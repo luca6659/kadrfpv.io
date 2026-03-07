@@ -1,43 +1,62 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kadr FPV Moscow</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>KADR FPV MOSCOW</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
 
-body{
+*{
 margin:0;
-font-family:Arial;
-background:#0a0a0a;
-color:white;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Inter',sans-serif;
+background:#0f0f0f;
+color:#ffffff;
+line-height:1.6;
 }
 
 header{
-background:black;
-padding:25px;
-text-align:center;
-font-size:30px;
-font-weight:bold;
+position:fixed;
+top:0;
+width:100%;
+background:rgba(0,0,0,0.6);
+backdrop-filter:blur(10px);
+padding:20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+z-index:100;
 }
 
-nav{
-background:#111;
-padding:15px;
-text-align:center;
+.logo{
+font-weight:600;
+letter-spacing:2px;
 }
 
 nav a{
-color:white;
-margin:20px;
+margin-left:25px;
 text-decoration:none;
-font-size:18px;
+color:white;
+opacity:0.8;
+transition:0.3s;
+}
+
+nav a:hover{
+opacity:1;
 }
 
 .hero{
+height:100vh;
 position:relative;
-height:500px;
 overflow:hidden;
 }
 
@@ -56,90 +75,121 @@ text-align:center;
 }
 
 .hero-text h1{
-font-size:55px;
-margin:0;
+font-size:60px;
+font-weight:600;
+margin-bottom:10px;
+}
+
+.hero-text p{
+opacity:0.8;
 }
 
 .section{
-padding:60px;
-text-align:center;
+padding:120px 40px;
+max-width:1200px;
+margin:auto;
+}
+
+.section h2{
+margin-bottom:40px;
+font-weight:600;
+}
+
+.video-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:25px;
+}
+
+.video-grid video{
+width:100%;
+border-radius:12px;
+transition:0.4s;
+}
+
+.video-grid video:hover{
+transform:scale(1.03);
 }
 
 .gallery{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
 }
 
 .gallery img{
-width:300px;
-margin:10px;
-border-radius:10px;
+width:100%;
+border-radius:12px;
+transition:0.4s;
 }
 
-.video-gallery{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-}
-
-.video-gallery video{
-width:400px;
-margin:10px;
-border-radius:10px;
+.gallery img:hover{
+transform:scale(1.05);
 }
 
 .contact{
-background:#111;
-padding:50px;
 text-align:center;
+padding:100px 20px;
+background:#111;
 }
 
 .contact a{
-color:#00ffcc;
+display:block;
+margin:10px;
 text-decoration:none;
+color:white;
+opacity:0.8;
+transition:0.3s;
+}
+
+.contact a:hover{
+opacity:1;
 }
 
 footer{
-background:black;
 text-align:center;
-padding:20px;
+padding:40px;
+opacity:0.5;
 }
 
 </style>
+
 </head>
 
 <body>
 
 <header>
-Kadr FPV Moscow
-</header>
+
+<div class="logo">
+KADR FPV
+</div>
 
 <nav>
-<a href="#">Главная</a>
 <a href="#video">Видео</a>
-<a href="#gallery">Фото</a>
+<a href="#photo">Фото</a>
 <a href="#contact">Контакты</a>
 </nav>
 
-<div class="hero">
+</header>
+
+<section class="hero">
 
 <video autoplay muted loop>
 <source src="hero.mp4" type="video/mp4">
 </video>
 
 <div class="hero-text">
-<h1>FPV Drone Moscow</h1>
-<p>Профессиональная аэросъемка</p>
+<h1>FPV AERIAL</h1>
+<p>cinematic drone production</p>
 </div>
 
-</div>
+</section>
 
 <section class="section" id="video">
 
-<h2>Наши видео</h2>
+<h2>Видео</h2>
 
-<div class="video-gallery">
+<div class="video-grid">
 
 <video controls>
 <source src="video1.mp4" type="video/mp4">
@@ -153,9 +203,9 @@ Kadr FPV Moscow
 
 </section>
 
-<section class="section" id="gallery">
+<section class="section" id="photo">
 
-<h2>Наши фотографии</h2>
+<h2>Фото</h2>
 
 <div class="gallery">
 
@@ -174,29 +224,24 @@ Kadr FPV Moscow
 
 <h2>Контакты</h2>
 
-<p>Телефон:</p>
-
-<p>
 <a href="tel:+79153585459">+7 915 358 54 59</a>
-</p>
 
-<p>
 <a href="tel:+79918736003">+7 991 873 60 03</a>
-</p>
 
-<p>
-Telegram:
 <a href="https://t.me/kadr_fpv" target="_blank">
-https://t.me/kadr_fpv
+Telegram — @kadr_fpv
 </a>
-</p>
 
-<p>Москва</p>
+<p style="margin-top:20px; opacity:0.6;">
+Москва
+</p>
 
 </section>
 
 <footer>
-© 2026 Kadr FPV Moscow
+
+© 2026 KADR FPV MOSCOW
+
 </footer>
 
 </body>
