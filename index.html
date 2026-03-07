@@ -1,77 +1,203 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мой новый сайт</title>
-    <style>
-        /* Базовые стили для оформления */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-            color: #333;
-        }
-        header {
-            background: #2c3e50;
-            color: white;
-            padding: 1rem 0;
-            text-align: center;
-        }
-        nav {
-            display: flex;
-            justify-content: center;
-            background: #34495e;
-        }
-        nav a {
-            color: white;
-            padding: 14px 20px;
-            text-decoration: none;
-            text-transform: uppercase;
-        }
-        nav a:hover {
-            background: #1abc9c;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
-            padding: 20px;
-        }
-        footer {
-            background: #2c3e50;
-            color: white;
-            text-align: center;
-            padding: 1rem 0;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kadr FPV Moscow</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#0a0a0a;
+color:white;
+}
+
+header{
+background:black;
+padding:25px;
+text-align:center;
+font-size:30px;
+font-weight:bold;
+}
+
+nav{
+background:#111;
+padding:15px;
+text-align:center;
+}
+
+nav a{
+color:white;
+margin:20px;
+text-decoration:none;
+font-size:18px;
+}
+
+.hero{
+position:relative;
+height:500px;
+overflow:hidden;
+}
+
+.hero video{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.hero-text{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+text-align:center;
+}
+
+.hero-text h1{
+font-size:55px;
+margin:0;
+}
+
+.section{
+padding:60px;
+text-align:center;
+}
+
+.gallery{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+}
+
+.gallery img{
+width:300px;
+margin:10px;
+border-radius:10px;
+}
+
+.video-gallery{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+}
+
+.video-gallery video{
+width:400px;
+margin:10px;
+border-radius:10px;
+}
+
+.contact{
+background:#111;
+padding:50px;
+text-align:center;
+}
+
+.contact a{
+color:#00ffcc;
+text-decoration:none;
+}
+
+footer{
+background:black;
+text-align:center;
+padding:20px;
+}
+
+</style>
 </head>
+
 <body>
 
-    <header>
-        <h1>Добро пожаловать на мой сайт</h1>
-    </header>
+<header>
+Kadr FPV Moscow
+</header>
 
-    <nav>
-        <a href="#">Главная</a>
-        <a href="#">О нас</a>
-        <a href="#">Услуги</a>
-        <a href="#">Контакты</a>
-    </nav>
+<nav>
+<a href="#">Главная</a>
+<a href="#video">Видео</a>
+<a href="#gallery">Фото</a>
+<a href="#contact">Контакты</a>
+</nav>
 
-    <div class="container">
-        <h2>Заголовок секции</h2>
-        <p>Это пример простого текста на вашей новой странице. Вы можете редактировать этот код, добавляя свои изображения, ссылки и блоки.</p>
-        <p>Используйте тег <code>&lt;a&gt;</code> для создания ссылок.</p>
-    </div>
+<div class="hero">
 
-    <footer>
-        <p>&copy; 2025 Мой Сайт. Все права защищены.</p>
-    </footer>
+<video autoplay muted loop>
+<source src="hero.mp4" type="video/mp4">
+</video>
+
+<div class="hero-text">
+<h1>FPV Drone Moscow</h1>
+<p>Профессиональная аэросъемка</p>
+</div>
+
+</div>
+
+<section class="section" id="video">
+
+<h2>Наши видео</h2>
+
+<div class="video-gallery">
+
+<video controls>
+<source src="video1.mp4" type="video/mp4">
+</video>
+
+<video controls>
+<source src="video2.mp4" type="video/mp4">
+</video>
+
+</div>
+
+</section>
+
+<section class="section" id="gallery">
+
+<h2>Наши фотографии</h2>
+
+<div class="gallery">
+
+<img src="photo1.jpg">
+<img src="photo2.jpg">
+<img src="photo3.jpg">
+<img src="photo4.jpg">
+<img src="photo5.jpg">
+<img src="photo6.jpg">
+
+</div>
+
+</section>
+
+<section class="contact" id="contact">
+
+<h2>Контакты</h2>
+
+<p>Телефон:</p>
+
+<p>
+<a href="tel:+79153585459">+7 915 358 54 59</a>
+</p>
+
+<p>
+<a href="tel:+79918736003">+7 991 873 60 03</a>
+</p>
+
+<p>
+Telegram:
+<a href="https://t.me/kadr_fpv" target="_blank">
+https://t.me/kadr_fpv
+</a>
+</p>
+
+<p>Москва</p>
+
+</section>
+
+<footer>
+© 2026 Kadr FPV Moscow
+</footer>
 
 </body>
 </html>
