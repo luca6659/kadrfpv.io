@@ -3,150 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>KADR FPV MOSCOW</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>KADR FPV | Cinematic Production</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600&display=swap" rel="stylesheet">
+    
     <style>
+        :root {
+            --bg: #0a0a0a;
+            --text: #ffffff;
+            --accent: #f2f2f2;
+            --transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #0f0f0f;
-            color: #ffffff;
-            line-height: 1.6;
+        html {
+            scroll-behavior: smooth; /* Та самая плавность прокрутки */
         }
 
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Навигация --- */
         header {
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
-            padding: 20px;
+            padding: 30px 50px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 100;
+            z-index: 1000;
+            background: linear-gradient(to bottom, rgba(10,10,10,0.8), transparent);
+            backdrop-filter: blur(5px);
         }
 
         .logo {
             font-weight: 600;
-            letter-spacing: 2px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-size: 14px;
         }
 
         nav a {
-            margin-left: 25px;
+            margin-left: 35px;
             text-decoration: none;
-            color: white;
-            opacity: 0.8;
-            transition: 0.3s;
+            color: var(--text);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.5;
+            transition: var(--transition);
         }
 
         nav a:hover {
             opacity: 1;
         }
 
+        /* --- Hero секция --- */
         .hero {
             height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             position: relative;
             overflow: hidden;
-        }
-
-        .hero video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .hero-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             text-align: center;
         }
 
+        .hero video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            filter: brightness(0.4);
+        }
+
         .hero-text h1 {
-            font-size: 60px;
-            font-weight: 600;
+            font-size: clamp(40px, 8vw, 90px);
+            font-weight: 200;
+            letter-spacing: -2px;
             margin-bottom: 10px;
+            text-transform: uppercase;
         }
 
         .hero-text p {
-            opacity: 0.8;
+            font-size: 14px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            opacity: 0.6;
         }
 
+        /* --- Секции общие --- */
         .section {
-            padding: 120px 40px;
-            max-width: 1200px;
+            padding: 140px 10%;
+            max-width: 1600px;
             margin: auto;
         }
 
-        .section h2 {
-            margin-bottom: 40px;
+        h2 {
+            font-size: 32px;
+            font-weight: 400;
+            margin-bottom: 60px;
+            letter-spacing: -1px;
+            border-left: 1px solid var(--accent);
+            padding-left: 20px;
+        }
+
+        /* --- Почему мы (Скандинавский блок) --- */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 100px;
+        }
+
+        .feature-item h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
             font-weight: 600;
         }
 
-        .video-grid {
+        .feature-item p {
+            font-size: 14px;
+            opacity: 0.6;
+            font-weight: 300;
+        }
+
+        /* --- Сетка видео и фото --- */
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-        }
-
-        .video-grid video {
-            width: 100%;
-            border-radius: 12px;
-            transition: 0.4s;
-        }
-
-        .video-grid video:hover {
-            transform: scale(1.03);
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
         }
 
         .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
         }
 
-        .gallery img {
+        video, img {
             width: 100%;
-            border-radius: 12px;
-            transition: 0.4s;
-            object-fit: cover;
-            aspect-ratio: 16/9; /* Делает все превью одинаковой формы */
+            border-radius: 2px; /* Минимализм — почти острые углы */
+            filter: grayscale(0.2);
+            transition: var(--transition);
         }
 
-        .gallery img:hover {
-            transform: scale(1.05);
+        video:hover, img:hover {
+            filter: grayscale(0);
+            transform: translateY(-5px);
         }
 
-        .contact {
-            text-align: center;
-            padding: 100px 20px;
+        /* --- Контакты и Telegram --- */
+        .contact-box {
             background: #111;
+            padding: 80px 40px;
+            text-align: center;
+            border-radius: 4px;
         }
 
-        .contact a {
-            display: block;
-            margin: 10px;
-            text-decoration: none;
-            color: white;
-            opacity: 0.8;
-            transition: 0.3s;
+        .tg-link {
+            display: inline-block;
+            margin-top: 30px;
+            transition: var(--transition);
         }
 
-        .contact a:hover {
+        .tg-link svg {
+            fill: white;
+            width: 40px;
+            height: 40px;
+            opacity: 0.7;
+            transition: var(--transition);
+        }
+
+        .tg-link:hover svg {
             opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .phone-links a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: 200;
         }
 
         footer {
+            padding: 60px;
             text-align: center;
-            padding: 40px;
-            opacity: 0.5;
+            font-size: 10px;
+            letter-spacing: 2px;
+            opacity: 0.3;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 20px; }
+            nav { display: none; } /* Скрываем меню на мобилках для чистоты */
+            .grid, .gallery { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -155,6 +224,7 @@
 <header>
     <div class="logo">KADR FPV</div>
     <nav>
+        <a href="#about">О нас</a>
         <a href="#video">Видео</a>
         <a href="#photo">Фото</a>
         <a href="#contact">Контакты</a>
@@ -166,14 +236,32 @@
         <source src="hero.mp4" type="video/mp4">
     </video>
     <div class="hero-text">
-        <h1>FPV AERIAL</h1>
-        <p>cinematic drone production</p>
+        <h1>Perspective</h1>
+        <p>Moscow based drone production</p>
+    </div>
+</section>
+
+<section class="section" id="about">
+    <h2>Почему мы</h2>
+    <div class="features">
+        <div class="feature-item">
+            <h3>Динамика</h3>
+            <p>Снимаем там, где обычные камеры бессильны. Скорость до 150 км/ч и ювелирная точность пролетов.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Качество</h3>
+            <p>Весь цикл производства от идеи до цветокоррекции 4K-материала под ключ.</p>
+        </div>
+        <div class="feature-item">
+            <h3>Оборудование</h3>
+            <p>Используем кастомные FPV дроны и топовые камеры для максимально иммерсивной картинки.</p>
+        </div>
     </div>
 </section>
 
 <section class="section" id="video">
-    <h2>Видео</h2>
-    <div class="video-grid">
+    <h2>Showreel / Видео</h2>
+    <div class="grid">
         <video controls>
             <source src="video1.mp4" type="video/mp4">
         </video>
@@ -184,25 +272,32 @@
 </section>
 
 <section class="section" id="photo">
-    <h2>Фото</h2>
+    <h2>Галерея</h2>
     <div class="gallery">
-        <img src="photo1.jpg.JPG" alt="FPV Photo 1">
-        <img src="photo2.jpg.JPG" alt="FPV Photo 2">
-        <img src="photo3.jpg.JPG" alt="FPV Photo 3">
-        <img src="photo4.jpg.JPG" alt="FPV Photo 4">
+        <img src="photo1.jpg.JPG" alt="FPV Art 1">
+        <img src="photo2.jpg.JPG" alt="FPV Art 2">
+        <img src="photo3.jpg.JPG" alt="FPV Art 3">
+        <img src="photo4.jpg.JPG" alt="FPV Art 4">
     </div>
 </section>
 
-<section class="contact" id="contact">
-    <h2>Контакты</h2>
-    <a href="tel:+79153585459">+7 915 358 54 59</a>
-    <a href="tel:+79918736003">+7 991 873 60 03</a>
-    <a href="https://t.me/kadr_fpv" target="_blank">Telegram — @kadr_fpv</a>
-    <p style="margin-top:20px; opacity:0.6;">Москва</p>
+<section class="section" id="contact">
+    <div class="contact-box">
+        <h2>Связь</h2>
+        <div class="phone-links">
+            <a href="tel:+79153585459">+7 915 358 54 59</a>
+            <a href="tel:+79918736003">+7 991 873 60 03</a>
+        </div>
+        
+        <a href="https://t.me/kadr_fpv" class="tg-link" target="_blank">
+            <svg viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.462 8.358l-1.63 7.684c-.123.542-.444.677-.897.424l-2.486-1.834-1.2 1.156c-.132.132-.244.244-.504.244l.179-2.541 4.624-4.177c.201-.178-.044-.278-.31-.1l-5.715 3.6-2.463-.769c-.537-.168-.547-.537.112-.793l9.629-3.712c.446-.168.837.099.68z"/></svg>
+        </a>
+        <p style="margin-top: 20px; opacity: 0.4; font-size: 12px;">Москва, Россия</p>
+    </div>
 </section>
 
 <footer>
-    © 2026 KADR FPV MOSCOW
+    &copy; 2026 KADR FPV MOSCOW — ALL RIGHTS RESERVED
 </footer>
 
 </body>
