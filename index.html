@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>KADR FPV | Cinematic Production</title>
+    <title>KADR FPV | Premium Production</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --bg: #0d0d0d;
-            --glass: rgba(255, 255, 255, 0.02);
             --text: #ffffff;
-            --accent: rgba(255, 255, 255, 0.08);
+            --accent: rgba(255, 255, 255, 0.1);
+            --tg-blue: #29a7e7;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; } /* Скрываем стандартный курсор */
         html { scroll-behavior: smooth; }
 
         body {
@@ -23,172 +23,131 @@
             background: var(--bg);
             color: var(--text);
             line-height: 1.6;
+            overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- Навигация (Более прозрачная) --- */
+        /* --- Кастомный курсор --- */
+        .cursor-dot {
+            width: 6px; height: 6px; background: #fff;
+            position: fixed; border-radius: 50%; pointer-events: none; z-index: 10001;
+            transform: translate(-50%, -50%);
+        }
+        .cursor-outline {
+            width: 30px; height: 30px; border: 1px solid rgba(255,255,255,0.4);
+            position: fixed; border-radius: 50%; pointer-events: none; z-index: 10000;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background 0.3s;
+        }
+
+        /* --- Навигация --- */
         header {
-            position: fixed;
-            top: 0; width: 100%;
-            padding: 20px 40px;
+            position: fixed; top: 0; width: 100%; padding: 25px 40px;
             display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000;
-            background: rgba(13, 13, 13, 0.3); /* Уменьшил прозрачность с 0.8 до 0.3 */
+            z-index: 1000; background: rgba(13, 13, 13, 0.2);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.03);
         }
-
         .logo { font-weight: 500; letter-spacing: 3px; font-size: 13px; text-transform: uppercase; }
-
-        nav a {
-            margin-left: 30px;
-            text-decoration: none;
-            color: var(--text);
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            opacity: 0.5;
-            transition: 0.3s;
-        }
-
+        nav a { margin-left: 30px; text-decoration: none; color: #fff; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.5; transition: 0.3s; }
         nav a:hover { opacity: 1; }
 
-        /* --- Hero --- */
+        /* --- Hero с Параллаксом --- */
         .hero {
-            height: 100vh;
-            display: flex; align-items: center; justify-content: center;
+            height: 100vh; display: flex; align-items: center; justify-content: center;
             position: relative; overflow: hidden;
-            text-align: center;
         }
-
-        .hero video {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; z-index: -1;
-            filter: brightness(0.4);
+        #hero-video {
+            position: absolute; top: 0; left: 0; width: 100%; height: 120%; /* Высота больше для параллакса */
+            object-fit: cover; z-index: -1; filter: brightness(0.4);
+            will-change: transform;
         }
-
-        .hero-text h1 {
-            font-size: clamp(32px, 6vw, 64px);
-            font-weight: 200;
-            letter-spacing: -1px;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-
-        .hero-text p { font-size: 11px; letter-spacing: 5px; text-transform: uppercase; opacity: 0.4; }
+        .hero-text h1 { font-size: clamp(40px, 8vw, 80px); font-weight: 200; letter-spacing: -2px; text-transform: uppercase; }
+        .hero-text p { font-size: 11px; letter-spacing: 5px; opacity: 0.4; text-transform: uppercase; }
 
         /* --- Секции --- */
         .section { padding: 120px 10%; max-width: 1400px; margin: auto; }
-        h2 { font-size: 20px; font-weight: 300; margin-bottom: 50px; border-left: 1px solid white; padding-left: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        h2 { font-size: 18px; font-weight: 300; margin-bottom: 40px; border-left: 1px solid #fff; padding-left: 15px; text-transform: uppercase; letter-spacing: 2px; }
 
-        /* --- О нас (Минимализм без цифр) --- */
-        .about-text {
-            font-size: clamp(18px, 3vw, 28px);
-            font-weight: 200;
-            line-height: 1.4;
-            max-width: 900px;
-            margin-bottom: 60px;
-            opacity: 0.9;
-        }
+        .about-text { font-size: clamp(20px, 4vw, 32px); font-weight: 200; line-height: 1.3; margin-bottom: 60px; }
 
-        /* --- Контент (Видео и Фото) --- */
-        .video-item { margin-bottom: 40px; }
-        video, img { width: 100%; border-radius: 8px; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid var(--accent); }
-        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        /* --- Видео/Фото --- */
+        video, img { width: 100%; border-radius: 4px; border: 1px solid var(--accent); transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         img:hover { transform: scale(1.02); }
 
-        /* --- Контакты и Telegram --- */
-        .contact-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 50px;
+        /* --- FAQ (Вопросы) --- */
+        .faq-container { max-width: 800px; }
+        .faq-item { border-bottom: 1px solid var(--accent); padding: 25px 0; }
+        .faq-question { 
+            font-size: 18px; font-weight: 300; display: flex; justify-content: space-between; 
+            align-items: center; cursor: none; transition: 0.3s;
         }
-
-        .contact-info {
-            background: var(--glass);
-            padding: 40px;
-            border-radius: 20px;
-            border: 1px solid var(--accent);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+        .faq-question:hover { opacity: 0.7; }
+        .faq-answer { 
+            max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0, 1, 0, 1); 
+            font-size: 14px; opacity: 0.5; font-weight: 300; padding-top: 0;
         }
+        .faq-item.active .faq-answer { max-height: 1000px; padding-top: 15px; transition: max-height 1s ease-in-out; }
+        .faq-icon { transition: 0.3s; font-size: 20px; }
+        .faq-item.active .faq-icon { transform: rotate(45deg); }
 
-        .contact-info a {
-            font-size: 24px;
-            color: white;
-            text-decoration: none;
-            font-weight: 200;
-            margin-bottom: 10px;
-            transition: 0.3s;
+        /* --- Контакты --- */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 50px; }
+        .contact-box { background: var(--glass); padding: 50px; border-radius: 12px; border: 1px solid var(--accent); display: flex; flex-direction: column; justify-content: center; }
+        .contact-box a { font-size: 26px; color: #fff; text-decoration: none; font-weight: 200; margin-bottom: 10px; }
+        .tg-card { 
+            background: rgba(41, 167, 231, 0.03); border: 1px solid rgba(41, 167, 231, 0.2); 
+            border-radius: 12px; padding: 50px; text-align: center; text-decoration: none; color: #fff;
+            transition: 0.4s;
         }
+        .tg-card:hover { background: rgba(41, 167, 231, 0.1); border-color: var(--tg-blue); }
+        .tg-card svg { width: 50px; fill: var(--tg-blue); margin-bottom: 15px; }
 
-        .contact-info a:hover { opacity: 0.6; }
+        footer { padding: 60px; text-align: center; font-size: 9px; opacity: 0.2; letter-spacing: 2px; }
 
-        .tg-card {
-            background: linear-gradient(135deg, rgba(41, 167, 231, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
-            border: 1px solid rgba(41, 167, 231, 0.15);
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            text-decoration: none;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .tg-card svg { width: 50px; height: 50px; fill: #29a7e7; margin-bottom: 15px; transition: 0.5s; opacity: 0.8; }
-        .tg-card span { color: white; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; font-weight: 300; }
-
-        .tg-card:hover {
-            background: rgba(41, 167, 231, 0.1);
-            border-color: rgba(41, 167, 231, 0.4);
-            transform: translateY(-5px);
-        }
-
-        footer { padding: 80px 40px; text-align: center; font-size: 9px; opacity: 0.2; letter-spacing: 2px; text-transform: uppercase; }
-
-        /* Анимации */
-        .fade-in { opacity: 0; transform: translateY(20px); transition: 1s ease forwards; }
+        .fade-in { opacity: 0; transform: translateY(30px); transition: 1s ease forwards; }
         .fade-in.visible { opacity: 1; transform: translateY(0); }
 
         @media (max-width: 768px) {
-            header { padding: 15px 20px; }
+            * { cursor: auto !important; }
+            .cursor-dot, .cursor-outline { display: none; }
+            .contact-grid { grid-template-columns: 1fr; }
+            header { padding: 20px; }
             nav { display: none; }
-            .contact-container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
+
+<div class="cursor-dot"></div>
+<div class="cursor-outline"></div>
 
 <header>
     <div class="logo">KADR FPV</div>
     <nav>
         <a href="#about">О нас</a>
         <a href="#video">Работы</a>
-        <a href="#photo">Галерея</a>
+        <a href="#faq">FAQ</a>
         <a href="#contact">Связь</a>
     </nav>
 </header>
 
 <section class="hero">
-    <video autoplay muted loop playsinline>
+    <video autoplay muted loop playsinline id="hero-video">
         <source src="hero.mp4.mov" type="video/quicktime">
         <source src="hero.mp4.mov" type="video/mp4">
     </video>
     <div class="hero-text">
         <h1>KADR FPV</h1>
-        <p>Premium Drone Production</p>
+        <p>AERIAL CINEMATOGRAPHY</p>
     </div>
 </section>
 
 <section class="section" id="about">
     <h2 class="fade-in">Filmmaking</h2>
     <div class="about-text fade-in">
-        Мы создаем новую перспективу для ваших проектов. От динамичных погонь до плавной интерьерной съемки — каждый кадр наполнен скоростью и точностью.
+        Мы ловим моменты, которые остаются за гранью обычного. Скорость, точность и новый взгляд на пространство.
     </div>
 </section>
 
@@ -199,45 +158,77 @@
     </div>
 </section>
 
-<section class="section" id="photo">
-    <h2 class="fade-in">Gallery</h2>
-    <div class="gallery fade-in">
-        <img src="photo1.jpg.JPG" alt="FPV 1">
-        <img src="photo2.jpg.JPG" alt="FPV 2">
-        <img src="photo3.jpg.JPG" alt="FPV 3">
-        <img src="photo4.jpg.JPG" alt="FPV 4">
+<section class="section" id="faq">
+    <h2 class="fade-in">Вопросы</h2>
+    <div class="faq-container fade-in">
+        <div class="faq-item">
+            <div class="faq-question">Нужно ли разрешение на полет? <span class="faq-icon">+</span></div>
+            <div class="faq-answer">Да, мы берем на себя все вопросы по согласованию полетов в разрешенных зонах Москвы и области. Безопасность и законность — наш приоритет.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Как быстро я получу видео? <span class="faq-icon">+</span></div>
+            <div class="faq-answer">Первые исходники доступны уже на следующий день. Готовый монтаж с цветокоррекцией обычно занимает от 3 до 7 рабочих дней.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">На что вы снимаете? <span class="faq-icon">+</span></div>
+            <div class="faq-answer">Используем кастомные 5-дюймовые дроны с камерами GoPro 12/11 и специализированные синевупы для съемок внутри помещений и рядом с людьми.</div>
+        </div>
     </div>
 </section>
 
 <section class="section" id="contact">
-    <h2 class="fade-in">Contact</h2>
-    <div class="contact-container fade-in">
-        <div class="contact-info">
+    <h2 class="fade-in">Project Inquiry</h2>
+    <div class="contact-grid fade-in">
+        <div class="contact-box">
             <a href="tel:+79153585459">+7 915 358 54 59</a>
             <a href="tel:+79918736003">+7 991 873 60 03</a>
-            <p style="font-size: 10px; opacity: 0.3; text-transform: uppercase; letter-spacing: 2px;">Moscow, Russia</p>
+            <p style="font-size: 10px; opacity: 0.3; text-transform: uppercase; letter-spacing: 2px;">Based in Moscow</p>
         </div>
-        
         <a href="https://t.me/kadr_fpv" class="tg-card" target="_blank">
             <svg viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.462 8.358l-1.63 7.684c-.123.542-.444.677-.897.424l-2.486-1.834-1.2 1.156c-.132.132-.244.244-.504.244l.179-2.541 4.624-4.177c.201-.178-.044-.278-.31-.1l-5.715 3.6-2.463-.769c-.537-.168-.547-.537.112-.793l9.629-3.712c.446-.168.837.099.68z"/></svg>
-            <span>Написать в Telegram</span>
+            <span style="display: block; letter-spacing: 2px; text-transform: uppercase; font-size: 12px;">Telegram Direct</span>
         </a>
     </div>
 </section>
 
-<footer>
-    © 2026 KADR FPV MOSCOW
-</footer>
+<footer>© 2026 KADR FPV — ALL RIGHTS RESERVED</footer>
 
 <script>
+    // 1. Скрипт кастомного курсора
+    const dot = document.querySelector('.cursor-dot');
+    const outline = document.querySelector('.cursor-outline');
+    window.addEventListener('mousemove', (e) => {
+        dot.style.left = e.clientX + 'px';
+        dot.style.top = e.clientY + 'px';
+        outline.animate({ left: e.clientX + 'px', top: e.clientY + 'px' }, { duration: 500, fill: "forwards" });
+    });
+
+    // Эффект при наведении на ссылки
+    document.querySelectorAll('a, .faq-question').forEach(link => {
+        link.addEventListener('mouseenter', () => { outline.style.width = '60px'; outline.style.height = '60px'; outline.style.background = 'rgba(255,255,255,0.1)'; });
+        link.addEventListener('mouseleave', () => { outline.style.width = '30px'; outline.style.height = '30px'; outline.style.background = 'transparent'; });
+    });
+
+    // 2. Параллакс эффект для видео
+    window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const video = document.querySelector('#hero-video');
+        video.style.transform = `translateY(${scrolled * 0.4}px)`;
+    });
+
+    // 3. FAQ Аккордеон
+    document.querySelectorAll('.faq-item').forEach(item => {
+        item.addEventListener('click', () => {
+            item.classList.toggle('active');
+        });
+    });
+
+    // 4. Плавное появление блоков
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
+            if (entry.isIntersecting) entry.target.classList.add('visible');
         });
     }, { threshold: 0.1 });
-
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 </script>
 
