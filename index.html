@@ -5,18 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>KADR FPV | Cinematic Production</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --bg: #0d0d0d;
-            --glass: rgba(20, 20, 20, 0.7);
+            --glass: rgba(255, 255, 255, 0.03);
             --text: #ffffff;
             --accent: rgba(255, 255, 255, 0.1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         html { scroll-behavior: smooth; }
 
         body {
@@ -27,24 +26,19 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Тонкая полупрозрачная шапка сверху */
+        /* --- Навигация --- */
         header {
             position: fixed;
             top: 0; width: 100%;
             padding: 20px 40px;
             display: flex; justify-content: space-between; align-items: center;
             z-index: 1000;
-            background: var(--glass);
+            background: rgba(13, 13, 13, 0.8);
             backdrop-filter: blur(15px);
             border-bottom: 1px solid var(--accent);
         }
 
-        .logo {
-            font-weight: 500;
-            letter-spacing: 3px;
-            font-size: 13px;
-            text-transform: uppercase;
-        }
+        .logo { font-weight: 500; letter-spacing: 3px; font-size: 13px; text-transform: uppercase; }
 
         nav a {
             margin-left: 30px;
@@ -59,7 +53,7 @@
 
         nav a:hover { opacity: 1; }
 
-        /* Главный экран (Hero) */
+        /* --- Hero --- */
         .hero {
             height: 100vh;
             display: flex; align-items: center; justify-content: center;
@@ -70,145 +64,129 @@
         .hero video {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             object-fit: cover; z-index: -1;
-            filter: brightness(0.5);
+            filter: brightness(0.4);
         }
 
         .hero-text h1 {
             font-size: clamp(32px, 6vw, 64px);
-            font-weight: 300;
+            font-weight: 200;
             letter-spacing: -1px;
             margin-bottom: 10px;
             text-transform: uppercase;
         }
 
-        .hero-text p {
-            font-size: 12px;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            opacity: 0.5;
-        }
+        .hero-text p { font-size: 12px; letter-spacing: 5px; text-transform: uppercase; opacity: 0.4; }
 
-        /* Секции */
-        .section {
-            padding: 100px 10%;
-            max-width: 1400px;
-            margin: auto;
-        }
+        /* --- Секции --- */
+        .section { padding: 100px 10%; max-width: 1400px; margin: auto; }
+        h2 { font-size: 22px; font-weight: 300; margin-bottom: 50px; border-left: 1px solid white; padding-left: 15px; text-transform: uppercase; letter-spacing: 1px; }
 
-        h2 {
-            font-size: 22px;
-            font-weight: 400;
-            margin-bottom: 50px;
-            letter-spacing: -0.5px;
-            color: #f0f0f0;
-            border-left: 1px solid white;
-            padding-left: 15px;
-        }
-
-        /* Блок со статистикой и растущими цифрами */
+        /* --- Статистика --- */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 30px;
             padding: 40px;
-            background: rgba(255,255,255,0.02);
-            border-radius: 12px;
+            background: var(--glass);
+            border-radius: 20px;
             border: 1px solid var(--accent);
-            margin-bottom: 50px;
+            margin-bottom: 80px;
         }
 
         .stat-card { text-align: center; }
-        
-        .stat-number {
-            display: block;
-            font-size: 38px;
-            font-weight: 300; /* Мягкое начертание */
-            margin-bottom: 5px;
-        }
+        .stat-number { display: block; font-size: 42px; font-weight: 200; margin-bottom: 5px; }
+        .stat-label { font-size: 9px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.4; }
 
-        .stat-label {
-            font-size: 9px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            opacity: 0.4;
-        }
-
-        /* Галерея и Видео */
+        /* --- Контент (Видео и Фото) --- */
         .video-item { margin-bottom: 40px; }
-        
-        video, img {
-            width: 100%;
-            border-radius: 4px;
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 15px;
-        }
-
+        video, img { width: 100%; border-radius: 12px; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid var(--accent); }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
         img:hover { transform: scale(1.02); }
 
-        /* Контакты */
-        .contact-card {
-            background: #111;
-            padding: 60px 20px;
-            border-radius: 12px;
-            text-align: center;
+        /* --- КРУТОЙ ТЕЛЕГРАМ И КОНТАКТЫ --- */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 50px;
+        }
+
+        .contact-info {
+            background: var(--glass);
+            padding: 40px;
+            border-radius: 24px;
             border: 1px solid var(--accent);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        .phone-link {
-            display: block;
-            font-size: 24px;
+        .contact-info a {
+            font-size: 28px;
             color: white;
             text-decoration: none;
+            font-weight: 200;
             margin-bottom: 10px;
-            font-weight: 300;
-        }
-
-        .tg-btn {
-            display: inline-flex;
-            align-items: center;
-            margin-top: 25px;
-            padding: 12px 30px;
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 40px;
-            text-decoration: none;
-            color: white;
-            font-size: 11px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
             transition: 0.3s;
         }
 
-        .tg-btn:hover { background: white; color: black; }
+        .contact-info a:hover { opacity: 0.6; }
 
-        footer {
-            padding: 60px;
+        .tg-card {
+            background: linear-gradient(135deg, rgba(41, 167, 231, 0.1) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border: 1px solid rgba(41, 167, 231, 0.2);
+            border-radius: 24px;
+            padding: 40px;
             text-align: center;
-            font-size: 9px;
-            opacity: 0.3;
+            text-decoration: none;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tg-card svg {
+            width: 60px;
+            height: 60px;
+            fill: #29a7e7;
+            margin-bottom: 15px;
+            transition: 0.5s;
+        }
+
+        .tg-card span {
+            color: white;
+            font-size: 14px;
             letter-spacing: 2px;
             text-transform: uppercase;
+            font-weight: 300;
         }
 
-        /* Эффект появления при прокрутке */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: 1s ease forwards;
+        .tg-card:hover {
+            background: rgba(41, 167, 231, 0.15);
+            border-color: rgba(41, 167, 231, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(41, 167, 231, 0.1);
         }
 
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .tg-card:hover svg {
+            transform: scale(1.1) rotate(-10deg);
+            filter: drop-shadow(0 0 10px rgba(41, 167, 231, 0.5));
         }
+
+        footer { padding: 80px 40px; text-align: center; font-size: 9px; opacity: 0.3; letter-spacing: 2px; text-transform: uppercase; }
+
+        /* Анимации */
+        .fade-in { opacity: 0; transform: translateY(20px); transition: 1s ease forwards; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
 
         @media (max-width: 768px) {
             header { padding: 15px 20px; }
             nav { display: none; }
+            .contact-container { grid-template-columns: 1fr; }
+            .section { padding: 80px 20px; }
         }
     </style>
 </head>
@@ -250,7 +228,6 @@
             <span class="stat-label">ПРОЕКТОВ</span>
         </div>
     </div>
-    <h2 class="fade-in">Мы создаем кадры, которые невозможно повторить классической камерой.</h2>
 </section>
 
 <section class="section" id="video">
@@ -271,12 +248,18 @@
 </section>
 
 <section class="section" id="contact">
-    <div class="contact-card fade-in">
-        <h2>Связаться с нами</h2>
-        <a href="tel:+79153585459" class="phone-link">+7 915 358 54 59</a>
-        <a href="tel:+79918736003" class="phone-link">+7 991 873 60 03</a>
-        <br>
-        <a href="https://t.me/kadr_fpv" class="tg-btn" target="_blank">Telegram</a>
+    <h2 class="fade-in">Обсудить проект</h2>
+    <div class="contact-container fade-in">
+        <div class="contact-info">
+            <a href="tel:+79153585459">+7 915 358 54 59</a>
+            <a href="tel:+79918736003">+7 991 873 60 03</a>
+            <p style="font-size: 11px; opacity: 0.4; text-transform: uppercase; letter-spacing: 1px;">Москва, Россия</p>
+        </div>
+        
+        <a href="https://t.me/kadr_fpv" class="tg-card" target="_blank">
+            <svg viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.462 8.358l-1.63 7.684c-.123.542-.444.677-.897.424l-2.486-1.834-1.2 1.156c-.132.132-.244.244-.504.244l.179-2.541 4.624-4.177c.201-.178-.044-.278-.31-.1l-5.715 3.6-2.463-.769c-.537-.168-.547-.537.112-.793l9.629-3.712c.446-.168.837.099.68z"/></svg>
+            <span>Написать в Telegram</span>
+        </a>
     </div>
 </section>
 
@@ -285,7 +268,6 @@
 </footer>
 
 <script>
-    // Скрипт плавного появления
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -293,23 +275,22 @@
                 if (entry.target.classList.contains('stats-grid')) startCounters();
             }
         });
-    }, { threshold: 0.2 });
+    }, { threshold: 0.1 });
 
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-    // Скрипт растущих цифр
     function startCounters() {
         const counters = document.querySelectorAll('.stat-number');
         counters.forEach(counter => {
-            if (counter.innerText !== "0") return; // Чтобы не запускать повторно
+            if (counter.innerText !== "0") return;
             const target = +counter.getAttribute('data-target');
             let current = 0;
-            const increment = target / 50;
+            const increment = target / 60;
             const update = () => {
                 if (current < target) {
                     current += increment;
                     counter.innerText = Math.ceil(current);
-                    setTimeout(update, 30);
+                    setTimeout(update, 25);
                 } else {
                     counter.innerText = target + "+";
                 }
