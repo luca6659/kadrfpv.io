@@ -8,6 +8,8 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
 
+<script src="https://unpkg.com/@studio-freight/lenis@1.0.6/dist/lenis.min.js"></script>
+
 <style>
 
 :root{
@@ -18,6 +20,7 @@
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
+
 html{scroll-behavior:smooth}
 
 body{
@@ -25,6 +28,23 @@ font-family:'Inter',sans-serif;
 background:var(--bg);
 color:var(--text);
 line-height:1.6;
+}
+
+/* PRELOADER */
+
+#preloader{
+position:fixed;
+width:100%;
+height:100%;
+background:#0d0d0d;
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:2000;
+letter-spacing:6px;
+font-size:12px;
+text-transform:uppercase;
+transition:1s;
 }
 
 /* HEADER */
@@ -53,11 +73,11 @@ text-transform:uppercase;
 nav a{
 margin-left:30px;
 text-decoration:none;
-color:white;
+color:var(--text);
 font-size:11px;
 text-transform:uppercase;
 letter-spacing:1.5px;
-opacity:.6;
+opacity:.5;
 transition:.3s;
 }
 
@@ -119,8 +139,6 @@ text-transform:uppercase;
 letter-spacing:1px;
 }
 
-/* ABOUT */
-
 .about-text{
 font-size:clamp(18px,3vw,28px);
 font-weight:200;
@@ -132,13 +150,12 @@ opacity:.9;
 
 /* VIDEO */
 
-.video-item{
-margin-bottom:40px;
-}
+.video-item{margin-bottom:40px}
 
 video,img{
 width:100%;
 border-radius:8px;
+transition:transform .6s cubic-bezier(.16,1,.3,1);
 border:1px solid var(--accent);
 }
 
@@ -148,9 +165,27 @@ grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
 gap:20px;
 }
 
-img:hover{
-transform:scale(1.02);
-transition:.4s;
+img:hover{transform:scale(1.02)}
+
+/* BRANDS */
+
+.brands{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+gap:40px;
+align-items:center;
+opacity:.6;
+}
+
+.brands img{
+width:100%;
+filter:invert(1) grayscale(1);
+opacity:.5;
+transition:.3s;
+}
+
+.brands img:hover{
+opacity:1;
 }
 
 /* CONTACT */
@@ -181,48 +216,67 @@ margin-bottom:10px;
 }
 
 .tg-card{
-background:linear-gradient(135deg,rgba(41,167,231,.05)0%,rgba(255,255,255,.01)100%);
+background:linear-gradient(135deg,rgba(41,167,231,.05),rgba(255,255,255,.01));
 border:1px solid rgba(41,167,231,.15);
 border-radius:20px;
 padding:40px;
 text-align:center;
-text-decoration:none;
 display:flex;
-flex-direction:column;
 align-items:center;
 justify-content:center;
-}
-
-.tg-card span{
-color:white;
-font-size:13px;
-letter-spacing:2px;
-text-transform:uppercase;
 }
 
 footer{
 padding:80px 40px;
 text-align:center;
 font-size:9px;
-opacity:.3;
+opacity:.2;
 letter-spacing:2px;
 text-transform:uppercase;
 }
 
-@media(max-width:768px){
+/* DRONE */
 
-nav{display:none}
-
-.contact-container{
-grid-template-columns:1fr;
+.drone{
+position:fixed;
+width:40px;
+top:80%;
+left:-100px;
+animation:dronefly 20s linear infinite;
+opacity:.4;
 }
 
+@keyframes dronefly{
+0%{transform:translateX(0)}
+100%{transform:translateX(120vw)}
+}
+
+/* ANIMATIONS */
+
+.fade-in{
+opacity:0;
+transform:translateY(20px);
+transition:1s ease forwards;
+}
+
+.fade-in.visible{
+opacity:1;
+transform:translateY(0);
+}
+
+@media(max-width:768px){
+nav{display:none}
+.contact-container{grid-template-columns:1fr}
 }
 
 </style>
 </head>
 
 <body>
+
+<div id="preloader">KADR FPV</div>
+
+<img class="drone" src="https://cdn-icons-png.flaticon.com/512/744/744465.png">
 
 <header>
 
@@ -252,9 +306,9 @@ grid-template-columns:1fr;
 
 <section class="section" id="about">
 
-<h2>Filmmaking</h2>
+<h2 class="fade-in">Filmmaking</h2>
 
-<div class="about-text">
+<div class="about-text fade-in">
 Мы создаем новую перспективу для ваших проектов. От динамичных погонь до плавной интерьерной съемки — каждый кадр наполнен скоростью и точностью.
 </div>
 
@@ -262,21 +316,36 @@ grid-template-columns:1fr;
 
 <section class="section" id="video">
 
-<h2>Selected Works</h2>
+<h2 class="fade-in">Selected Works</h2>
 
-<div class="video-item">
+<div class="video-item fade-in">
 <video controls>
-<source src="hero.mp4.mov" type="video/mp4">
+<source src="video1.mp4" type="video/mp4">
 </video>
+</div>
+
+</section>
+
+<section class="section">
+
+<h2 class="fade-in">Brands</h2>
+
+<div class="brands fade-in">
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/DJI_logo.png">
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/44/BMW.svg">
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Mercedes-Benz_Logo_2010.svg">
+<img src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg">
+
 </div>
 
 </section>
 
 <section class="section" id="photo">
 
-<h2>Gallery</h2>
+<h2 class="fade-in">Gallery</h2>
 
-<div class="gallery">
+<div class="gallery fade-in">
 
 <img src="photo1.jpg.JPG">
 <img src="photo2.jpg.JPG">
@@ -289,9 +358,9 @@ grid-template-columns:1fr;
 
 <section class="section" id="contact">
 
-<h2>Contact</h2>
+<h2 class="fade-in">Contact</h2>
 
-<div class="contact-container">
+<div class="contact-container fade-in">
 
 <div class="contact-info">
 
@@ -317,6 +386,44 @@ Moscow, Russia
 © 2026 KADR FPV MOSCOW
 
 </footer>
+
+<script>
+
+/* PRELOADER */
+
+window.addEventListener("load",()=>{
+setTimeout(()=>{
+document.getElementById("preloader").style.opacity="0"
+setTimeout(()=>{
+document.getElementById("preloader").style.display="none"
+},800)
+},500)
+})
+
+/* LENIS SMOOTH SCROLL */
+
+const lenis = new Lenis()
+
+function raf(time){
+lenis.raf(time)
+requestAnimationFrame(raf)
+}
+
+requestAnimationFrame(raf)
+
+/* FADE IN */
+
+const observer=new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+entry.target.classList.add("visible")
+}
+})
+},{threshold:0.1})
+
+document.querySelectorAll(".fade-in").forEach(el=>observer.observe(el))
+
+</script>
 
 </body>
 </html>
