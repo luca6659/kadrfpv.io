@@ -5,203 +5,217 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>KADR FPV | Cinematic Production</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg: #0d0d0d;
-            --glass: rgba(20, 20, 20, 0.7);
+            --bg: #0a0a0a;
             --text: #ffffff;
-            --accent: rgba(255, 255, 255, 0.1);
+            --accent: #f2f2f2;
+            --transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        html { scroll-behavior: smooth; }
+        html {
+            scroll-behavior: smooth; /* Та самая плавность прокрутки */
+        }
 
         body {
             font-family: 'Inter', sans-serif;
             background: var(--bg);
             color: var(--text);
-            line-height: 1.6;
+            line-height: 1.5;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Полупрозрачная шапка */
+        /* --- Навигация --- */
         header {
             position: fixed;
-            top: 0; width: 100%;
-            padding: 20px 40px;
-            display: flex; justify-content: space-between; align-items: center;
+            top: 0;
+            width: 100%;
+            padding: 30px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             z-index: 1000;
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid var(--accent);
+            background: linear-gradient(to bottom, rgba(10,10,10,0.8), transparent);
+            backdrop-filter: blur(5px);
         }
 
         .logo {
-            font-weight: 500;
-            letter-spacing: 3px;
-            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 4px;
             text-transform: uppercase;
+            font-size: 14px;
         }
 
         nav a {
-            margin-left: 30px;
+            margin-left: 35px;
             text-decoration: none;
             color: var(--text);
-            font-size: 11px;
+            font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            opacity: 0.6;
-            transition: 0.3s;
+            letter-spacing: 2px;
+            opacity: 0.5;
+            transition: var(--transition);
         }
 
-        nav a:hover { opacity: 1; }
+        nav a:hover {
+            opacity: 1;
+        }
 
-        /* Hero секция */
+        /* --- Hero секция --- */
         .hero {
             height: 100vh;
-            display: flex; align-items: center; justify-content: center;
-            position: relative; overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
             text-align: center;
         }
 
         .hero video {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; z-index: -1;
-            filter: brightness(0.5);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            filter: brightness(0.4);
         }
 
         .hero-text h1 {
-            font-size: clamp(32px, 6vw, 64px);
-            font-weight: 300;
-            letter-spacing: -1px;
+            font-size: clamp(40px, 8vw, 90px);
+            font-weight: 200;
+            letter-spacing: -2px;
             margin-bottom: 10px;
+            text-transform: uppercase;
         }
 
         .hero-text p {
-            font-size: 12px;
-            letter-spacing: 4px;
+            font-size: 14px;
+            letter-spacing: 5px;
             text-transform: uppercase;
-            opacity: 0.5;
+            opacity: 0.6;
         }
 
-        /* Разделы */
+        /* --- Секции общие --- */
         .section {
-            padding: 100px 10%;
-            max-width: 1400px;
+            padding: 140px 10%;
+            max-width: 1600px;
             margin: auto;
         }
 
         h2 {
-            font-size: 24px;
+            font-size: 32px;
             font-weight: 400;
-            margin-bottom: 50px;
-            letter-spacing: -0.5px;
-            color: #f0f0f0;
+            margin-bottom: 60px;
+            letter-spacing: -1px;
+            border-left: 1px solid var(--accent);
+            padding-left: 20px;
         }
 
-        /* Статистика с растущими цифрами */
-        .stats-grid {
+        /* --- Почему мы (Скандинавский блок) --- */
+        .features {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 30px;
-            padding: 40px;
-            background: rgba(255,255,255,0.03);
-            border-radius: 15px;
-            border: 1px solid var(--accent);
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 100px;
         }
 
-        .stat-card { text-align: center; }
-        
-        .stat-number {
-            display: block;
-            font-size: 36px;
+        .feature-item h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .feature-item p {
+            font-size: 14px;
+            opacity: 0.6;
             font-weight: 300;
-            margin-bottom: 5px;
         }
 
-        .stat-label {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            opacity: 0.4;
-        }
-
-        /* Видео и Фото */
-        .video-item { margin-bottom: 40px; position: relative; }
-        
-        video, img {
-            width: 100%;
-            border-radius: 8px;
-            transition: transform 0.5s ease;
+        /* --- Сетка видео и фото --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
         }
 
         .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
         }
 
-        img:hover { transform: scale(1.02); }
+        video, img {
+            width: 100%;
+            border-radius: 2px; /* Минимализм — почти острые углы */
+            filter: grayscale(0.2);
+            transition: var(--transition);
+        }
 
-        /* Контакты */
-        .contact-card {
-            background: #151515;
-            padding: 60px;
-            border-radius: 20px;
+        video:hover, img:hover {
+            filter: grayscale(0);
+            transform: translateY(-5px);
+        }
+
+        /* --- Контакты и Telegram --- */
+        .contact-box {
+            background: #111;
+            padding: 80px 40px;
             text-align: center;
+            border-radius: 4px;
         }
 
-        .phone-link {
+        .tg-link {
+            display: inline-block;
+            margin-top: 30px;
+            transition: var(--transition);
+        }
+
+        .tg-link svg {
+            fill: white;
+            width: 40px;
+            height: 40px;
+            opacity: 0.7;
+            transition: var(--transition);
+        }
+
+        .tg-link:hover svg {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .phone-links a {
             display: block;
-            font-size: 28px;
             color: white;
             text-decoration: none;
-            margin-bottom: 15px;
-            font-weight: 300;
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: 200;
         }
-
-        .tg-btn {
-            display: inline-flex;
-            align-items: center;
-            margin-top: 20px;
-            padding: 12px 25px;
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 30px;
-            text-decoration: none;
-            color: white;
-            font-size: 12px;
-            letter-spacing: 1px;
-            transition: 0.3s;
-        }
-
-        .tg-btn:hover { background: white; color: black; }
 
         footer {
-            padding: 50px;
+            padding: 60px;
             text-align: center;
             font-size: 10px;
+            letter-spacing: 2px;
             opacity: 0.3;
-            letter-spacing: 1px;
-        }
-
-        /* Анимация появления */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: 0.8s ease forwards;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
+            text-transform: uppercase;
         }
 
         @media (max-width: 768px) {
-            header { padding: 15px 20px; }
-            nav { display: none; }
+            header { padding: 20px; }
+            nav { display: none; } /* Скрываем меню на мобилках для чистоты */
+            .grid, .gallery { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -211,9 +225,9 @@
     <div class="logo">KADR FPV</div>
     <nav>
         <a href="#about">О нас</a>
-        <a href="#video">Работы</a>
-        <a href="#photo">Галерея</a>
-        <a href="#contact">Связь</a>
+        <a href="#video">Видео</a>
+        <a href="#photo">Фото</a>
+        <a href="#contact">Контакты</a>
     </nav>
 </header>
 
@@ -222,99 +236,69 @@
         <source src="hero.mp4" type="video/mp4">
     </video>
     <div class="hero-text">
-        <h1>KADR FPV MOSCOW</h1>
-        <p>Premium Drone Production</p>
+        <h1>Perspective</h1>
+        <p>Moscow based drone production</p>
     </div>
 </section>
 
 <section class="section" id="about">
-    <div class="stats-grid fade-in">
-        <div class="stat-card">
-            <span class="stat-number" data-target="150">0</span>
-            <span class="stat-label">КМ/Ч СКОРОСТЬ</span>
+    <h2>Почему мы</h2>
+    <div class="features">
+        <div class="feature-item">
+            <h3>Динамика</h3>
+            <p>Снимаем там, где обычные камеры бессильны. Скорость до 150 км/ч и ювелирная точность пролетов.</p>
         </div>
-        <div class="stat-card">
-            <span class="stat-number" data-target="500">0</span>
-            <span class="stat-label">ЧАСОВ НАЛЕТА</span>
+        <div class="feature-item">
+            <h3>Качество</h3>
+            <p>Весь цикл производства от идеи до цветокоррекции 4K-материала под ключ.</p>
         </div>
-        <div class="stat-card">
-            <span class="stat-number" data-target="100">0</span>
-            <span class="stat-label">ПРОЕКТОВ</span>
+        <div class="feature-item">
+            <h3>Оборудование</h3>
+            <p>Используем кастомные FPV дроны и топовые камеры для максимально иммерсивной картинки.</p>
         </div>
     </div>
 </section>
 
 <section class="section" id="video">
-    <h2 class="fade-in">Selected Works</h2>
-    <div class="video-item fade-in">
-        <video controls><source src="video1.mp4" type="video/mp4"></video>
-    </div>
-    <div class="video-item fade-in">
-        <video controls><source src="video2.mp4" type="video/mp4"></video>
+    <h2>Showreel / Видео</h2>
+    <div class="grid">
+        <video controls>
+            <source src="video1.mp4" type="video/mp4">
+        </video>
+        <video controls>
+            <source src="video2.mp4" type="video/mp4">
+        </video>
     </div>
 </section>
 
 <section class="section" id="photo">
-    <h2 class="fade-in">Gallery</h2>
-    <div class="gallery fade-in">
-        <img src="photo1.jpg.JPG" alt="FPV 1">
-        <img src="photo2.jpg.JPG" alt="FPV 2">
-        <img src="photo3.jpg.JPG" alt="FPV 3">
-        <img src="photo4.jpg.JPG" alt="FPV 4">
+    <h2>Галерея</h2>
+    <div class="gallery">
+        <img src="photo1.jpg.JPG" alt="FPV Art 1">
+        <img src="photo2.jpg.JPG" alt="FPV Art 2">
+        <img src="photo3.jpg.JPG" alt="FPV Art 3">
+        <img src="photo4.jpg.JPG" alt="FPV Art 4">
     </div>
 </section>
 
 <section class="section" id="contact">
-    <div class="contact-card fade-in">
-        <h2>Start a Project</h2>
-        <a href="tel:+79153585459" class="phone-link">+7 915 358 54 59</a>
-        <a href="tel:+79918736003" class="phone-link">+7 991 873 60 03</a>
-        <a href="https://t.me/kadr_fpv" class="tg-btn" target="_blank">НАПИСАТЬ В TELEGRAM</a>
+    <div class="contact-box">
+        <h2>Связь</h2>
+        <div class="phone-links">
+            <a href="tel:+79153585459">+7 915 358 54 59</a>
+            <a href="tel:+79918736003">+7 991 873 60 03</a>
+        </div>
+        
+        <a href="https://t.me/kadr_fpv" class="tg-link" target="_blank">
+            <svg viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.462 8.358l-1.63 7.684c-.123.542-.444.677-.897.424l-2.486-1.834-1.2 1.156c-.132.132-.244.244-.504.244l.179-2.541 4.624-4.177c.201-.178-.044-.278-.31-.1l-5.715 3.6-2.463-.769c-.537-.168-.547-.537.112-.793l9.629-3.712c.446-.168.837.099.68z"/></svg>
+        </a>
+        <p style="margin-top: 20px; opacity: 0.4; font-size: 12px;">Москва, Россия</p>
     </div>
 </section>
 
 <footer>
-    © 2026 KADR FPV MOSCOW — CREATED WITH PASSION
+    &copy; 2026 KADR FPV MOSCOW — ALL RIGHTS RESERVED
 </footer>
-
-<script>
-    // Скрипт для анимации появления блоков
-    const observerOptions = { threshold: 0.2 };
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                // Если это блок со статистикой, запускаем счетчик
-                if (entry.target.classList.contains('stats-grid')) {
-                    startCounters();
-                }
-            }
-        });
-    }, observerOptions);
-
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-    // Функция счетчика
-    function startCounters() {
-        const counters = document.querySelectorAll('.stat-number');
-        counters.forEach(counter => {
-            const target = +counter.getAttribute('data-target');
-            const count = +counter.innerText;
-            const speed = target / 100;
-
-            const updateCount = () => {
-                const current = +counter.innerText;
-                if (current < target) {
-                    counter.innerText = Math.ceil(current + speed);
-                    setTimeout(updateCount, 20);
-                } else {
-                    counter.innerText = target + (target === 150 ? "" : "+");
-                }
-            };
-            updateCount();
-        });
-    }
-</script>
 
 </body>
 </html>
