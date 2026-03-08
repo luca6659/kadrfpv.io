@@ -40,7 +40,7 @@ display:flex;
 align-items:center;
 justify-content:center;
 z-index:5000;
-transition:opacity 1.2s ease, visibility 1.2s;
+transition:opacity 0.8s ease, visibility 0.8s;
 }
 
 .intro.hidden{
@@ -53,7 +53,7 @@ font-size:clamp(40px,8vw,90px);
 font-weight:200;
 letter-spacing:8px;
 text-transform:uppercase;
-animation:introAnim 2.5s ease;
+animation:introAnim 1s ease;
 }
 
 @keyframes introAnim{
@@ -289,6 +289,7 @@ grid-template-columns:1fr;
 
 <body>
 
+<!-- INTRO -->
 <div class="intro" id="intro">
 <h1>KADR FPV</h1>
 </div>
@@ -304,7 +305,6 @@ grid-template-columns:1fr;
 </header>
 
 <section class="hero">
-
 <video autoplay muted loop playsinline>
 <source src="hero.mp4.mov" type="video/quicktime">
 <source src="hero.mp4.mov" type="video/mp4">
@@ -314,7 +314,6 @@ grid-template-columns:1fr;
 <h1>KADR FPV</h1>
 <p>Premium Drone Production</p>
 </div>
-
 </section>
 
 <section class="section" id="about">
@@ -335,21 +334,17 @@ grid-template-columns:1fr;
 
 <section class="section" id="photo">
 <h2 class="fade-in">Gallery</h2>
-
 <div class="gallery fade-in">
 <img src="photo1.jpg.JPG">
 <img src="photo2.jpg.JPG">
 <img src="photo3.jpg.JPG">
 <img src="photo4.jpg.JPG">
 </div>
-
 </section>
 
 <section class="section" id="contact">
 <h2 class="fade-in">Contact</h2>
-
 <div class="contact-container fade-in">
-
 <div class="contact-info">
 <a href="tel:+79153585459">+7 915 358 54 59</a>
 <a href="tel:+79918736003">+7 991 873 60 03</a>
@@ -357,17 +352,12 @@ grid-template-columns:1fr;
 </div>
 
 <a href="https://t.me/kadr_fpv" class="tg-card" target="_blank">
-
 <svg viewBox="0 0 24 24">
 <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.462 8.358l-1.63 7.684c-.123.542-.444.677-.897.424l-2.486-1.834-1.2 1.156c-.132.132-.244.244-.504.244l.179-2.541 4.624-4.177c.201-.178-.044-.278-.31-.1l-5.715 3.6-2.463-.769c-.537-.168-.547-.537.112-.793l9.629-3.712c.446-.168.837.099.68z"/>
 </svg>
-
 <span>Написать в Telegram</span>
-
 </a>
-
 </div>
-
 </section>
 
 <footer>
@@ -376,26 +366,20 @@ grid-template-columns:1fr;
 
 <script>
 
-/* INTRO */
-
+/* INTRO SHORTER */
 window.addEventListener("load",()=>{
-
 setTimeout(()=>{
 document.getElementById("intro").classList.add("hidden");
-},1800)
-
+},1000) // <-- показа 1 секунда
 })
 
-/* FADE */
-
+/* FADE IN SECTIONS */
 const observer=new IntersectionObserver((entries)=>{
-
 entries.forEach(entry=>{
 if(entry.isIntersecting){
 entry.target.classList.add("visible")
 }
 })
-
 },{threshold:0.1})
 
 document.querySelectorAll(".fade-in").forEach(el=>observer.observe(el))
