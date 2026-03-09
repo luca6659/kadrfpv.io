@@ -289,7 +289,6 @@ grid-template-columns:1fr;
 
 <body>
 
-<!-- INTRO -->
 <div class="intro" id="intro">
 <h1>KADR FPV</h1>
 </div>
@@ -327,7 +326,7 @@ grid-template-columns:1fr;
 <h2 class="fade-in">Selected Works</h2>
 <div class="video-item fade-in">
 <video controls>
-<source src="video1.mp4" type="video/mp4">
+<source src="video1.mp4.mov" type="video/mp4">
 </video>
 </div>
 </section>
@@ -335,10 +334,10 @@ grid-template-columns:1fr;
 <section class="section" id="photo">
 <h2 class="fade-in">Gallery</h2>
 <div class="gallery fade-in">
-<img src="photo1.jpg.JPG">
-<img src="photo2.jpg.JPG">
-<img src="photo3.jpg.JPG">
-<img src="photo4.jpg.JPG">
+<img src="photo1.jpg">
+<img src="photo2.jpg">
+<img src="photo3.jpg">
+<img src="photo4.jpg">
 </div>
 </section>
 
@@ -366,14 +365,12 @@ grid-template-columns:1fr;
 
 <script>
 
-/* INTRO SHORTER */
 window.addEventListener("load",()=>{
 setTimeout(()=>{
 document.getElementById("intro").classList.add("hidden");
-},1000) // <-- показа 1 секунда
+},1500)
 })
 
-/* FADE IN SECTIONS */
 const observer=new IntersectionObserver((entries)=>{
 entries.forEach(entry=>{
 if(entry.isIntersecting){
