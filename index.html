@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>KADR FPV | Cinematic Production</title>
 
+<!-- Font Awesome для иконки Telegram -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
 
 <style>
@@ -14,6 +17,7 @@
 --glass:rgba(255,255,255,0.02);
 --text:#ffffff;
 --accent:rgba(255,255,255,0.08);
+--tg-blue:#26A5E4;
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
@@ -167,6 +171,7 @@ opacity:0.9;
 /* CONTENT */
 
 .video-item{margin-bottom:40px}
+.video-item.second-video { margin-top: 60px; margin-bottom: 0; }
 
 video,img{
 width:100%;
@@ -213,6 +218,79 @@ transition:0.3s;
 
 .contact-info a:hover{opacity:0.6}
 
+/* Telegram блок */
+.telegram-block {
+    background: rgba(38, 165, 228, 0.08);
+    border: 1px solid rgba(38, 165, 228, 0.3);
+    border-radius: 20px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.telegram-block:hover {
+    background: rgba(38, 165, 228, 0.12);
+    border-color: var(--tg-blue);
+}
+
+.telegram-link {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(255,255,255,0.05);
+    padding: 16px 28px;
+    border-radius: 60px;
+    text-decoration: none;
+    color: white;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+}
+
+.telegram-link i {
+    font-size: 32px;
+    color: var(--tg-blue);
+}
+
+.telegram-link span {
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
+
+.telegram-link:hover {
+    background: var(--tg-blue);
+    transform: translateY(-3px);
+}
+
+.telegram-link:hover i {
+    color: white;
+}
+
+.telegram-block p {
+    font-size: 14px;
+    opacity: 0.7;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.telegram-block h3 {
+    font-size: 28px;
+    font-weight: 300;
+    margin-bottom: 10px;
+}
+
+.telegram-small {
+    font-size: 12px !important;
+    opacity: 0.5 !important;
+    margin-top: 20px !important;
+    text-transform: none !important;
+}
+
 footer{
 padding:80px 40px;
 text-align:center;
@@ -233,6 +311,25 @@ transition:1s ease forwards;
 .fade-in.visible{
 opacity:1;
 transform:translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .contact-container {
+        grid-template-columns: 1fr;
+    }
+    .telegram-link span {
+        font-size: 16px;
+    }
+    .telegram-link i {
+        font-size: 28px;
+    }
+    header {
+        padding: 15px 20px;
+    }
+    nav a {
+        margin-left: 15px;
+    }
 }
 
 </style>
@@ -279,16 +376,25 @@ transform:translateY(0);
 <source src="video1.mp4.mov" type="video/mp4">
 </video>
 </div>
+
+<!-- ДОБАВЛЕННОЕ ВТОРОЕ ВИДЕО СНИЗУ -->
+<div class="video-item second-video fade-in">
+<video controls>
+<source src="video2.mp4" type="video/mp4">
+<source src="video2.mp4.mov" type="video/mp4">
+Ваш браузер не поддерживает видео.
+</video>
+</div>
 </section>
 
 <section class="section" id="photo">
 <h2 class="fade-in">Gallery</h2>
 <div class="gallery fade-in">
-<img src="photo1.jpg.JPG">
-<img src="photo2.jpg.JPG">
-<img src="photo3.jpg.JPG">
-<img src="photo4.jpg.JPG">
-<img src="photo5.jpg.jpg">
+<img src="photo1.jpg.JPG" alt="FPV shot 1">
+<img src="photo2.jpg.JPG" alt="FPV shot 2">
+<img src="photo3.jpg.JPG" alt="FPV shot 3">
+<img src="photo4.jpg.JPG" alt="FPV shot 4">
+<img src="photo5.jpg.jpg" alt="FPV shot 5">
 </div>
 </section>
 
@@ -299,6 +405,19 @@ transform:translateY(0);
 <a href="tel:+79153585459">+7 915 358 54 59</a>
 <a href="tel:+79918736003">+7 991 873 60 03</a>
 <p style="font-size:10px;opacity:.3;text-transform:uppercase;letter-spacing:2px;">Moscow, Russia</p>
+</div>
+
+<!-- НОВЫЙ БЛОК С ЛОГОТИПОМ TELEGRAM -->
+<div class="telegram-block">
+    <p><i class="fab fa-telegram-plane" style="font-size: 28px; color: #26A5E4; margin-right: 8px;"></i> Связь через Telegram</p>
+    <h3>Быстрое обсуждение<br>проектов</h3>
+    <a href="https://t.me/kadrfpv" target="_blank" class="telegram-link">
+        <i class="fab fa-telegram"></i>
+        <span>@kadrfpv</span>
+    </a>
+    <div class="telegram-small">
+        Напишите нам — ответим в течение часа
+    </div>
 </div>
 </div>
 </section>
