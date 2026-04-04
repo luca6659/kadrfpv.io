@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KADR FPV | Cinematic Production</title>
+<title>KADR FPV | Аэросъемка с дронов в Москве</title>
 
-<!-- Font Awesome для иконки Telegram -->
+<!-- Font Awesome для иконок -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 
@@ -18,6 +18,7 @@
 --text:#ffffff;
 --accent:rgba(255,255,255,0.08);
 --tg-blue:#26A5E4;
+--gold:#C6A43F;
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
@@ -29,10 +30,10 @@ background:var(--bg);
 color:var(--text);
 line-height:1.6;
 -webkit-font-smoothing:antialiased;
+overflow-x:hidden;
 }
 
 /* INTRO SCREEN */
-
 .intro{
 position:fixed;
 top:0;
@@ -52,12 +53,25 @@ opacity:0;
 visibility:hidden;
 }
 
-.intro h1{
-font-size:clamp(40px,8vw,90px);
+.intro-content {
+text-align: center;
+}
+
+.intro-logo {
+font-size: clamp(40px,8vw,90px);
 font-weight:200;
 letter-spacing:8px;
 text-transform:uppercase;
 animation:introAnim 1s ease;
+margin-bottom: 20px;
+}
+
+.intro-sub {
+font-size: 12px;
+letter-spacing: 6px;
+text-transform: uppercase;
+opacity: 0;
+animation: fadeInUp 0.8s ease 0.5s forwards;
 }
 
 @keyframes introAnim{
@@ -65,8 +79,51 @@ animation:introAnim 1s ease;
 100%{opacity:1;letter-spacing:8px;transform:scale(1)}
 }
 
-/* HEADER */
+@keyframes fadeInUp {
+0% {
+opacity: 0;
+transform: translateY(30px);
+}
+100% {
+opacity: 1;
+transform: translateY(0);
+}
+}
 
+@keyframes fadeInLeft {
+0% {
+opacity: 0;
+transform: translateX(-50px);
+}
+100% {
+opacity: 1;
+transform: translateX(0);
+}
+}
+
+@keyframes fadeInRight {
+0% {
+opacity: 0;
+transform: translateX(50px);
+}
+100% {
+opacity: 1;
+transform: translateX(0);
+}
+}
+
+@keyframes scaleIn {
+0% {
+opacity: 0;
+transform: scale(0.8);
+}
+100% {
+opacity: 1;
+transform: scale(1);
+}
+}
+
+/* HEADER */
 header{
 position:fixed;
 top:0;
@@ -79,13 +136,47 @@ z-index:1000;
 background:rgba(13,13,13,0.3);
 backdrop-filter:blur(10px);
 border-bottom:1px solid rgba(255,255,255,0.05);
+animation: fadeInDown 0.8s ease;
+}
+
+@keyframes fadeInDown {
+0% {
+opacity: 0;
+transform: translateY(-100%);
+}
+100% {
+opacity: 1;
+transform: translateY(0);
+}
 }
 
 .logo{
-font-weight:500;
+font-weight:600;
 letter-spacing:3px;
-font-size:13px;
+font-size:14px;
 text-transform:uppercase;
+position: relative;
+display: inline-block;
+}
+
+.logo span {
+color: var(--gold);
+font-weight: 700;
+}
+
+.logo::after {
+content: '';
+position: absolute;
+bottom: -5px;
+left: 0;
+width: 0;
+height: 1px;
+background: var(--gold);
+transition: width 0.3s ease;
+}
+
+.logo:hover::after {
+width: 100%;
 }
 
 nav a{
@@ -97,12 +188,27 @@ text-transform:uppercase;
 letter-spacing:1.5px;
 opacity:0.5;
 transition:0.3s;
+position: relative;
+}
+
+nav a::after {
+content: '';
+position: absolute;
+bottom: -5px;
+left: 0;
+width: 0;
+height: 1px;
+background: white;
+transition: width 0.3s ease;
+}
+
+nav a:hover::after {
+width: 100%;
 }
 
 nav a:hover{opacity:1}
 
 /* HERO */
-
 .hero{
 height:100vh;
 display:flex;
@@ -124,23 +230,63 @@ z-index:-1;
 filter:brightness(0.4);
 }
 
+.hero-text {
+animation: fadeInUp 1s ease 0.2s forwards;
+opacity: 0;
+}
+
 .hero-text h1{
-font-size:clamp(32px,6vw,64px);
+font-size:clamp(32px,6vw,74px);
 font-weight:200;
 letter-spacing:-1px;
-margin-bottom:10px;
+margin-bottom:15px;
 text-transform:uppercase;
+background: linear-gradient(135deg, #fff 0%, #ccc 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
 }
 
 .hero-text p{
-font-size:11px;
-letter-spacing:5px;
+font-size:12px;
+letter-spacing:6px;
 text-transform:uppercase;
-opacity:0.4;
+opacity:0.6;
+margin-bottom:30px;
+}
+
+.hero-scroll {
+position: absolute;
+bottom: 40px;
+left: 50%;
+transform: translateX(-50%);
+animation: bounce 2s infinite;
+cursor: pointer;
+opacity: 0.5;
+transition: opacity 0.3s;
+}
+
+.hero-scroll:hover {
+opacity: 1;
+}
+
+.hero-scroll i {
+font-size: 24px;
+}
+
+@keyframes bounce {
+0%, 20%, 50%, 80%, 100% {
+transform: translateX(-50%) translateY(0);
+}
+40% {
+transform: translateX(-50%) translateY(-20px);
+}
+60% {
+transform: translateX(-50%) translateY(-10px);
+}
 }
 
 /* SECTIONS */
-
 .section{
 padding:120px 10%;
 max-width:1400px;
@@ -151,14 +297,31 @@ h2{
 font-size:20px;
 font-weight:300;
 margin-bottom:50px;
-border-left:1px solid white;
+border-left:2px solid var(--gold);
 padding-left:15px;
 text-transform:uppercase;
-letter-spacing:1px;
+letter-spacing:2px;
+position: relative;
+overflow: hidden;
+}
+
+h2::before {
+content: '';
+position: absolute;
+left: 0;
+top: 0;
+height: 100%;
+width: 0;
+background: rgba(198, 164, 63, 0.1);
+transition: width 0.6s ease;
+z-index: -1;
+}
+
+h2.visible::before {
+width: 100%;
 }
 
 /* ABOUT */
-
 .about-text{
 font-size:clamp(18px,3vw,28px);
 font-weight:200;
@@ -169,7 +332,6 @@ opacity:0.9;
 }
 
 /* CONTENT */
-
 .video-item{
 margin-bottom:40px;
 background:#000;
@@ -195,18 +357,49 @@ grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
 gap:20px;
 }
 
-img{
+.gallery-item {
+position: relative;
+overflow: hidden;
+border-radius: 8px;
+cursor: pointer;
+}
+
+.gallery-item img{
 width:100%;
 border-radius:8px;
 transition:transform 0.6s cubic-bezier(.16,1,.3,1);
 border:1px solid var(--accent);
-cursor:pointer;
 }
 
-img:hover{transform:scale(1.02)}
+.gallery-overlay {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0,0,0,0.7);
+display: flex;
+align-items: center;
+justify-content: center;
+opacity: 0;
+transition: opacity 0.3s ease;
+border-radius: 8px;
+}
+
+.gallery-item:hover .gallery-overlay {
+opacity: 1;
+}
+
+.gallery-item:hover img {
+transform: scale(1.05);
+}
+
+.gallery-overlay i {
+font-size: 48px;
+color: white;
+}
 
 /* CONTACT */
-
 .contact-container{
 display:grid;
 grid-template-columns:1fr 1fr;
@@ -222,6 +415,12 @@ border:1px solid var(--accent);
 display:flex;
 flex-direction:column;
 justify-content:center;
+animation: fadeInLeft 0.8s ease forwards;
+opacity: 0;
+}
+
+.contact-info.visible {
+opacity: 1;
 }
 
 .contact-info a{
@@ -231,81 +430,93 @@ text-decoration:none;
 font-weight:200;
 margin-bottom:10px;
 transition:0.3s;
+display: inline-block;
 }
 
-.contact-info a:hover{opacity:0.6}
+.contact-info a:hover{
+opacity:0.6;
+transform: translateX(5px);
+}
 
 /* Telegram блок */
 .telegram-block {
-    background: rgba(38, 165, 228, 0.08);
-    border: 1px solid rgba(38, 165, 228, 0.3);
-    border-radius: 20px;
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    transition: all 0.3s ease;
+background: rgba(38, 165, 228, 0.08);
+border: 1px solid rgba(38, 165, 228, 0.3);
+border-radius: 20px;
+padding: 40px;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+text-align: center;
+transition: all 0.3s ease;
+animation: fadeInRight 0.8s ease forwards;
+opacity: 0;
+}
+
+.telegram-block.visible {
+opacity: 1;
 }
 
 .telegram-block:hover {
-    background: rgba(38, 165, 228, 0.12);
-    border-color: var(--tg-blue);
+background: rgba(38, 165, 228, 0.12);
+border-color: var(--tg-blue);
+transform: translateY(-5px);
 }
 
 .telegram-link {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    background: rgba(255,255,255,0.05);
-    padding: 16px 28px;
-    border-radius: 60px;
-    text-decoration: none;
-    color: white;
-    transition: all 0.3s ease;
-    margin-top: 20px;
+display: flex;
+align-items: center;
+gap: 15px;
+background: rgba(255,255,255,0.05);
+padding: 16px 28px;
+border-radius: 60px;
+text-decoration: none;
+color: white;
+transition: all 0.3s ease;
+margin-top: 20px;
 }
 
 .telegram-link i {
-    font-size: 32px;
-    color: var(--tg-blue);
+font-size: 32px;
+color: var(--tg-blue);
+transition: 0.3s;
 }
 
 .telegram-link span {
-    font-size: 20px;
-    font-weight: 400;
-    letter-spacing: 0.5px;
+font-size: 20px;
+font-weight: 400;
+letter-spacing: 0.5px;
 }
 
 .telegram-link:hover {
-    background: var(--tg-blue);
-    transform: translateY(-3px);
+background: var(--tg-blue);
+transform: translateY(-3px);
 }
 
 .telegram-link:hover i {
-    color: white;
+color: white;
 }
 
 .telegram-block p {
-    font-size: 14px;
-    opacity: 0.7;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 5px;
+font-size: 14px;
+opacity: 0.7;
+letter-spacing: 1px;
+text-transform: uppercase;
+margin-bottom: 5px;
 }
 
 .telegram-block h3 {
-    font-size: 28px;
-    font-weight: 300;
-    margin-bottom: 10px;
+font-size: 28px;
+font-weight: 300;
+margin-bottom: 10px;
 }
 
 .telegram-small {
-    font-size: 12px !important;
-    opacity: 0.5 !important;
-    margin-top: 20px !important;
-    text-transform: none !important;
+font-size: 12px !important;
+opacity: 0.5 !important;
+margin-top: 20px !important;
+text-transform: none !important;
 }
 
 footer{
@@ -315,13 +526,17 @@ font-size:9px;
 opacity:0.2;
 letter-spacing:2px;
 text-transform:uppercase;
+transition: opacity 0.3s;
 }
 
-/* ANIMATION */
+footer:hover {
+opacity: 0.4;
+}
 
+/* ANIMATIONS */
 .fade-in{
 opacity:0;
-transform:translateY(20px);
+transform:translateY(30px);
 transition:1s ease forwards;
 }
 
@@ -330,48 +545,119 @@ opacity:1;
 transform:translateY(0);
 }
 
-/* Responsive */
-@media (max-width: 900px) {
-    .contact-container {
-        grid-template-columns: 1fr;
-    }
-    .telegram-link span {
-        font-size: 16px;
-    }
-    .telegram-link i {
-        font-size: 28px;
-    }
-    header {
-        padding: 15px 20px;
-    }
-    nav a {
-        margin-left: 15px;
-    }
-    .contact-info a {
-        font-size: 18px;
-    }
+.fade-in-left {
+opacity: 0;
+transform: translateX(-50px);
+transition: 0.8s ease forwards;
 }
 
-/* Стили для контролов видео */
+.fade-in-left.visible {
+opacity: 1;
+transform: translateX(0);
+}
+
+.fade-in-right {
+opacity: 0;
+transform: translateX(50px);
+transition: 0.8s ease forwards;
+}
+
+.fade-in-right.visible {
+opacity: 1;
+transform: translateX(0);
+}
+
+.scale-in {
+opacity: 0;
+transform: scale(0.8);
+transition: 0.6s ease forwards;
+}
+
+.scale-in.visible {
+opacity: 1;
+transform: scale(1);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+.contact-container {
+grid-template-columns: 1fr;
+}
+.telegram-link span {
+font-size: 16px;
+}
+.telegram-link i {
+font-size: 28px;
+}
+header {
+padding: 15px 20px;
+}
+nav a {
+margin-left: 15px;
+}
+.contact-info a {
+font-size: 18px;
+}
+}
+
+/* Кнопка наверх */
+.scroll-top {
+position: fixed;
+bottom: 30px;
+right: 30px;
+width: 50px;
+height: 50px;
+background: rgba(255,255,255,0.1);
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+opacity: 0;
+visibility: hidden;
+transition: all 0.3s ease;
+z-index: 1000;
+backdrop-filter: blur(10px);
+border: 1px solid rgba(255,255,255,0.2);
+}
+
+.scroll-top.show {
+opacity: 1;
+visibility: visible;
+}
+
+.scroll-top:hover {
+background: var(--gold);
+transform: translateY(-5px);
+}
+
+.scroll-top i {
+font-size: 20px;
+color: white;
+}
+
+/* Стили для видео */
 video::-webkit-media-controls {
-    background-color: rgba(0,0,0,0.5);
+background-color: rgba(0,0,0,0.5);
 }
 
 video::-webkit-media-controls-panel {
-    background-color: rgba(0,0,0,0.5);
+background-color: rgba(0,0,0,0.5);
 }
-
 </style>
 </head>
 
 <body>
 
 <div class="intro" id="intro">
-<h1>KADR FPV</h1>
+<div class="intro-content">
+<div class="intro-logo">KADR FPV</div>
+<div class="intro-sub">Aerial Cinematography</div>
+</div>
 </div>
 
 <header>
-<div class="logo">KADR FPV</div>
+<div class="logo">KADR <span>FPV</span></div>
 <nav>
 <a href="#about">О нас</a>
 <a href="#video">Работы</a>
@@ -382,16 +668,18 @@ video::-webkit-media-controls-panel {
 
 <section class="hero">
 <video autoplay muted loop playsinline>
-    <!-- Поддержка MOV формата -->
-    <source src="hero.mov" type="video/quicktime">
-    <source src="hero.mp4" type="video/mp4">
-    <source src="hero.mp4.mov" type="video/mp4">
-    Ваш браузер не поддерживает видео.
+<source src="hero.mov" type="video/quicktime">
+<source src="hero.mp4" type="video/mp4">
+<source src="hero.mp4.mov" type="video/mp4">
 </video>
 
 <div class="hero-text">
 <h1>KADR FPV</h1>
 <p>Premium Drone Production</p>
+</div>
+
+<div class="hero-scroll" onclick="document.getElementById('about').scrollIntoView({behavior: 'smooth'})">
+<i class="fas fa-chevron-down"></i>
 </div>
 </section>
 
@@ -405,58 +693,80 @@ video::-webkit-media-controls-panel {
 <section class="section" id="video">
 <h2 class="fade-in">Selected Works</h2>
 <div class="video-item fade-in">
-    <video controls preload="metadata">
-        <!-- Первое видео с поддержкой MOV -->
-        <source src="video1.mov" type="video/quicktime">
-        <source src="video1.mp4" type="video/mp4">
-        <source src="video1.mp4.mov" type="video/mp4">
-        Ваш браузер не поддерживает видео.
-    </video>
+<video controls preload="metadata">
+<source src="video1.mov" type="video/quicktime">
+<source src="video1.mp4" type="video/mp4">
+<source src="video1.mp4.mov" type="video/mp4">
+Ваш браузер не поддерживает видео.
+</video>
 </div>
 
-<!-- ВТОРОЕ ВИДЕО СНИЗУ (с поддержкой MOV) -->
 <div class="video-item second-video fade-in">
-    <video controls preload="metadata">
-        <source src="video2.mov" type="video/quicktime">
-        <source src="video2.mp4" type="video/mp4">
-        <source src="video2.mp4.mov" type="video/mp4">
-        Ваш браузер не поддерживает видео.
-    </video>
+<video controls preload="metadata">
+<source src="video2.mov" type="video/quicktime">
+<source src="video2.mp4" type="video/mp4">
+<source src="video2.mp4.mov" type="video/mp4">
+Ваш браузер не поддерживает видео.
+</video>
 </div>
 </section>
 
 <section class="section" id="photo">
 <h2 class="fade-in">Gallery</h2>
-<div class="gallery fade-in">
-    <img src="photo1.jpg.JPG" alt="FPV shot 1" loading="lazy">
-    <img src="photo2.jpg.JPG" alt="FPV shot 2" loading="lazy">
-    <img src="photo3.jpg.JPG" alt="FPV shot 3" loading="lazy">
-    <img src="photo4.jpg.JPG" alt="FPV shot 4" loading="lazy">
-    <img src="photo5.jpg.jpg" alt="FPV shot 5" loading="lazy">
+<div class="gallery">
+<div class="gallery-item scale-in">
+<img src="photo1.jpg.JPG" alt="FPV shot 1" loading="lazy">
+<div class="gallery-overlay">
+<i class="fas fa-search-plus"></i>
+</div>
+</div>
+<div class="gallery-item scale-in">
+<img src="photo2.jpg.JPG" alt="FPV shot 2" loading="lazy">
+<div class="gallery-overlay">
+<i class="fas fa-search-plus"></i>
+</div>
+</div>
+<div class="gallery-item scale-in">
+<img src="photo3.jpg.JPG" alt="FPV shot 3" loading="lazy">
+<div class="gallery-overlay">
+<i class="fas fa-search-plus"></i>
+</div>
+</div>
+<div class="gallery-item scale-in">
+<img src="photo4.jpg.JPG" alt="FPV shot 4" loading="lazy">
+<div class="gallery-overlay">
+<i class="fas fa-search-plus"></i>
+</div>
+</div>
+<div class="gallery-item scale-in">
+<img src="photo5.jpg.jpg" alt="FPV shot 5" loading="lazy">
+<div class="gallery-overlay">
+<i class="fas fa-search-plus"></i>
+</div>
+</div>
 </div>
 </section>
 
 <section class="section" id="contact">
 <h2 class="fade-in">Contact</h2>
-<div class="contact-container fade-in">
-    <div class="contact-info">
-        <a href="tel:+79153585459">+7 915 358 54 59</a>
-        <a href="tel:+79918736003">+7 991 873 60 03</a>
-        <p style="font-size:10px;opacity:.3;text-transform:uppercase;letter-spacing:2px;margin-top:15px;">Moscow, Russia</p>
-    </div>
+<div class="contact-container">
+<div class="contact-info fade-in-left">
+<a href="tel:+79153585459">+7 915 358 54 59</a>
+<a href="tel:+79918736003">+7 991 873 60 03</a>
+<p style="font-size:10px;opacity:.3;text-transform:uppercase;letter-spacing:2px;margin-top:15px;">Moscow, Russia</p>
+</div>
 
-    <!-- БЛОК С TELEGRAM -->
-    <div class="telegram-block">
-        <p><i class="fab fa-telegram-plane" style="font-size: 28px; color: #26A5E4; margin-right: 8px;"></i> Связь через Telegram</p>
-        <h3>Быстрое обсуждение<br>проектов</h3>
-        <a href="https://t.me/kadrfpv" target="_blank" class="telegram-link">
-            <i class="fab fa-telegram"></i>
-            <span>@kadrfpv</span>
-        </a>
-        <div class="telegram-small">
-            Напишите нам — ответим в течение часа
-        </div>
-    </div>
+<div class="telegram-block fade-in-right">
+<p><i class="fab fa-telegram-plane" style="font-size: 28px; color: #26A5E4; margin-right: 8px;"></i> Связь через Telegram</p>
+<h3>Быстрое обсуждение<br>проектов</h3>
+<a href="https://t.me/kadrfpv" target="_blank" class="telegram-link">
+<i class="fab fa-telegram"></i>
+<span>@kadrfpv</span>
+</a>
+<div class="telegram-small">
+Напишите нам — ответим в течение часа
+</div>
+</div>
 </div>
 </section>
 
@@ -464,41 +774,67 @@ video::-webkit-media-controls-panel {
 © 2026 KADR FPV MOSCOW
 </footer>
 
+<div class="scroll-top" id="scrollTop">
+<i class="fas fa-arrow-up"></i>
+</div>
+
 <script>
 
 // Скрытие интро
 window.addEventListener("load",()=>{
-    setTimeout(()=>{
-        const intro = document.getElementById("intro");
-        if(intro) intro.classList.add("hidden");
-    },1500);
+setTimeout(()=>{
+const intro = document.getElementById("intro");
+if(intro) intro.classList.add("hidden");
+},2000);
 });
 
 // Анимация при скролле
 const observer = new IntersectionObserver((entries)=>{
-    entries.forEach(entry=>{
-        if(entry.isIntersecting){
-            entry.target.classList.add("visible");
-        }
-    });
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+entry.target.classList.add("visible");
+}
+});
 },{threshold:0.1});
 
-document.querySelectorAll(".fade-in").forEach(el=>observer.observe(el));
+document.querySelectorAll(".fade-in, .fade-in-left, .fade-in-right, .scale-in").forEach(el=>observer.observe(el));
 
-// Обработка ошибок загрузки видео (если файл не найден)
-document.querySelectorAll('video').forEach(video => {
-    video.addEventListener('error', function(e) {
-        console.log('Видео не загружено. Проверьте путь к файлу:', this.querySelector('source')?.src || this.src);
-    });
+// Кнопка наверх
+const scrollTop = document.getElementById('scrollTop');
+window.addEventListener('scroll', () => {
+if (window.scrollY > 300) {
+scrollTop.classList.add('show');
+} else {
+scrollTop.classList.remove('show');
+}
 });
 
-// Автоплей для hero видео с обработкой ошибки
+scrollTop.addEventListener('click', () => {
+window.scrollTo({
+top: 0,
+behavior: 'smooth'
+});
+});
+
+// Обработка ошибок загрузки видео
+document.querySelectorAll('video').forEach(video => {
+video.addEventListener('error', function(e) {
+console.log('Видео не загружено. Проверьте путь к файлу:', this.querySelector('source')?.src || this.src);
+});
+});
+
+// Автоплей для hero видео
 const heroVideo = document.querySelector('.hero video');
 if(heroVideo) {
-    heroVideo.play().catch(e => {
-        console.log('Автовоспроизведение заблокировано браузером');
-    });
+heroVideo.play().catch(e => {
+console.log('Автовоспроизведение заблокировано браузером');
+});
 }
+
+// Плавное появление элементов галереи с задержкой
+document.querySelectorAll('.gallery-item').forEach((item, index) => {
+item.style.transitionDelay = `${index * 0.1}s`;
+});
 
 </script>
 
