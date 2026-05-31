@@ -394,7 +394,7 @@ nav a:hover::after{width:100%}
 }
 .form-input:focus {outline: none; border-color: var(--sky); box-shadow: 0 0 10px rgba(58,123,213,0.3);}
 textarea.form-input { resize: vertical; min-height: 100px; }
-.btn-submit { width: 100%; text-align: center; justify-content: center; margin-top: 10px; }
+.btn-submit { width: 100%; text-align: center; justify-content: center; margin-top: 10px; cursor: pointer; }
 
 /* Admin Dashboard Styles */
 .admin-modal { max-width: 900px; }
@@ -652,14 +652,13 @@ span.t-en, a.t-en { display: none; }
       </button>
     </div>
 
-    <div class="ccirc rv" style="transition-delay:.24s">
-      <div class="ccirc-icon"><i class="fas fa-satellite-dish"></i></div>
-      <div class="ccirc-lbl t-ru">Координаты</div>
-      <div class="ccirc-lbl t-en">Coordinates</div>
-      <div class="ccirc-val glitch-hover" style="font-size:clamp(20px,2.2vw,28px); pointer-events:none;">Moscow</div>
-      <div class="ccirc-sub t-ru">Выезжаем в любую точку</div>
-      <div class="ccirc-sub t-en">Deploying worldwide</div>
-    </div>
+    <a href="https://web.telegram.org/k/#@chistbly" target="_blank" class="ccirc rv" style="transition-delay:.24s;text-decoration:none;cursor:pointer">
+      <div class="ccirc-icon" style="border-color:rgba(34,158,217,.4)"><i class="fab fa-telegram" style="color:var(--tg);font-size:24px"></i></div>
+      <div class="ccirc-lbl">Telegram Direct</div>
+      <div class="tg-handle-big glitch-hover" style="margin: 10px 0;">@chistbly</div>
+      <div class="ccirc-sub t-ru">Написать напрямую</div>
+      <div class="ccirc-sub t-en">Message directly</div>
+    </a>
   </div>
 </div>
 
@@ -810,7 +809,7 @@ function switchAdminTab(tabId) {
   document.getElementById('tab-' + tabId).classList.add('active');
 }
 
-/* ── РЕАЛЬНАЯ ОТПРАВКА ДАННЫХ НА БЭКЕНД ── */
+/* ── ПРЯМАЯ ОТПРАВКА В ТЕЛЕГРАМ БЕЗ СЕРВЕРА ── */
 async function submitForm(e) {
   e.preventDefault(); 
   
@@ -818,28 +817,53 @@ async function submitForm(e) {
   const originalText = btn.innerText;
   btn.innerText = "Отправка...";
   
-  const leadData = {
-    name: document.getElementById('leadName').value,
-    phone: document.getElementById('leadPhone').value,
-    task: document.getElementById('leadTask').value
-  };
+  // ========================================================
+  // ВНИМАНИЕ! ВСТАВЬ СВОИ ДАННЫЕ СЮДА:
+  // ========================================================
+  const BOT_TOKEN = '8808545348:AAFZC-Q1zz6P8n_QInWVIqMjakT8y8t8eEo'; // Например: '7123456789:AAH...'
+  const CHAT_ID = '5729574721'; // Например: '123456789'
   
+  const name = document.getElementById('leadName').value;
+  const phone = document.getElementById('leadPhone').value;
+  const task = document.getElementById('leadTask').value;
+  
+  // Собираем текст сообщения
+  const message = `🔥 НОВАЯ ЗАЯВКА С САЙТА 🔥\n\n👤 Имя: ${name}\n📞 Телефон: ${phone}\n📝 Задача: ${task}`;
+  
+  // Создаем ссылку для отправки в Telegram API
+  const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`;
+
   try {
-    const response = await fetch('/api/send-lead', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(leadData)
-    });
+    // Отправляем запрос напрямую в Телеграм!
+    const response = await fetch(url);
     
     if (response.ok) {
       alert('Заявка успешно отправлена! Скоро свяжемся.');
+      
+      // Добавляем красивую карточку в админку для вида
+      const container = document.getElementById('adminLeadsContainer');
+      container.insertAdjacentHTML('afterbegin', `
+        <div class="data-card" style="border-color: var(--sky);">
+          <div class="data-info">
+            <h4>${name} — НОВАЯ ЗАЯВКА</h4>
+            <p>${task}</p>
+            <p style="color: var(--sky); margin-top: 5px;">${phone}</p>
+          </div>
+          <div class="data-actions">
+            <a href="tel:${phone.replace(/\D/g,'')}" class="btn-action call"><i class="fas fa-phone"></i> Позвонить</a>
+            <button class="btn-action delete" onclick="this.closest('.data-card').remove()">Удалить</button>
+          </div>
+        </div>
+      `);
+
       e.target.reset();
       closeModal('requestModal');
     } else {
-      alert('Ошибка при отправке. Попробуйте еще раз.');
+      // Если забыл вписать токен, вылезет эта ошибка
+      alert('Ошибка при отправке! Проверь, правильно ли ты вписал BOT_TOKEN и CHAT_ID в коде.');
     }
   } catch (error) {
-    alert('Ошибка соединения. (Закинь бэкенд на сервер!)');
+    alert('Ошибка соединения с интернетом.');
   } finally {
     btn.innerText = originalText;
   }
