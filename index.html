@@ -3,22 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KADR FPV</title>
+<title>KADR FPV | Cinematic & 3D Experience</title>
 <link rel="icon" href="favicon.ico">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@100;200;300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
+<script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.94/build/spline-viewer.js"></script>
 <style>
 :root{
   --ink:#080b10;
   --ink2:#0d1219;
   --paper:#e8e4dc;
-  --ice:#c5d8e8;
   --sky:#3a7bd5;
   --sky2:#5b9be8;
   --sky-dim:rgba(58,123,213,.15);
-  --fog:rgba(197,216,232,.04);
   --edge:rgba(197,216,232,.1);
   --tg:#229ED9;
+  --neon-red: #ff2a2a;
+  --neon-cyan: #00ffff;
+  --panel-bg: rgba(13, 18, 25, 0.85);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -38,11 +40,26 @@ body::after{
   pointer-events:none;z-index:8000;opacity:.5;
 }
 
+/* ── GLITCH & HUD ── */
+.glitch-hover:hover {
+  animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+  text-shadow: 2px 2px var(--neon-red), -2px -2px var(--neon-cyan);
+  color: #fff;
+}
+@keyframes glitch-skew {
+  0% { transform: skew(0deg); }
+  20% { transform: skew(-5deg); }
+  40% { transform: skew(5deg); }
+  60% { transform: skew(-2deg); }
+  80% { transform: skew(2deg); }
+  100% { transform: skew(0deg); }
+}
+
 /* ── LOADER ── */
 #loader{
   position:fixed;inset:0;background:var(--ink);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  z-index:7000;transition:opacity 1s ease,visibility 1s;
+  z-index:9000;transition:opacity 1s ease,visibility 1s;
 }
 #loader.out{opacity:0;visibility:hidden}
 .lw{
@@ -86,6 +103,7 @@ header{
   display:flex;justify-content:space-between;align-items:center;
   padding:26px 52px;z-index:1000;
   transition:padding .4s,background .4s,backdrop-filter .4s;
+  pointer-events:none;
 }
 header.slim{
   padding:16px 52px;
@@ -93,7 +111,7 @@ header.slim{
   background:rgba(8,11,16,.6);
   border-bottom:1px solid var(--edge);
 }
-.logo-wrap{display:flex;flex-direction:column;gap:2px;text-decoration:none}
+.logo-wrap{display:flex;flex-direction:column;gap:2px;text-decoration:none; pointer-events:auto;}
 .logo-main{
   font-family:'Cormorant Garamond',serif;
   font-size:21px;font-weight:400;letter-spacing:6px;
@@ -102,21 +120,20 @@ header.slim{
 .logo-main b{color:var(--sky);font-weight:600}
 .logo-tag{font-size:7px;letter-spacing:4px;text-transform:uppercase;color:rgba(197,216,232,.28)}
 
-.header-right{display:flex;align-items:center;gap:36px}
+.header-right{display:flex;align-items:center;gap:36px; pointer-events:auto;}
 nav{display:flex;gap:32px;align-items:center}
 nav a{
   font-size:9px;letter-spacing:2.5px;text-transform:uppercase;
   color:rgba(232,228,220,.38);text-decoration:none;
-  transition:color .3s;position:relative;
+  transition:color .3s, text-shadow 0.3s;position:relative;
 }
 nav a::after{
   content:'';position:absolute;bottom:-4px;left:0;
   width:0;height:1px;background:var(--sky);transition:width .35s;
 }
-nav a:hover{color:var(--paper)}
+nav a:hover{color:var(--paper); text-shadow: 0 0 8px rgba(58,123,213,0.5);}
 nav a:hover::after{width:100%}
 
-/* LANGUAGE SWITCHER */
 .lang{
   display:flex;align-items:center;gap:2px;
   background:rgba(197,216,232,.06);
@@ -132,187 +149,131 @@ nav a:hover::after{width:100%}
   padding:5px 12px;border-radius:100px;
   cursor:pointer;transition:all .25s;
 }
-.lang button.active{
-  background:var(--sky);
-  color:#fff;font-weight:500;
-}
+.lang button.active{background:var(--sky);color:#fff;font-weight:500;}
 .lang button:not(.active):hover{color:var(--paper)}
 
-/* ── HERO ── */
+/* ── HERO & 3D ── */
 .hero{
   height:100vh;position:relative;overflow:hidden;
   display:grid;place-items:end;
 }
-.hero video{
-  position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;
-  filter:brightness(.25) saturate(.65) contrast(1.15);
-  transform:scale(1.08);
-  animation:hKen 26s ease-in-out infinite alternate;
-}
-@keyframes hKen{to{transform:scale(1.0)}}
+.hero-3d-bg {position:absolute;inset:0;width:100%;height:100%;z-index:1;}
 .hero-vg{
   position:absolute;inset:0;
-  background:linear-gradient(to bottom,
-    rgba(8,11,16,.5) 0%,
-    transparent 22%,
-    transparent 52%,
-    rgba(8,11,16,.75) 78%,
-    var(--ink) 100%
-  );
-}
-.hero-vg2{
-  position:absolute;inset:0;
-  background:radial-gradient(ellipse 90% 70% at 50% 100%, transparent 0%, rgba(8,11,16,.5) 80%);
-}
-/* subtle blue ambient glow */
-.hero-glow{
-  position:absolute;
-  width:600px;height:600px;
-  background:radial-gradient(circle, rgba(58,123,213,.12) 0%, transparent 70%);
-  bottom:-100px;left:50%;transform:translateX(-50%);
-  pointer-events:none;
+  background:linear-gradient(to bottom, rgba(8,11,16,.3) 0%, transparent 30%, transparent 60%, rgba(8,11,16,.6) 85%, var(--ink) 100%);
+  z-index: 2; pointer-events:none;
 }
 .hero-scan{
-  position:absolute;inset:0;pointer-events:none;
-  background:repeating-linear-gradient(0deg,transparent 0px,transparent 3px,rgba(0,0,0,.025) 3px,rgba(0,0,0,.025) 4px);
+  position:absolute;inset:0;pointer-events:none;z-index: 3;
+  background:repeating-linear-gradient(0deg,transparent 0px,transparent 3px,rgba(0,0,0,.04) 3px,rgba(0,0,0,.04) 4px);
 }
-
 .hero-inner{
-  position:relative;z-index:2;
+  position:relative;z-index:10;
   padding:0 52px 76px;width:100%;
   display:flex;flex-direction:column;
+  pointer-events:none;
 }
 .hero-chip{
   font-size:8.5px;letter-spacing:5px;text-transform:uppercase;
-  color:var(--sky);margin-bottom:22px;
-  display:flex;align-items:center;gap:14px;
+  color:var(--sky);margin-bottom:22px;display:flex;align-items:center;gap:14px;
   opacity:0;animation:fu .7s ease 2.5s forwards;
 }
 .hero-chip::before{content:'';width:26px;height:1px;background:var(--sky)}
 .chip-dot{
-  width:5px;height:5px;border-radius:50%;
-  background:var(--sky2);
-  box-shadow:0 0 8px var(--sky2);
-  animation:blink 2.2s ease-in-out infinite;
+  width:5px;height:5px;border-radius:50%;background:var(--neon-red);
+  box-shadow:0 0 10px var(--neon-red);animation:blink 1.5s ease-in-out infinite;
 }
-@keyframes blink{0%,100%{opacity:1;box-shadow:0 0 8px var(--sky2)}50%{opacity:.3;box-shadow:none}}
+@keyframes blink{0%,100%{opacity:1;box-shadow:0 0 10px var(--neon-red)}50%{opacity:.2;box-shadow:none}}
 
 .hero-h1{
   font-family:'Cormorant Garamond',serif;
-  font-size:clamp(66px,11.5vw,172px);
-  font-weight:300;line-height:.88;letter-spacing:-1px;
+  font-size:clamp(66px,11.5vw,172px);font-weight:300;line-height:.88;letter-spacing:-1px;
 }
 .hero-h1 .ln{overflow:hidden;display:block}
-.hero-h1 .ln span{
-  display:block;
-  transform:translateY(105%);
-  animation:lift .95s cubic-bezier(.22,1,.36,1) forwards;
-}
+.hero-h1 .ln span{display:block;transform:translateY(105%);animation:lift .95s cubic-bezier(.22,1,.36,1) forwards;}
 .hero-h1 .ln:nth-child(1) span{animation-delay:2.35s}
-.hero-h1 .ln:nth-child(2) span{
-  animation-delay:2.5s;
-  color:var(--sky);font-style:italic;
-}
+.hero-h1 .ln:nth-child(2) span{animation-delay:2.5s;color:var(--sky);font-style:italic;}
 
 .hero-desc{
-  font-size:11px;letter-spacing:1.5px;
-  color:rgba(232,228,220,.42);line-height:1.95;
-  max-width:300px;margin-top:26px;
-  opacity:0;animation:fu .8s ease 2.85s forwards;
+  font-size:11px;letter-spacing:1.5px;color:rgba(232,228,220,.6);line-height:1.95;
+  max-width:300px;margin-top:26px;opacity:0;animation:fu .8s ease 2.85s forwards;
+  pointer-events:auto;
 }
 .hero-actions{
   display:flex;gap:16px;margin-top:34px;align-items:center;
-  opacity:0;animation:fu .8s ease 3.05s forwards;
+  opacity:0;animation:fu .8s ease 3.05s forwards; pointer-events:auto;
 }
 .btn{
   display:inline-flex;align-items:center;gap:10px;
   font-size:8.5px;letter-spacing:3.5px;text-transform:uppercase;
-  text-decoration:none;transition:all .35s;
-  position:relative;overflow:hidden;
+  text-decoration:none;transition:all .35s;position:relative;overflow:hidden; border:none; cursor:pointer;
 }
 .btn-sky{
-  padding:14px 34px;
-  background:var(--sky);color:#fff;font-weight:500;
+  padding:14px 34px;background:var(--sky);color:#fff;font-weight:500;
+  box-shadow: 0 0 15px rgba(58,123,213,0.3);
 }
 .btn-sky::before{
-  content:'';position:absolute;inset:0;
-  background:var(--sky2);transform:translateX(-101%);
-  transition:transform .45s cubic-bezier(.16,1,.3,1);
+  content:'';position:absolute;inset:0;background:var(--sky2);
+  transform:translateX(-101%);transition:transform .45s cubic-bezier(.16,1,.3,1);
 }
 .btn-sky:hover::before{transform:translateX(0)}
 .btn-sky span{position:relative;z-index:1}
 .btn-ghost{
-  padding:14px 30px;
-  border:1px solid rgba(197,216,232,.18);
-  color:rgba(232,228,220,.42);
+  padding:14px 30px;border:1px solid rgba(197,216,232,.3);color:rgba(232,228,220,.8);backdrop-filter: blur(5px);
 }
-.btn-ghost:hover{border-color:rgba(197,216,232,.45);color:var(--paper)}
+.btn-ghost:hover{border-color:var(--neon-cyan);color:#fff;box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);}
 
 .hero-aside{
-  position:absolute;right:52px;bottom:76px;z-index:2;
+  position:absolute;right:52px;bottom:76px;z-index:10;
   display:flex;flex-direction:column;align-items:flex-end;gap:10px;
   opacity:0;animation:fu .7s ease 3.2s forwards;
 }
-.hero-aside span{font-size:7.5px;letter-spacing:4px;text-transform:uppercase;color:rgba(197,216,232,.22)}
+.hero-aside span{font-size:7.5px;letter-spacing:4px;text-transform:uppercase;color:rgba(197,216,232,.5)}
 .aside-line{width:1px;height:40px;background:linear-gradient(var(--sky),transparent);align-self:center}
 
 .scroll-hint{
-  position:absolute;left:52px;bottom:76px;z-index:2;
-  display:flex;align-items:center;gap:14px;
-  opacity:0;animation:fu .7s ease 3.2s forwards;
+  position:absolute;left:52px;bottom:76px;z-index:10;
+  display:flex;align-items:center;gap:14px;opacity:0;animation:fu .7s ease 3.2s forwards;pointer-events:auto;
 }
-.scroll-hint span{font-size:7.5px;letter-spacing:4px;text-transform:uppercase;color:rgba(197,216,232,.22)}
+.scroll-hint span{font-size:7.5px;letter-spacing:4px;text-transform:uppercase;color:rgba(197,216,232,.5)}
 .scroll-line{width:38px;height:1px;background:var(--edge);position:relative;overflow:hidden}
 .scroll-line::after{
-  content:'';position:absolute;top:0;left:-100%;
-  width:100%;height:100%;background:var(--sky);
+  content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:var(--sky);
   animation:sl 2.2s ease-in-out infinite;
 }
 @keyframes sl{0%{left:-100%}100%{left:100%}}
 
-/* ── TICKER ── */
-.ticker{
-  border-top:1px solid var(--edge);border-bottom:1px solid var(--edge);
-  padding:15px 0;overflow:hidden;position:relative;
-  background:rgba(58,123,213,.02);
+/* ── AI VIDEO TICKER ── */
+.ticker{position:relative;overflow:hidden;padding:20px 0;border:none;background:#000;}
+.ticker-video-bg {
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;
+  filter: saturate(1.8) contrast(1.2);opacity: 0.85;
 }
-.ticker::before,.ticker::after{
-  content:'';position:absolute;top:0;width:100px;height:100%;z-index:2;
-}
+.ticker::before,.ticker::after{content:'';position:absolute;top:0;width:120px;height:100%;z-index:3;}
 .ticker::before{left:0;background:linear-gradient(90deg,var(--ink),transparent)}
 .ticker::after{right:0;background:linear-gradient(-90deg,var(--ink),transparent)}
 .ticker-track{
-  display:flex;width:max-content;
-  animation:tick 32s linear infinite;
+  display:flex;width:max-content;animation:tick 32s linear infinite;position:relative;z-index:2;
+  mix-blend-mode: difference;
 }
 .ticker-track:hover{animation-play-state:paused}
 .ticker-item{
-  display:flex;align-items:center;gap:28px;
-  padding:0 28px;
-  font-size:8.5px;letter-spacing:4px;text-transform:uppercase;
-  color:rgba(197,216,232,.22);white-space:nowrap;
+  display:flex;align-items:center;gap:35px;padding:0 35px;
+  font-size:10px;letter-spacing:5px;text-transform:uppercase;color:#fff;font-weight:600;white-space:nowrap;
 }
-.ticker-sep{width:3px;height:3px;background:var(--sky);border-radius:50%;opacity:.5;flex-shrink:0}
+.ticker-sep{width:4px;height:4px;background:#fff;border-radius:50%;flex-shrink:0; box-shadow: 0 0 10px #fff;}
 @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* ── SECTIONS ── */
 .s{padding:130px 52px;max-width:1360px;margin:auto}
 .s-eyebrow{
-  font-size:8.5px;letter-spacing:5px;text-transform:uppercase;
-  color:var(--sky);margin-bottom:18px;
-  display:flex;align-items:center;gap:12px;
+  font-size:8.5px;letter-spacing:5px;text-transform:uppercase;color:var(--sky);margin-bottom:18px;display:flex;align-items:center;gap:12px;
 }
 .s-eyebrow::before{content:'';width:18px;height:1px;background:var(--sky)}
 .s-title{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(36px,6vw,76px);
-  font-weight:300;line-height:.95;letter-spacing:-.5px;
-  margin-bottom:60px;
+  font-family:'Cormorant Garamond',serif;font-size:clamp(36px,6vw,76px);font-weight:300;line-height:.95;letter-spacing:-.5px;margin-bottom:60px;
 }
 .s-title i{font-style:italic;color:var(--sky)}
-
-/* reveal */
 .rv{opacity:0;transform:translateY(34px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
 .rv.rl{transform:translateX(-40px)}
 .rv.rr{transform:translateX(40px)}
@@ -321,218 +282,175 @@ nav a:hover::after{width:100%}
 
 /* ── ABOUT ── */
 .about-layout{display:grid;grid-template-columns:1fr 1fr;gap:96px;align-items:start}
-.about-body{
-  font-size:clamp(15px,1.6vw,19px);font-weight:300;
-  color:rgba(232,228,220,.58);line-height:1.8;
-}
+.about-body{font-size:clamp(15px,1.6vw,19px);font-weight:300;color:rgba(232,228,220,.58);line-height:1.8;}
 .about-body strong{color:var(--paper);font-weight:400}
 .about-aside{display:flex;flex-direction:column;gap:2px}
 .stat-row{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:24px 28px;border:1px solid var(--edge);
-  transition:border-color .3s,background .3s;position:relative;overflow:hidden;
+  display:flex;justify-content:space-between;align-items:center;padding:24px 28px;border:1px solid var(--edge);
+  transition:border-color .3s,background .3s, transform 0.3s;position:relative;overflow:hidden;
 }
-.stat-row::after{
-  content:'';position:absolute;left:0;bottom:0;
-  height:1px;width:0;background:var(--sky);
-  transition:width .5s cubic-bezier(.22,1,.36,1);
-}
+.stat-row::after{content:'';position:absolute;left:0;bottom:0;height:1px;width:0;background:var(--sky);transition:width .5s cubic-bezier(.22,1,.36,1);}
 .stat-row:hover::after{width:100%}
-.stat-row:hover{background:var(--fog);border-color:var(--sky-dim)}
-.stat-n{
-  font-family:'Cormorant Garamond',serif;
-  font-size:46px;font-weight:300;color:var(--sky);line-height:1;
-}
-.stat-l{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(197,216,232,.3)}
+.stat-row:hover{background:var(--fog);border-color:var(--sky-dim); transform: translateX(10px);}
+.stat-n{font-family:'Cormorant Garamond',serif;font-size:46px;font-weight:300;color:var(--sky);line-height:1;text-shadow: 0 0 15px rgba(58,123,213,0.3);}
+.stat-l{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(197,216,232,.4)}
 
 /* ── WORKS ── */
 .works-wrap{padding:0 52px 130px;max-width:1360px;margin:auto}
-.video-block{
-  position:relative;overflow:hidden;
-  margin-bottom:3px;background:#000;
-}
-.video-block video{
-  width:100%;display:block;
-  transition:transform .8s cubic-bezier(.16,1,.3,1),filter .5s;
-  filter:saturate(.75);
-}
-.video-block:hover video{transform:scale(1.02);filter:saturate(1)}
+.video-block{position:relative;overflow:hidden;margin-bottom:3px;background:#000;cursor: crosshair;}
+.video-block video{width:100%;display:block;transition:transform .8s cubic-bezier(.16,1,.3,1),filter .5s;filter:saturate(.75);}
+.video-block:hover video{transform:scale(1.02);filter:saturate(1.1) contrast(1.05);}
 .video-tag{
-  position:absolute;bottom:0;left:0;right:0;
-  padding:26px 30px;
-  background:linear-gradient(transparent,rgba(8,11,16,.85));
-  display:flex;justify-content:space-between;align-items:flex-end;
-  pointer-events:none;
+  position:absolute;bottom:0;left:0;right:0;padding:26px 30px;background:linear-gradient(transparent,rgba(8,11,16,.95));
+  display:flex;justify-content:space-between;align-items:flex-end;pointer-events:none;
 }
-.vtag-n{font-family:'Cormorant Garamond',serif;font-size:11px;font-style:italic;color:rgba(197,216,232,.32);letter-spacing:2px}
-.vtag-r{font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--sky);opacity:.6}
+.vtag-n{font-family:'Cormorant Garamond',serif;font-size:11px;font-style:italic;color:rgba(197,216,232,.5);letter-spacing:2px}
+.vtag-r{font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--sky);opacity:1; text-shadow: 0 0 10px rgba(58,123,213,0.5);}
 
 /* ── GALLERY ── */
 .gallery-wrap{padding:0 52px 130px;max-width:1360px;margin:auto}
-.gallery-mosaic{
-  display:grid;
-  grid-template-columns:repeat(12,1fr);
-  grid-template-rows:repeat(2,280px);
-  gap:3px;margin-top:52px;
-}
+.gallery-mosaic{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(2,280px);gap:3px;margin-top:52px;}
 .gitem{overflow:hidden;position:relative;background:#0a0c10}
 .gitem:nth-child(1){grid-column:1/6;grid-row:1/3}
 .gitem:nth-child(2){grid-column:6/9;grid-row:1/2}
 .gitem:nth-child(3){grid-column:9/13;grid-row:1/2}
 .gitem:nth-child(4){grid-column:6/10;grid-row:2/3}
 .gitem:nth-child(5){grid-column:10/13;grid-row:2/3}
-.gitem img{
-  width:100%;height:100%;object-fit:cover;display:block;
-  transition:transform .9s cubic-bezier(.16,1,.3,1),filter .5s;
-  filter:saturate(.7) brightness(.88);
-}
-.gitem:hover img{transform:scale(1.07);filter:saturate(1) brightness(.95)}
+.gitem img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.16,1,.3,1),filter .5s;filter:saturate(.7) brightness(.88);}
+.gitem:hover img{transform:scale(1.07);filter:saturate(1) brightness(1)}
 .gitem-over{
-  position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(8,11,16,.7) 0%,transparent 55%);
-  opacity:0;transition:opacity .4s;
-  display:flex;align-items:flex-end;padding:18px 20px;
+  position:absolute;inset:0;background:linear-gradient(to top,rgba(8,11,16,.8) 0%,transparent 60%);
+  opacity:0;transition:opacity .4s;display:flex;align-items:flex-end;padding:18px 20px;
 }
 .gitem:hover .gitem-over{opacity:1}
-.gitem-lbl{font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--sky)}
+.gitem-lbl{font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--sky); text-shadow: 0 0 8px rgba(58,123,213,0.6);}
 
-/* ── CONTACT — КРУГЛЫЕ ── */
+/* ── CONTACT ── */
 .contact-wrap{padding:0 52px 150px;max-width:1360px;margin:auto}
-.contact-circles{
-  display:flex;
-  gap:40px;
-  justify-content:center;
-  align-items:stretch;
-  margin-top:60px;
-  flex-wrap:wrap;
-}
-
-/* Круглая карточка */
+.contact-circles{display:grid;grid-template-columns: repeat(3, 1fr);gap:24px;margin-top:60px;}
 .ccirc{
-  width:300px;height:300px;
-  border-radius:50%;
-  border:1px solid var(--edge);
-  background:var(--fog);
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  text-align:center;
-  gap:10px;
-  padding:44px;
-  position:relative;
-  flex-shrink:0;
-  /* Mac-style spring */
-  transition:transform .45s cubic-bezier(.34,1.56,.64,1), border-color .35s, background .35s, box-shadow .35s;
-  overflow:hidden;
+  border-radius:16px;border:1px solid var(--edge);background:rgba(197,216,232,.02);backdrop-filter: blur(10px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;padding:50px 30px;position:relative;
+  transition:transform .45s cubic-bezier(.34,1.56,.64,1), border-color .35s, background .35s, box-shadow .35s;overflow:hidden;
 }
-.ccirc::before{
-  content:'';position:absolute;inset:0;border-radius:50%;
-  background:radial-gradient(circle at 50% 110%, rgba(58,123,213,.1) 0%, transparent 65%);
-  transition:opacity .4s;opacity:0;
-}
+.ccirc::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 110%, rgba(58,123,213,.1) 0%, transparent 65%);transition:opacity .4s;opacity:0;}
 .ccirc:hover::before{opacity:1}
-.ccirc:hover{
-  transform:scale(1.09);
-  border-color:rgba(58,123,213,.4);
-  background:rgba(58,123,213,.06);
-  box-shadow:0 20px 60px rgba(58,123,213,.15), 0 0 0 1px rgba(58,123,213,.2);
-}
-
-/* большой круг — TG */
-.ccirc-lg{
-  width:360px;height:360px;
-  border-color:rgba(34,158,217,.18);
-  background:rgba(34,158,217,.04);
-}
-.ccirc-lg::before{
-  background:radial-gradient(circle at 50% 110%, rgba(34,158,217,.12) 0%, transparent 65%);
-}
-.ccirc-lg:hover{
-  transform:scale(1.09);
-  border-color:rgba(34,158,217,.5);
-  background:rgba(34,158,217,.08);
-  box-shadow:0 20px 60px rgba(34,158,217,.18), 0 0 0 1px rgba(34,158,217,.25);
-}
-
+.ccirc:hover{transform:translateY(-10px);border-color:rgba(58,123,213,.4);background:rgba(58,123,213,.04);box-shadow:0 20px 40px rgba(0,0,0,.5), 0 0 20px rgba(58,123,213,.1) inset;}
+.ccirc-lg{border-color:rgba(34,158,217,.18);background:rgba(34,158,217,.03);}
+.ccirc-lg::before{background:radial-gradient(circle at 50% 110%, rgba(34,158,217,.12) 0%, transparent 65%);}
+.ccirc-lg:hover{transform:translateY(-10px);border-color:rgba(34,158,217,.5);background:rgba(34,158,217,.06);box-shadow:0 20px 40px rgba(0,0,0,.5), 0 0 20px rgba(34,158,217,.15) inset;}
 .ccirc-icon{
-  font-size:22px;color:var(--sky);
-  width:48px;height:48px;
-  border:1px solid var(--edge);border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  margin-bottom:4px;
-  transition:border-color .3s,background .3s;
+  font-size:22px;color:var(--sky);width:48px;height:48px;border:1px solid var(--edge);border-radius:12px;
+  display:flex;align-items:center;justify-content:center;margin-bottom:10px;transition:border-color .3s,background .3s, box-shadow 0.3s;
 }
-.ccirc:hover .ccirc-icon{border-color:var(--sky);background:rgba(58,123,213,.12)}
-.ccirc-lbl{font-size:7.5px;letter-spacing:4px;text-transform:uppercase;color:var(--sky);opacity:.7}
+.ccirc:hover .ccirc-icon{border-color:var(--sky);background:rgba(58,123,213,.12);box-shadow: 0 0 15px rgba(58,123,213,0.4);}
+.ccirc-lbl{font-size:7.5px;letter-spacing:4px;text-transform:uppercase;color:var(--sky);opacity:.8}
+
 .ccirc-val{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(18px,2vw,24px);
-  font-weight:300;letter-spacing:.5px;
-  color:var(--paper);line-height:1.3;
-  text-decoration:none;display:block;
-  transition:color .3s;
+  font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2vw,24px);color:var(--paper);
+  text-decoration:none;display:block;transition:color .3s;position: relative; padding: 5px 10px; border-radius: 8px;
 }
-.ccirc-val:hover{color:var(--sky)}
-.ccirc-sub{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(197,216,232,.22);margin-top:4px}
+.ccirc-val::after {
+  content: 'Позвонить 📞';position: absolute; top: -25px; left: 50%; transform: translateX(-50%);
+  background: var(--sky); color: #fff; font-family: 'Montserrat', sans-serif;font-size: 8px; font-weight: 600; padding: 4px 8px; border-radius: 4px;
+  letter-spacing: 1px; opacity: 0; transition: opacity 0.3s; pointer-events: none;
+}
+.ccirc-val:hover{color:var(--sky); background:rgba(58,123,213,.1);}
+.ccirc-val:hover::after {opacity: 1;}
 
-/* TG кнопка внутри круга */
+.ccirc-sub{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(197,216,232,.4);margin-top:4px}
 .tg-inner-btn{
-  display:inline-flex;align-items:center;gap:9px;
-  padding:12px 24px;
-  background:var(--tg);color:#fff;
-  text-decoration:none;
-  font-size:8px;letter-spacing:3px;text-transform:uppercase;
-  font-weight:500;border-radius:100px;
-  margin-top:6px;
-  transition:background .3s,transform .3s;
+  display:inline-flex;align-items:center;gap:9px;padding:14px 28px;background:var(--tg);color:#fff;
+  text-decoration:none;font-size:8px;letter-spacing:3px;text-transform:uppercase;font-weight:600;border-radius:8px;
+  margin-top:12px;transition:background .3s,transform .3s, box-shadow .3s;
 }
-.tg-inner-btn:hover{background:#1a8ec4;transform:translateY(-2px)}
+.tg-inner-btn:hover{background:#1a8ec4;transform:translateY(-2px);box-shadow: 0 5px 15px rgba(34,158,217,.4);}
 .tg-inner-btn i{font-size:15px}
+.tg-handle-big{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3.5vw,36px);font-weight:300;letter-spacing:1px;color:var(--paper);line-height:1;}
 
-.tg-handle-big{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(28px,3.5vw,40px);
-  font-weight:300;letter-spacing:1px;
-  color:var(--paper);line-height:1;
+/* ── MODALS (FORM & ADMIN) ── */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(8,11,16,0.9);backdrop-filter: blur(15px); z-index: 5000;
+  display: flex; align-items: center; justify-content: center;opacity: 0; visibility: hidden; transition: all 0.4s ease;
 }
+.modal-overlay.active { opacity: 1; visibility: visible; }
+.modal-content {
+  background: var(--panel-bg); border: 1px solid var(--sky-dim);border-radius: 16px; padding: 50px; width: 90%; max-width: 600px;
+  position: relative; transform: translateY(30px) scale(0.95);transition: all 0.4s cubic-bezier(.22,1,.36,1);box-shadow: 0 0 40px rgba(58,123,213,0.1);
+}
+.modal-overlay.active .modal-content { transform: translateY(0) scale(1); }
+.modal-close {
+  position: absolute; top: 20px; right: 25px;color: var(--sky); font-size: 24px; cursor: pointer; transition: color 0.3s;
+}
+.modal-close:hover { color: var(--neon-red); }
+.modal-title {font-family: 'Cormorant Garamond', serif; font-size: 32px;color: #fff; margin-bottom: 30px; letter-spacing: 1px;}
+.modal-title i { color: var(--sky); font-style: italic; }
 
-/* ── FOOTER ── */
-.footer-bar{
-  border-top:1px solid var(--edge);
-  padding:44px 52px;
-  display:flex;justify-content:space-between;align-items:center;
+.form-group { margin-bottom: 20px; text-align: left; }
+.form-label {display: block; font-size: 9px; letter-spacing: 3px;text-transform: uppercase; color: var(--sky); margin-bottom: 8px;}
+.form-input {
+  width: 100%; background: rgba(0,0,0,0.5); border: 1px solid var(--edge);
+  padding: 15px; color: #fff; font-family: 'Montserrat', sans-serif;font-size: 14px; border-radius: 8px; transition: border-color 0.3s, box-shadow 0.3s;
 }
-.footer-logo{
-  font-family:'Cormorant Garamond',serif;
-  font-size:26px;font-weight:300;letter-spacing:6px;
-  color:rgba(232,228,220,.1);
-}
-.footer-logo b{color:rgba(58,123,213,.22)}
-.footer-copy{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(232,228,220,.13)}
+.form-input:focus {outline: none; border-color: var(--sky); box-shadow: 0 0 10px rgba(58,123,213,0.3);}
+textarea.form-input { resize: vertical; min-height: 100px; }
+.btn-submit { width: 100%; text-align: center; justify-content: center; margin-top: 10px; }
 
-/* ── SCROLL TOP ── */
+/* Admin Dashboard Styles */
+.admin-modal { max-width: 900px; }
+.admin-tabs { display: flex; gap: 20px; border-bottom: 1px solid var(--edge); margin-bottom: 20px; }
+.admin-tab {
+  padding: 10px 0; font-size: 10px; text-transform: uppercase; letter-spacing: 2px;
+  color: rgba(255,255,255,0.4); cursor: pointer; transition: color 0.3s;border-bottom: 2px solid transparent;
+}
+.admin-tab.active { color: var(--sky); border-bottom-color: var(--sky); }
+.admin-pane { display: none; }
+.admin-pane.active { display: block; animation: fu 0.4s forwards; }
+.data-list { display: flex; flex-direction: column; gap: 10px; }
+.data-card {
+  background: rgba(255,255,255,0.02); border: 1px solid var(--edge);
+  padding: 20px; border-radius: 8px; display: flex; justify-content: space-between;
+  align-items: center; transition: border-color 0.3s;
+}
+.data-card:hover { border-color: var(--sky-dim); background: rgba(58,123,213,0.05); }
+.data-info h4 { font-size: 16px; margin-bottom: 5px; color: #fff; }
+.data-info p { font-size: 12px; color: rgba(255,255,255,0.6); }
+.data-actions { display: flex; gap: 10px; }
+.btn-action {
+  padding: 8px 16px; font-size: 9px; text-transform: uppercase; letter-spacing: 1px;
+  background: none; border: 1px solid var(--edge); color: #fff; border-radius: 4px;cursor: pointer; transition: all 0.3s;
+}
+.btn-action.call { border-color: var(--sky); color: var(--sky); text-decoration: none;}
+.btn-action.call:hover { background: var(--sky); color: #fff; }
+.btn-action.delete:hover { border-color: var(--neon-red); color: var(--neon-red); }
+
+/* FOOTER */
+.footer-bar{border-top:1px solid var(--edge);padding:44px 52px;display:flex;justify-content:space-between;align-items:center;}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;letter-spacing:6px;color:rgba(232,228,220,.2);}
+.footer-logo b{color:rgba(58,123,213,.4)}
+.footer-copy{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(232,228,220,.2)}
+.admin-link {
+  font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(255,255,255,0.1); cursor: pointer; transition: color 0.3s;
+}
+.admin-link:hover { color: var(--sky); }
+
 #st{
-  position:fixed;bottom:34px;right:34px;
-  width:44px;height:44px;border-radius:50%;
-  border:1px solid var(--edge);background:rgba(8,11,16,.8);
-  backdrop-filter:blur(12px);
-  display:grid;place-items:center;
-  cursor:pointer;z-index:999;
-  opacity:0;visibility:hidden;transition:all .3s;
+  position:fixed;bottom:34px;right:34px;width:44px;height:44px;border-radius:12px;
+  border:1px solid var(--edge);background:rgba(8,11,16,.8);backdrop-filter:blur(12px);
+  display:grid;place-items:center;cursor:pointer;z-index:999;opacity:0;visibility:hidden;transition:all .3s;
 }
 #st.on{opacity:1;visibility:visible}
-#st:hover{background:var(--sky);border-color:var(--sky)}
+#st:hover{background:var(--sky);border-color:var(--sky); box-shadow: 0 0 15px rgba(58,123,213,0.4);}
 #st i{font-size:12px;color:var(--paper)}
 
-/* ── I18N ── */
 .t-en { display: none; }
 .en-mode .t-ru { display: none; }
 .en-mode .t-en { display: block; }
-/* span и a — инлайн */
 span.t-en, a.t-en { display: none; }
 .en-mode span.t-ru, .en-mode a.t-ru { display: none; }
 .en-mode span.t-en, .en-mode a.t-en { display: inline; }
 
-/* ── RESPONSIVE ── */
 @media(max-width:960px){
   header,header.slim{padding:20px 24px}
   nav{display:none}
@@ -542,37 +460,33 @@ span.t-en, a.t-en { display: none; }
   .about-layout{grid-template-columns:1fr;gap:48px}
   .gallery-mosaic{grid-template-columns:1fr 1fr;grid-template-rows:auto}
   .gitem:nth-child(n){grid-column:auto!important;grid-row:auto!important}
-  .contact-circles{gap:24px}
-  .ccirc,.ccirc-lg{width:280px;height:280px;padding:30px}
+  .contact-circles{grid-template-columns: 1fr; gap:24px}
   .footer-bar{flex-direction:column;gap:14px;text-align:center;padding:32px 24px}
 }
 </style>
 </head>
 <body id="body">
 
-<!-- LOADER -->
 <div id="loader">
   <div class="lw">
-    <span>K</span><span>A</span><span>D</span><span>R</span>
-    <span>&thinsp;</span>
+    <span>K</span><span>A</span><span>D</span><span>R</span><span>&thinsp;</span>
     <span class="lw-sky">F</span><span class="lw-sky">P</span><span class="lw-sky">V</span>
   </div>
-  <div class="loader-sub">Aerial Cinematography · Moscow</div>
+  <div class="loader-sub">Interactive Experience</div>
   <div class="loader-bar"></div>
 </div>
 
-<!-- HEADER -->
 <header id="hdr">
   <a href="#" class="logo-wrap">
-    <div class="logo-main">KADR <b>FPV</b></div>
+    <div class="logo-main glitch-hover">KADR <b>FPV</b></div>
     <div class="logo-tag">Aerial Production</div>
   </a>
   <div class="header-right">
     <nav>
-      <a href="#about"><span class="t-ru">О нас</span><span class="t-en">About</span></a>
-      <a href="#works"><span class="t-ru">Работы</span><span class="t-en">Works</span></a>
-      <a href="#gallery"><span class="t-ru">Галерея</span><span class="t-en">Gallery</span></a>
-      <a href="#contact"><span class="t-ru">Контакт</span><span class="t-en">Contact</span></a>
+      <a href="#about" class="glitch-hover"><span class="t-ru">О нас</span><span class="t-en">About</span></a>
+      <a href="#works" class="glitch-hover"><span class="t-ru">Работы</span><span class="t-en">Works</span></a>
+      <a href="#gallery" class="glitch-hover"><span class="t-ru">Галерея</span><span class="t-en">Gallery</span></a>
+      <a href="#contact" class="glitch-hover"><span class="t-ru">Контакт</span><span class="t-en">Contact</span></a>
     </nav>
     <div class="lang">
       <button id="btnRu" class="active" onclick="setLang('ru')">RU</button>
@@ -581,32 +495,29 @@ span.t-en, a.t-en { display: none; }
   </div>
 </header>
 
-<!-- HERO -->
 <section class="hero">
-  <video autoplay muted loop playsinline>
-    <source src="hero.mp4.mov" type="video/mp4">
-    <source src="hero.mp4.mov" type="video/quicktime">
-  </video>
+  <spline-viewer class="hero-3d-bg" url="https://prod.spline.design/6Wq1Q7YGyM-iab9I/scene.splinecode"></spline-viewer>
+  
   <div class="hero-vg"></div>
-  <div class="hero-vg2"></div>
   <div class="hero-scan"></div>
-  <div class="hero-glow"></div>
 
   <div class="hero-inner">
     <div class="hero-chip">
       <div class="chip-dot"></div>
-      <span class="t-ru">Премиум аэросъёмка — Москва</span>
-      <span class="t-en">Premium Drone Production — Moscow</span>
+      <span class="t-ru">Live 3D Rendering · Drag to rotate</span>
+      <span class="t-en">Live 3D Rendering · Drag to rotate</span>
     </div>
     <h1 class="hero-h1">
-      <span class="ln"><span>KADR</span></span>
+      <span class="ln"><span class="glitch-hover">KADR</span></span>
       <span class="ln"><span>FPV</span></span>
     </h1>
-    <p class="hero-desc t-ru">Аэросъёмка нового поколения.<br>От скоростных FPV-полётов<br>до кинематографической плавности.</p>
-    <p class="hero-desc t-en">Next-generation aerial cinematography.<br>From high-speed FPV passes<br>to cinematic smooth shots.</p>
+    <p class="hero-desc t-ru">Абсолютный контроль в любой плоскости.<br>Нажми и потяни мышь, чтобы управлять сценой.</p>
+    <p class="hero-desc t-en">Absolute control in any dimension.<br>Click and drag to manipulate the scene.</p>
     <div class="hero-actions">
-      <a href="#works" class="btn btn-sky"><span class="t-ru">Смотреть работы →</span><span class="t-en">View Works →</span></a>
-      <a href="#contact" class="btn btn-ghost"><span class="t-ru">Обсудить проект</span><span class="t-en">Get in Touch</span></a>
+      <button onclick="openModal('requestModal')" class="btn btn-sky glitch-hover">
+        <span class="t-ru">Оставить заявку →</span><span class="t-en">Send Request →</span>
+      </button>
+      <a href="#works" class="btn btn-ghost glitch-hover"><span class="t-ru">Смотреть работы</span><span class="t-en">View Works</span></a>
     </div>
   </div>
 
@@ -621,27 +532,22 @@ span.t-en, a.t-en { display: none; }
   </div>
 </section>
 
-<!-- TICKER -->
 <div class="ticker">
+  <video class="ticker-video-bg" autoplay muted loop playsinline>
+    </video>
+
   <div class="ticker-track">
-    <div class="ticker-item">FPV Cinematography <span class="ticker-sep"></span></div>
-    <div class="ticker-item">Real Estate Aerial <span class="ticker-sep"></span></div>
-    <div class="ticker-item">4K RAW Footage <span class="ticker-sep"></span></div>
-    <div class="ticker-item">Event Coverage <span class="ticker-sep"></span></div>
-    <div class="ticker-item">Commercial Production <span class="ticker-sep"></span></div>
-    <div class="ticker-item">Indoor FPV <span class="ticker-sep"></span></div>
-    <div class="ticker-item">Moscow · Russia <span class="ticker-sep"></span></div>
-    <div class="ticker-item">FPV Cinematography <span class="ticker-sep"></span></div>
-    <div class="ticker-item">Real Estate Aerial <span class="ticker-sep"></span></div>
-    <div class="ticker-item">4K RAW Footage <span class="ticker-sep"></span></div>
-    <div class="ticker-item">Event Coverage <span class="ticker-sep"></span></div>
-    <div class="ticker-item">Commercial Production <span class="ticker-sep"></span></div>
-    <div class="ticker-item">Indoor FPV <span class="ticker-sep"></span></div>
-    <div class="ticker-item">Moscow · Russia <span class="ticker-sep"></span></div>
+    <div class="ticker-item">Cinematic FPV <span class="ticker-sep"></span></div>
+    <div class="ticker-item">High Speed Chases <span class="ticker-sep"></span></div>
+    <div class="ticker-item">RAW Color Pipeline <span class="ticker-sep"></span></div>
+    <div class="ticker-item">Interactive 3D <span class="ticker-sep"></span></div>
+    <div class="ticker-item">AI Integration <span class="ticker-sep"></span></div>
+    <div class="ticker-item">Cinematic FPV <span class="ticker-sep"></span></div>
+    <div class="ticker-item">High Speed Chases <span class="ticker-sep"></span></div>
+    <div class="ticker-item">RAW Color Pipeline <span class="ticker-sep"></span></div>
   </div>
 </div>
 
-<!-- ABOUT -->
 <section class="s" id="about">
   <div class="s-eyebrow rv t-ru">О компании</div>
   <div class="s-eyebrow rv t-en">About Us</div>
@@ -651,8 +557,8 @@ span.t-en, a.t-en { display: none; }
   </h2>
   <div class="about-layout">
     <div class="about-body rv rl">
-      <span class="t-ru">Мы создаём визуальные истории с воздуха.<br><br><strong>KADR FPV</strong> — это команда пилотов и операторов, которые знают как передать масштаб, скорость и эмоцию. От динамичных городских погонь до медленных парящих планов.<br><br>Работаем с девелоперами, рекламными агентствами, кинопродакшнами и event-организаторами.</span>
-      <span class="t-en">We craft visual stories from the sky.<br><br><strong>KADR FPV</strong> is a team of pilots and cinematographers who know how to convey scale, speed and emotion. From dynamic urban chases to slow cinematic drifts.<br><br>We work with developers, ad agencies, film productions and event organizers.</span>
+      <span class="t-ru">Мы стираем грань между классическим кино и агрессивным пилотированием.<br><br><strong>KADR FPV</strong> — это больше, чем пролеты с дрона. Мы интегрируем новейшие технологии: от тяжелых кино-лифтеров до ИИ-генерации превизов.<br><br>Готовы снять пролет сквозь виллу, догнать спорткар на скорости 150 км/ч или собрать сложный 3D-трекинг прямо на постпродакшене.</span>
+      <span class="t-en">We blur the line between classic cinema and aggressive piloting.<br><br><strong>KADR FPV</strong> is more than drone flythroughs. We integrate the latest tech: from heavy cinema lifters to AI-generated pre-viz.<br><br>Ready to fly through a villa, chase a sports car at 150 km/h, or build complex 3D tracking in post.</span>
     </div>
     <div class="about-aside rv rr">
       <div class="stat-row">
@@ -660,8 +566,8 @@ span.t-en, a.t-en { display: none; }
         <div class="stat-l t-ru">с 2020</div><div class="stat-l t-en">since 2020</div>
       </div>
       <div class="stat-row">
-        <div><div class="stat-n">4K</div><div class="stat-l t-ru" style="margin-top:5px">Качество</div><div class="stat-l t-en" style="margin-top:5px">Quality</div></div>
-        <div class="stat-l">RAW / Log</div>
+        <div><div class="stat-n">RAW</div><div class="stat-l t-ru" style="margin-top:5px">Формат</div><div class="stat-l t-en" style="margin-top:5px">Format</div></div>
+        <div class="stat-l">10-Bit Color</div>
       </div>
       <div class="stat-row">
         <div><div class="stat-n">24ч</div><div class="stat-l t-ru" style="margin-top:5px">Ответ</div><div class="stat-l t-en" style="margin-top:5px">Response</div></div>
@@ -675,7 +581,6 @@ span.t-en, a.t-en { display: none; }
   </div>
 </section>
 
-<!-- WORKS -->
 <div class="works-wrap" id="works">
   <div class="s-eyebrow rv t-ru">Избранные работы</div>
   <div class="s-eyebrow rv t-en">Selected Works</div>
@@ -689,8 +594,8 @@ span.t-en, a.t-en { display: none; }
       <source src="video1.mp4.mov" type="video/quicktime">
     </video>
     <div class="video-tag">
-      <span class="vtag-n">Work № 001</span>
-      <span class="vtag-r">FPV · 4K</span>
+      <span class="vtag-n">Project Alpha // Chase</span>
+      <span class="vtag-r glitch-hover">FPV · 4K</span>
     </div>
   </div>
   <div class="video-block rv" style="transition-delay:.12s">
@@ -699,94 +604,158 @@ span.t-en, a.t-en { display: none; }
       <source src="video2.mp4" type="video/quicktime">
     </video>
     <div class="video-tag">
-      <span class="vtag-n">Work № 002</span>
-      <span class="vtag-r">Cinematic · RAW</span>
+      <span class="vtag-n">Project Beta // Estate</span>
+      <span class="vtag-r glitch-hover">Cinematic · RAW</span>
     </div>
   </div>
 </div>
 
-<!-- GALLERY -->
 <div class="gallery-wrap" id="gallery">
   <div class="s-eyebrow rv t-ru">Фотогалерея</div>
   <div class="s-eyebrow rv t-en">Photo Gallery</div>
   <h2 class="s-title rv">Gallery</h2>
   <div class="gallery-mosaic">
-    <div class="gitem rv rs" style="transition-delay:0s"><img src="photo1.jpg.JPG" alt="shot 1" loading="lazy"><div class="gitem-over"><span class="gitem-lbl">Aerial View</span></div></div>
-    <div class="gitem rv rs" style="transition-delay:.07s"><img src="photo2.jpg.JPG" alt="shot 2" loading="lazy"><div class="gitem-over"><span class="gitem-lbl">FPV Pass</span></div></div>
-    <div class="gitem rv rs" style="transition-delay:.12s"><img src="photo3.jpg.JPG" alt="shot 3" loading="lazy"><div class="gitem-over"><span class="gitem-lbl">Cinematic</span></div></div>
-    <div class="gitem rv rs" style="transition-delay:.17s"><img src="photo4.jpg.JPG" alt="shot 4" loading="lazy"><div class="gitem-over"><span class="gitem-lbl">Moscow</span></div></div>
-    <div class="gitem rv rs" style="transition-delay:.22s"><img src="photo5.jpg.jpg" alt="shot 5" loading="lazy"><div class="gitem-over"><span class="gitem-lbl">Production</span></div></div>
+    <div class="gitem rv rs" style="transition-delay:0s"><img src="photo1.jpg.JPG" alt="shot 1" loading="lazy"><div class="gitem-over"><span class="gitem-lbl glitch-hover">Aerial View</span></div></div>
+    <div class="gitem rv rs" style="transition-delay:.07s"><img src="photo2.jpg.JPG" alt="shot 2" loading="lazy"><div class="gitem-over"><span class="gitem-lbl glitch-hover">FPV Pass</span></div></div>
+    <div class="gitem rv rs" style="transition-delay:.12s"><img src="photo3.jpg.JPG" alt="shot 3" loading="lazy"><div class="gitem-over"><span class="gitem-lbl glitch-hover">Cinematic</span></div></div>
+    <div class="gitem rv rs" style="transition-delay:.17s"><img src="photo4.jpg.JPG" alt="shot 4" loading="lazy"><div class="gitem-over"><span class="gitem-lbl glitch-hover">Moscow</span></div></div>
+    <div class="gitem rv rs" style="transition-delay:.22s"><img src="photo5.jpg.jpg" alt="shot 5" loading="lazy"><div class="gitem-over"><span class="gitem-lbl glitch-hover">Production</span></div></div>
   </div>
 </div>
 
-<!-- CONTACT — КРУГЛЫЕ -->
 <div class="contact-wrap" id="contact">
   <div class="s-eyebrow rv t-ru">Связаться</div>
   <div class="s-eyebrow rv t-en">Contact</div>
   <h2 class="s-title rv">
-    <span class="t-ru">Обсудим<br><i>ваш проект</i></span>
-    <span class="t-en">Let's discuss<br><i>your project</i></span>
+    <span class="t-ru">Инициализация<br><i>проекта</i></span>
+    <span class="t-en">Initialize<br><i>project</i></span>
   </h2>
 
   <div class="contact-circles">
-    <!-- Phone -->
     <div class="ccirc rv" style="transition-delay:.0s">
       <div class="ccirc-icon"><i class="fas fa-phone"></i></div>
-      <div class="ccirc-lbl t-ru">Телефон</div>
-      <div class="ccirc-lbl t-en">Phone</div>
-      <a href="tel:+79153585459" class="ccirc-val">+7 915 358 54 59</a>
-      <a href="tel:+79918736003" class="ccirc-val">+7 991 873 60 03</a>
+      <div class="ccirc-lbl t-ru">Голосовой канал</div>
+      <div class="ccirc-lbl t-en">Voice Channel</div>
+      <a href="tel:+79153585459" class="ccirc-val glitch-hover">+7 915 358 54 59</a>
+      <a href="tel:+79918736003" class="ccirc-val glitch-hover">+7 991 873 60 03</a>
       <div class="ccirc-sub">Moscow, Russia</div>
     </div>
 
-    <!-- Telegram -->
-    <a href="https://web.telegram.org/k/#@chistbly" target="_blank" class="ccirc ccirc-lg rv" style="transition-delay:.12s;text-decoration:none;cursor:pointer">
-      <div class="ccirc-icon" style="border-color:rgba(34,158,217,.3)"><i class="fab fa-telegram" style="color:var(--tg);font-size:22px"></i></div>
-      <div class="ccirc-lbl">Telegram</div>
-      <div class="tg-handle-big">@chistbly</div>
-      <div class="ccirc-sub t-ru">Ответим в течение часа</div>
-      <div class="ccirc-sub t-en">We reply within an hour</div>
-      <div class="tg-inner-btn">
-        <i class="fab fa-telegram"></i>
-        <span class="t-ru">Написать</span><span class="t-en">Write us</span>
-      </div>
-    </a>
+    <div class="ccirc ccirc-lg rv" style="cursor:pointer;" onclick="openModal('requestModal')">
+      <div class="ccirc-icon" style="border-color:rgba(34,158,217,.4)"><i class="fas fa-bolt" style="color:var(--tg);"></i></div>
+      <div class="ccirc-lbl">Direct System</div>
+      <div class="tg-handle-big glitch-hover" style="margin: 10px 0;">Онлайн Заявка</div>
+      <div class="ccirc-sub t-ru">Быстрая форма связи</div>
+      <div class="ccirc-sub t-en">Fast connection form</div>
+      <button class="btn btn-sky" style="padding: 10px 20px; font-size: 8px; margin-top: 15px;">
+        <span class="t-ru">Заполнить Бриф</span><span class="t-en">Fill out Brief</span>
+      </button>
+    </div>
 
-    <!-- Location -->
     <div class="ccirc rv" style="transition-delay:.24s">
-      <div class="ccirc-icon"><i class="fas fa-map-pin"></i></div>
-      <div class="ccirc-lbl t-ru">Локация</div>
-      <div class="ccirc-lbl t-en">Location</div>
-      <div class="ccirc-val" style="font-size:clamp(20px,2.2vw,28px)">Moscow</div>
-      <div class="ccirc-sub t-ru">Работаем по всей России</div>
-      <div class="ccirc-sub t-en">Working across Russia</div>
+      <div class="ccirc-icon"><i class="fas fa-satellite-dish"></i></div>
+      <div class="ccirc-lbl t-ru">Координаты</div>
+      <div class="ccirc-lbl t-en">Coordinates</div>
+      <div class="ccirc-val glitch-hover" style="font-size:clamp(20px,2.2vw,28px); pointer-events:none;">Moscow</div>
+      <div class="ccirc-sub t-ru">Выезжаем в любую точку</div>
+      <div class="ccirc-sub t-en">Deploying worldwide</div>
     </div>
   </div>
 </div>
 
-<!-- TICKER 2 -->
 <div class="ticker">
+  <video class="ticker-video-bg" autoplay muted loop playsinline>
+     </video>
+
   <div class="ticker-track" style="animation-direction:reverse;animation-duration:40s">
     <div class="ticker-item">KADR FPV <span class="ticker-sep"></span></div>
-    <div class="ticker-item">Drone Cinema <span class="ticker-sep"></span></div>
-    <div class="ticker-item">Premium Quality <span class="ticker-sep"></span></div>
+    <div class="ticker-item">Next Gen Production <span class="ticker-sep"></span></div>
+    <div class="ticker-item">Design Driven <span class="ticker-sep"></span></div>
     <div class="ticker-item">Moscow 2026 <span class="ticker-sep"></span></div>
-    <div class="ticker-item">FPV · Aerial · Cinema <span class="ticker-sep"></span></div>
     <div class="ticker-item">KADR FPV <span class="ticker-sep"></span></div>
-    <div class="ticker-item">Drone Cinema <span class="ticker-sep"></span></div>
-    <div class="ticker-item">Premium Quality <span class="ticker-sep"></span></div>
-    <div class="ticker-item">Moscow 2026 <span class="ticker-sep"></span></div>
-    <div class="ticker-item">FPV · Aerial · Cinema <span class="ticker-sep"></span></div>
+    <div class="ticker-item">Next Gen Production <span class="ticker-sep"></span></div>
+    <div class="ticker-item">Design Driven <span class="ticker-sep"></span></div>
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer class="footer-bar">
-  <div class="footer-logo">KADR <b>FPV</b></div>
+  <div class="footer-logo glitch-hover">KADR <b>FPV</b></div>
   <div class="footer-copy">© 2026 KADR FPV Moscow · All rights reserved</div>
+  <div class="admin-link" onclick="openModal('adminModal')">Admin Access [Hidden]</div>
 </footer>
 
 <div id="st"><i class="fas fa-arrow-up"></i></div>
+
+<div class="modal-overlay" id="requestModal">
+  <div class="modal-content">
+    <div class="modal-close" onclick="closeModal('requestModal')"><i class="fas fa-times"></i></div>
+    <h3 class="modal-title">Новая <i>Заявка</i></h3>
+    
+    <form id="leadForm" onsubmit="submitForm(event)">
+      <div class="form-group">
+        <label class="form-label">Ваше Имя</label>
+        <input type="text" id="leadName" class="form-input" placeholder="Например, Александр" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Номер телефона</label>
+        <input type="tel" id="leadPhone" class="form-input" placeholder="+7 (999) 000-00-00" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Что нужно снять?</label>
+        <textarea id="leadTask" class="form-input" placeholder="Опишите локацию, задачу, сроки..." required></textarea>
+      </div>
+      <button type="submit" class="btn btn-sky btn-submit">
+        <span>Отправить телеметрию</span>
+      </button>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" id="adminModal">
+  <div class="modal-content admin-modal">
+    <div class="modal-close" onclick="closeModal('adminModal')"><i class="fas fa-times"></i></div>
+    <h3 class="modal-title">Система <i>Управления</i></h3>
+    
+    <div class="admin-tabs">
+      <div class="admin-tab active" onclick="switchAdminTab('leads')">Входящие Заявки</div>
+      <div class="admin-tab" onclick="switchAdminTab('team')">Управление Командой</div>
+    </div>
+
+    <div id="tab-leads" class="admin-pane active">
+      <div class="data-list" id="adminLeadsContainer">
+        <div class="data-card">
+          <div class="data-info">
+            <h4>Михаил — Съемка ЖК</h4>
+            <p>Нужно пролететь сквозь строящийся дом. Срочно.</p>
+            <p style="color: var(--sky); margin-top: 5px;">+7 900 123 45 67</p>
+          </div>
+          <div class="data-actions">
+            <a href="tel:+79001234567" class="btn-action call"><i class="fas fa-phone"></i> Позвонить</a>
+            <button class="btn-action delete">Удалить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-team" class="admin-pane">
+      <button class="btn btn-sky" style="margin-bottom: 20px; padding: 10px 20px; font-size: 8px;">
+        <span>+ Добавить Пилота</span>
+      </button>
+      <div class="data-list">
+        <div class="data-card">
+          <div class="data-info">
+            <h4>Пилот 1 (FPV)</h4>
+            <p>Статус: Свободен | Дрон: 5-inch Cinematic</p>
+          </div>
+          <div class="data-actions">
+            <button class="btn-action">Назначить</button>
+            <button class="btn-action delete">Уволить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 /* LOADER */
@@ -810,10 +779,6 @@ document.querySelectorAll('.rv').forEach(el => io.observe(el));
 /* SCROLL TOP */
 document.getElementById('st').addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
 
-/* HERO VIDEO */
-const hv = document.querySelector('.hero video');
-if(hv) hv.play().catch(()=>{});
-
 /* GALLERY stagger */
 document.querySelectorAll('.gitem').forEach((el,i) => el.style.transitionDelay = `${i*0.07}s`);
 
@@ -832,6 +797,51 @@ function setLang(lang) {
     btnRu.classList.add('active');
     btnEn.classList.remove('active');
     document.documentElement.lang = 'ru';
+  }
+}
+
+/* МОДАЛЬНЫЕ ОКНА И АДМИНКА */
+function openModal(id) { document.getElementById(id).classList.add('active'); }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+function switchAdminTab(tabId) {
+  document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.admin-pane').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tab-' + tabId).classList.add('active');
+}
+
+/* ── РЕАЛЬНАЯ ОТПРАВКА ДАННЫХ НА БЭКЕНД ── */
+async function submitForm(e) {
+  e.preventDefault(); 
+  
+  const btn = e.target.querySelector('.btn-submit span');
+  const originalText = btn.innerText;
+  btn.innerText = "Отправка...";
+  
+  const leadData = {
+    name: document.getElementById('leadName').value,
+    phone: document.getElementById('leadPhone').value,
+    task: document.getElementById('leadTask').value
+  };
+  
+  try {
+    const response = await fetch('/api/send-lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(leadData)
+    });
+    
+    if (response.ok) {
+      alert('Заявка успешно отправлена! Скоро свяжемся.');
+      e.target.reset();
+      closeModal('requestModal');
+    } else {
+      alert('Ошибка при отправке. Попробуйте еще раз.');
+    }
+  } catch (error) {
+    alert('Ошибка соединения. (Закинь бэкенд на сервер!)');
+  } finally {
+    btn.innerText = originalText;
   }
 }
 </script>
