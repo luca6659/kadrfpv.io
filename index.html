@@ -6,21 +6,24 @@
 <title>KADR FPV | Cinematic Drone Production</title>
 <link rel="icon" href="favicon.ico">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Outfit:wght@800&display=swap" rel="stylesheet">
 <script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.94/build/spline-viewer.js"></script>
 <style>
 :root{
   --ink:#05070a;
   --paper:#f0f2f5;
-  --sky:#00f0ff; /* Неоновый голубой (DJI стиль) */
+  --sky:#00f0ff; /* Неоновый голубой */
   --sky-dim:rgba(0, 240, 255, 0.15);
+  --neon-magenta: #ff2a85; /* Дерзкий розовый */
+  --neon-purple: #b026ff; /* Глубокий фиолетовый */
+  --neon-green: #00ff66; /* Системный зеленый */
   --edge:rgba(0, 240, 255, 0.2);
   --tg:#229ED9;
-  --neon-red: #ff2a2a;
   --panel-bg: rgba(5, 7, 10, 0.85);
   
   --font-main: 'Space Grotesk', sans-serif;
   --font-hud: 'Space Mono', monospace;
+  --font-accent: 'Outfit', sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -42,7 +45,18 @@ body::before {
   pointer-events: none; z-index: -1;
 }
 
-/* ── HUD LOADER (КАК В DJI GOGGLES) ── */
+/* ── ПАРАЛЛАКС ЭФФЕКТ (ГИРОСКОП / МЫШЬ) ── */
+.parallax-wrap {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+.parallax-el {
+  transform: rotateX(var(--move-y, 0deg)) rotateY(var(--move-x, 0deg)) translateZ(var(--depth, 20px));
+  transition: transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+/* ── HUD LOADER (КОСМИЧЕСКИЙ ПРОГРЕСС-БАР) ── */
 #loader{
   position:fixed;inset:0;background:var(--ink);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -51,24 +65,29 @@ body::before {
 }
 #loader.out{opacity:0;visibility:hidden}
 .hud-boot {
-  width: 300px;
-  display: flex; flex-direction: column; gap: 10px;
+  width: 340px;
+  display: flex; flex-direction: column; gap: 12px;
 }
 .hud-title {
-  color: #fff; font-size: 24px; font-weight: 700; letter-spacing: 4px;
+  color: #fff; font-size: 28px; font-weight: 700; letter-spacing: 6px;
   text-align: center; margin-bottom: 20px; text-transform: uppercase;
 }
-.hud-title span { color: var(--sky); }
+.hud-title span { 
+  background: linear-gradient(90deg, var(--sky), var(--neon-purple));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
 .hud-pct-wrap { display: flex; justify-content: space-between; color: var(--sky); font-size: 14px; }
 .hud-bar-container {
-  width: 100%; height: 2px; background: rgba(0,240,255,0.1); position: relative; overflow: hidden;
+  width: 100%; height: 3px; background: rgba(255,255,255,0.05); position: relative; overflow: hidden;
+  border-radius: 2px;
 }
 .hud-bar {
-  position: absolute; left: 0; top: 0; height: 100%; background: var(--sky); width: 0%;
-  box-shadow: 0 0 10px var(--sky);
+  position: absolute; left: 0; top: 0; height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--neon-purple), var(--sky), var(--neon-magenta));
+  box-shadow: 0 0 15px var(--neon-purple), 0 0 30px var(--sky);
 }
 .hud-logs {
-  font-size: 10px; color: rgba(255,255,255,0.4); text-transform: uppercase;
+  font-size: 10px; color: var(--neon-green); text-transform: uppercase;
   height: 15px; overflow: hidden; letter-spacing: 1px; margin-top: 10px;
 }
 
@@ -83,11 +102,11 @@ header.slim{
 }
 .logo-wrap{display:flex;flex-direction:column;gap:2px;text-decoration:none; pointer-events:auto;}
 .logo-main{
-  font-family:var(--font-main);font-size:24px;font-weight:700;letter-spacing:4px;
+  font-family:var(--font-accent);font-size:26px;font-weight:800;letter-spacing:4px;
   text-transform:uppercase;line-height:1;color:var(--paper);
 }
-.logo-main b{color:var(--sky);}
-.logo-tag{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(0,240,255,.5)}
+.logo-main b{color:var(--neon-magenta);}
+.logo-tag{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,42,133,.6)}
 
 .header-right{display:flex;align-items:center;gap:40px; pointer-events:auto;}
 nav{display:flex;gap:35px;align-items:center}
@@ -95,7 +114,6 @@ nav a{
   font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:700;
   color:rgba(255,255,255,0.5);text-decoration:none; cursor:pointer;
 }
-/* Скремблер эффект (Хакерский текст) */
 .cyber-text { display: inline-block; transition: color 0.3s; }
 nav a:hover .cyber-text { color: var(--sky); text-shadow: 0 0 8px var(--sky-dim); }
 
@@ -108,7 +126,10 @@ nav a:hover .cyber-text { color: var(--sky); text-shadow: 0 0 8px var(--sky-dim)
   color:rgba(255,255,255,.4);background:none;border:none;padding:5px 12px;border-radius:2px;
   cursor:pointer;transition:all .25s; font-weight: 700;
 }
-.lang button.active{background:var(--sky);color:#000;}
+.lang button.active{
+  background:linear-gradient(45deg, var(--sky), var(--neon-purple));
+  color:#fff; border:none; box-shadow: 0 0 10px rgba(176,38,255,0.4);
+}
 .lang button:not(.active):hover{color:#fff}
 
 /* ── HERO & 3D ── */
@@ -116,12 +137,12 @@ nav a:hover .cyber-text { color: var(--sky); text-shadow: 0 0 8px var(--sky-dim)
 .hero-3d-bg {position:absolute;inset:0;width:100%;height:100%;z-index:1;}
 .hero-vg{
   position:absolute;inset:0;
-  background:linear-gradient(to bottom, rgba(5,7,10,.5) 0%, transparent 30%, transparent 60%, rgba(5,7,10,.8) 85%, var(--ink) 100%);
+  background:linear-gradient(to bottom, rgba(5,7,10,.3) 0%, transparent 40%, transparent 60%, rgba(5,7,10,.9) 90%, var(--ink) 100%);
   z-index: 2; pointer-events:none;
 }
 .hero-scan{
   position:absolute;inset:0;pointer-events:none;z-index: 3;
-  background:repeating-linear-gradient(0deg,transparent 0px,transparent 2px,rgba(0,240,255,.02) 2px,rgba(0,240,255,.02) 4px);
+  background:repeating-linear-gradient(0deg,transparent 0px,transparent 2px,rgba(0,240,255,.03) 2px,rgba(0,240,255,.03) 4px);
 }
 .hero-inner{position:relative;z-index:10;padding:0 52px 76px;width:100%;display:flex;flex-direction:column;pointer-events:none;}
 
@@ -129,18 +150,22 @@ nav a:hover .cyber-text { color: var(--sky); text-shadow: 0 0 8px var(--sky-dim)
   font-family:var(--font-hud); font-size:10px;letter-spacing:4px;text-transform:uppercase;
   color:var(--sky);margin-bottom:22px;display:flex;align-items:center;gap:14px;
 }
-.hero-chip::before{content:'';width:30px;height:2px;background:var(--sky)}
+.hero-chip::before{content:'';width:30px;height:2px;background:var(--neon-magenta)}
 
 .hero-h1{
-  font-family:var(--font-main);font-size:clamp(60px,12vw,180px);font-weight:700;
+  font-family:var(--font-accent);font-size:clamp(60px,12vw,180px);font-weight:800;
   line-height:0.85;letter-spacing:-2px; text-transform: uppercase; margin-bottom: 20px;
 }
 .hero-h1 .ln{display:block;}
-.hero-h1 .ln:nth-child(2){color:transparent; -webkit-text-stroke: 2px var(--sky);}
+.hero-h1 .ln:nth-child(2){
+  background: linear-gradient(90deg, var(--sky), var(--neon-purple));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  font-style: italic;
+}
 
 .hero-desc{
-  font-family:var(--font-hud); font-size:12px;letter-spacing:1px;color:rgba(255,255,255,.6);
-  line-height:1.8;max-width:350px;pointer-events:auto;
+  font-family:var(--font-hud); font-size:12px;letter-spacing:1px;color:rgba(255,255,255,.7);
+  line-height:1.8;max-width:350px;pointer-events:auto; border-left: 2px solid var(--neon-purple); padding-left: 15px;
 }
 
 .hero-actions{display:flex;gap:20px;margin-top:40px;align-items:center;pointer-events:auto;}
@@ -151,21 +176,23 @@ nav a:hover .cyber-text { color: var(--sky); text-shadow: 0 0 8px var(--sky-dim)
 }
 .btn-sky{
   padding:18px 40px;background:var(--sky);color:#000;
-  box-shadow: 0 0 20px rgba(0,240,255,0.2);
+  box-shadow: 0 0 20px rgba(0,240,255,0.3);
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
 }
-.btn-sky:hover{background:#fff; box-shadow: 0 0 30px rgba(255,255,255,0.4); transform: translateY(-2px);}
+.btn-sky:hover{
+  background:var(--neon-magenta); color:#fff; box-shadow: 0 0 30px rgba(255,42,133,0.5); transform: translateY(-3px);
+}
 .btn-ghost{
   padding:16px 30px;border:1px solid var(--edge);color:rgba(255,255,255,.8);
-  clip-path: polygon(10px 0, 100% 0, 100% 100%, 0 100%, 0 10px);
+  clip-path: polygon(10px 0, 100% 0, 100% 100%, 0 100%, 0 10px); background:rgba(255,255,255,0.02);
 }
-.btn-ghost:hover{border-color:var(--sky);color:var(--sky);background:rgba(0,240,255,0.05);}
+.btn-ghost:hover{border-color:var(--neon-purple);color:#fff;background:rgba(176,38,255,0.15); transform: translateY(-3px);}
 
 /* ── AI VIDEO TICKERS ── */
 .ticker{position:relative;overflow:hidden;padding:25px 0;background:#000; font-family:var(--font-hud);}
 .ticker-video-bg {
   position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;
-  filter: saturate(1.5) contrast(1.2);opacity: 0.6;
+  filter: saturate(1.8) contrast(1.2);opacity: 0.6;
 }
 .ticker-track{
   display:flex;width:max-content;animation:tick 30s linear infinite;position:relative;z-index:2;
@@ -175,21 +202,25 @@ nav a:hover .cyber-text { color: var(--sky); text-shadow: 0 0 8px var(--sky-dim)
   display:flex;align-items:center;gap:40px;padding:0 40px;
   font-size:14px;letter-spacing:6px;text-transform:uppercase;color:#fff;font-weight:700;white-space:nowrap;
 }
-.ticker-sep{width:6px;height:6px;background:var(--sky); flex-shrink:0;}
+.ticker-sep{width:8px;height:8px;background:var(--neon-magenta); flex-shrink:0; border-radius:50%;}
 @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* ── SECTIONS ── */
 .s{padding:130px 52px;max-width:1360px;margin:auto}
 .s-eyebrow{
   font-family:var(--font-hud); font-size:10px;letter-spacing:5px;text-transform:uppercase;
-  color:var(--sky);margin-bottom:20px;display:flex;align-items:center;gap:15px;
+  color:var(--neon-purple);margin-bottom:20px;display:flex;align-items:center;gap:15px;
 }
-.s-eyebrow::before{content:'';width:20px;height:2px;background:var(--sky)}
+.s-eyebrow::before{content:'';width:20px;height:2px;background:var(--neon-purple)}
 .s-title{
-  font-size:clamp(40px,7vw,80px);font-weight:700;line-height:0.9;letter-spacing:-1px;
-  margin-bottom:70px; text-transform: uppercase;
+  font-family:var(--font-accent); font-size:clamp(40px,7vw,80px);font-weight:800;line-height:0.9;
+  letter-spacing:-1px;margin-bottom:70px; text-transform: uppercase;
 }
-.s-title i{font-style:normal; color:transparent; -webkit-text-stroke: 1px var(--sky);}
+.s-title i{
+  font-style:normal; 
+  background: linear-gradient(90deg, var(--sky), var(--neon-magenta));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
 
 /* Анимации при скролле */
 .rv{opacity:0;transform:translateY(34px);transition:all .9s cubic-bezier(.22,1,.36,1)}
@@ -198,32 +229,35 @@ nav a:hover .cyber-text { color: var(--sky); text-shadow: 0 0 8px var(--sky-dim)
 /* ── ABOUT ── */
 .about-layout{display:grid;grid-template-columns:1fr 1fr;gap:96px;align-items:start}
 .about-body{font-size:clamp(16px,1.8vw,20px);font-weight:400;color:rgba(255,255,255,.6);line-height:1.7;}
-.about-body strong{color:#fff;font-weight:700}
-.about-aside{display:flex;flex-direction:column;gap:5px}
+.about-body strong{color:var(--sky);font-weight:700}
+.about-aside{display:flex;flex-direction:column;gap:10px}
 .stat-row{
   display:flex;justify-content:space-between;align-items:center;padding:30px;
   background:rgba(255,255,255,0.02);border:1px solid var(--edge);
-  transition:all 0.3s;position:relative;
+  transition:all 0.4s;position:relative;
 }
-.stat-row:hover{background:rgba(0,240,255,0.05);border-color:var(--sky); transform: translateX(10px);}
-.stat-n{font-size:52px;font-weight:700;color:var(--sky);line-height:1;}
+.stat-row:nth-child(1):hover{background:rgba(0,240,255,0.05);border-color:var(--sky); box-shadow: -5px 0 0 var(--sky);}
+.stat-row:nth-child(2):hover{background:rgba(255,42,133,0.05);border-color:var(--neon-magenta); box-shadow: -5px 0 0 var(--neon-magenta);}
+.stat-row:nth-child(3):hover{background:rgba(176,38,255,0.05);border-color:var(--neon-purple); box-shadow: -5px 0 0 var(--neon-purple);}
+
+.stat-n{font-family:var(--font-accent); font-size:52px;font-weight:800;color:#fff;line-height:1;}
 .stat-l{font-family:var(--font-hud);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.4)}
 
 /* ── WORKS (ПИКСЕЛЬНЫЙ ПРИЦЕЛ) ── */
 .works-wrap{padding:0 52px 130px;max-width:1360px;margin:auto}
 .video-block{
-  position:relative;overflow:hidden;margin-bottom:10px;background:#000;
+  position:relative;overflow:hidden;margin-bottom:15px;background:#000;
   cursor: crosshair; border: 1px solid var(--edge);
 }
 .video-block video{width:100%;display:block;transition:all 0.6s;filter:saturate(0.5) brightness(0.8);}
-.video-block:hover video{transform:scale(1.02);filter:saturate(1) brightness(1);}
+.video-block:hover video{transform:scale(1.02);filter:saturate(1.2) brightness(1.1);}
 .video-tag{
   position:absolute;bottom:0;left:0;right:0;padding:30px;
   background:linear-gradient(transparent,rgba(5,7,10,.95));
   display:flex;justify-content:space-between;align-items:flex-end;pointer-events:none;
 }
 .vtag-n{font-family:var(--font-hud);font-size:14px;color:#fff;letter-spacing:3px; text-transform:uppercase; font-weight:700;}
-.vtag-r{font-family:var(--font-hud);font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--sky);}
+.vtag-r{font-family:var(--font-hud);font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--neon-magenta);}
 
 /* ── GALLERY ── */
 .gallery-wrap{padding:0 52px 130px;max-width:1360px;margin:auto}
@@ -252,21 +286,29 @@ nav a:hover .cyber-text { color: var(--sky); text-shadow: 0 0 8px var(--sky-dim)
   text-align:center;gap:10px;padding:60px 30px;position:relative;
   transition:all .4s; clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
 }
-.ccirc:hover{transform:translateY(-10px);border-color:var(--sky);background:rgba(0,240,255,.05);box-shadow:0 15px 30px rgba(0,0,0,.5);}
+/* Разные цвета для карточек */
+.ccirc:nth-child(1):hover{border-color:var(--sky);background:rgba(0,240,255,.05);box-shadow:0 15px 30px rgba(0,240,255,.15);}
+.ccirc:nth-child(1):hover .ccirc-icon{background:var(--sky); color:#000;}
+
+.ccirc:nth-child(2):hover{border-color:var(--neon-magenta);background:rgba(255,42,133,.05);box-shadow:0 15px 30px rgba(255,42,133,.15);}
+.ccirc:nth-child(2):hover .ccirc-icon{background:var(--neon-magenta); color:#fff; border-color:var(--neon-magenta);}
+
+.ccirc:nth-child(3):hover{border-color:var(--neon-purple);background:rgba(176,38,255,.05);box-shadow:0 15px 30px rgba(176,38,255,.15);}
+.ccirc:nth-child(3):hover .ccirc-icon{background:var(--neon-purple); color:#fff; border-color:var(--neon-purple);}
+
 .ccirc-icon{
-  font-size:24px;color:var(--sky);width:50px;height:50px;
-  border:1px solid var(--sky-dim);display:flex;align-items:center;justify-content:center;
-  margin-bottom:15px; background: rgba(0,240,255,0.05);
+  font-size:24px;color:#fff;width:55px;height:55px;
+  border:1px solid var(--edge);display:flex;align-items:center;justify-content:center;
+  margin-bottom:15px; background: rgba(255,255,255,0.05); transition:all 0.4s;
 }
-.ccirc-lbl{font-family:var(--font-hud);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--sky);}
+.ccirc-lbl{font-family:var(--font-hud);font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.5);}
 .ccirc-val{
-  font-size:clamp(20px,2vw,28px);font-weight:700;color:#fff;
+  font-family:var(--font-accent); font-size:clamp(20px,2vw,28px);font-weight:800;color:#fff;
   text-decoration:none;display:block;transition:color .3s;
 }
-.ccirc-val:hover{color:var(--sky);}
 .ccirc-sub{font-family:var(--font-hud);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:5px}
 
-.tg-handle-big{font-size:clamp(28px,3.5vw,40px);font-weight:700;letter-spacing:2px;color:#fff;line-height:1;}
+.tg-handle-big{font-family:var(--font-accent); font-size:clamp(28px,3.5vw,40px);font-weight:800;letter-spacing:2px;color:#fff;line-height:1;}
 
 /* SCROLL TO TOP */
 #st{
@@ -285,38 +327,39 @@ nav a:hover .cyber-text { color: var(--sky); text-shadow: 0 0 8px var(--sky-dim)
 }
 .modal-overlay.active { opacity: 1; visibility: visible; }
 .modal-content {
-  background: #000; border: 1px solid var(--sky); padding: 50px; width: 90%; max-width: 600px;
+  background: #000; border: 1px solid var(--neon-magenta); padding: 50px; width: 90%; max-width: 600px;
   position: relative; transform: scale(0.95);transition: all 0.3s;
-  box-shadow: 0 0 30px rgba(0,240,255,0.1);
+  box-shadow: 0 0 30px rgba(255,42,133,0.15);
 }
 .modal-overlay.active .modal-content { transform: scale(1); }
 .modal-close {
-  position: absolute; top: 20px; right: 25px;color: var(--sky); font-size: 24px; cursor: pointer; transition: color 0.3s;
+  position: absolute; top: 20px; right: 25px;color: var(--neon-magenta); font-size: 24px; cursor: pointer; transition: color 0.3s;
 }
 .modal-close:hover { color: #fff; }
-.modal-title {font-size: 36px;font-weight:700; color: #fff; margin-bottom: 30px; text-transform: uppercase;}
-.modal-title i { color: transparent; -webkit-text-stroke: 1px var(--sky); font-style: normal; }
+.modal-title {font-family:var(--font-accent); font-size: 36px;font-weight:800; color: #fff; margin-bottom: 30px; text-transform: uppercase;}
+.modal-title i { color: transparent; -webkit-text-stroke: 1px var(--neon-magenta); font-style: normal; }
 
 .form-group { margin-bottom: 25px; text-align: left; }
-.form-label {display: block; font-family:var(--font-hud); font-size: 10px; letter-spacing: 3px;text-transform: uppercase; color: var(--sky); margin-bottom: 10px;}
+.form-label {display: block; font-family:var(--font-hud); font-size: 10px; letter-spacing: 3px;text-transform: uppercase; color: var(--neon-magenta); margin-bottom: 10px;}
 .form-input {
   width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--edge);
   padding: 18px; color: #fff; font-family: var(--font-hud); font-size: 14px; transition: all 0.3s;
 }
-.form-input:focus {outline: none; border-color: var(--sky); background: rgba(0,240,255,0.05);}
+.form-input:focus {outline: none; border-color: var(--neon-magenta); background: rgba(255,42,133,0.05);}
 textarea.form-input { resize: vertical; min-height: 120px; }
-.btn-submit { width: 100%; text-align: center; justify-content: center; margin-top: 10px; }
+.btn-submit { width: 100%; text-align: center; justify-content: center; margin-top: 10px; background: var(--neon-magenta); box-shadow: 0 0 20px rgba(255,42,133,0.3);}
+.btn-submit:hover { background: #fff; color: #000; box-shadow: 0 0 30px rgba(255,255,255,0.5);}
 
 /* ── FOOTER ── */
 .footer-bar{border-top:1px solid var(--edge);padding:40px 52px;display:flex;justify-content:space-between;align-items:center;}
-.footer-logo{font-size:24px;font-weight:700;letter-spacing:4px;color:rgba(255,255,255,.5);}
+.footer-logo{font-family:var(--font-accent); font-size:24px;font-weight:800;letter-spacing:4px;color:rgba(255,255,255,.5);}
 .footer-logo b{color:var(--sky)}
 .footer-copy{font-family:var(--font-hud); font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.3)}
 .admin-link {
   font-family:var(--font-hud); font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
   color: rgba(255,255,255,0.2); cursor: pointer; transition: color 0.3s;
 }
-.admin-link:hover { color: var(--sky); }
+.admin-link:hover { color: var(--neon-purple); }
 
 /* I18N */
 .t-en { display: none; }
@@ -386,12 +429,12 @@ span.t-en, a.t-en { display: none; }
   </div>
 </header>
 
-<section class="hero">
+<section class="hero parallax-wrap">
   <spline-viewer class="hero-3d-bg" url="https://prod.spline.design/6Wq1Q7YGyM-iab9I/scene.splinecode"></spline-viewer>
   <div class="hero-vg"></div>
   <div class="hero-scan"></div>
 
-  <div class="hero-inner">
+  <div class="hero-inner parallax-el" style="--depth: 40px;">
     <div class="hero-chip">
       <span class="t-ru">Live 3D // Drag to control</span>
       <span class="t-en">Live 3D // Drag to control</span>
@@ -414,88 +457,88 @@ span.t-en, a.t-en { display: none; }
 <div class="ticker">
   <video class="ticker-video-bg" autoplay muted loop playsinline></video>
   <div class="ticker-track">
-    <div class="ticker-item">Cinematic FPV <span class="ticker-sep"></span></div>
+    <div class="ticker-item" style="color:var(--sky);">Cinematic FPV <span class="ticker-sep"></span></div>
     <div class="ticker-item">High Speed Chases <span class="ticker-sep"></span></div>
-    <div class="ticker-item">RAW Color Pipeline <span class="ticker-sep"></span></div>
+    <div class="ticker-item" style="color:var(--neon-purple);">RAW Color Pipeline <span class="ticker-sep"></span></div>
     <div class="ticker-item">Interactive 3D <span class="ticker-sep"></span></div>
-    <div class="ticker-item">Cinematic FPV <span class="ticker-sep"></span></div>
+    <div class="ticker-item" style="color:var(--sky);">Cinematic FPV <span class="ticker-sep"></span></div>
     <div class="ticker-item">High Speed Chases <span class="ticker-sep"></span></div>
-    <div class="ticker-item">RAW Color Pipeline <span class="ticker-sep"></span></div>
+    <div class="ticker-item" style="color:var(--neon-purple);">RAW Color Pipeline <span class="ticker-sep"></span></div>
   </div>
 </div>
 
-<section class="s" id="about">
+<section class="s parallax-wrap" id="about">
   <div class="s-eyebrow rv t-ru">Манифест</div>
   <div class="s-eyebrow rv t-en">Manifesto</div>
-  <h2 class="s-title rv">
+  <h2 class="s-title rv parallax-el" style="--depth: 25px;">
     <span class="t-ru">Каждый кадр —<br><i>новая высота</i></span>
     <span class="t-en">Every frame —<br><i>a new altitude</i></span>
   </h2>
   <div class="about-layout">
-    <div class="about-body rv">
+    <div class="about-body rv parallax-el" style="--depth: 15px;">
       <span class="t-ru">Мы стираем грань между классическим кино и агрессивным пилотированием.<br><br><strong>KADR FPV</strong> — это больше, чем пролеты с дрона. Мы интегрируем новейшие технологии: от тяжелых кино-лифтеров до ИИ-генерации превизов.<br><br>Готовы снять пролет сквозь виллу, догнать спорткар на скорости 150 км/ч или собрать сложный 3D-трекинг прямо на постпродакшене.</span>
       <span class="t-en">We blur the line between classic cinema and aggressive piloting.<br><br><strong>KADR FPV</strong> is more than drone flythroughs. We integrate the latest tech: from heavy cinema lifters to AI-generated pre-viz.<br><br>Ready to fly through a villa, chase a sports car at 150 km/h, or build complex 3D tracking in post.</span>
     </div>
-    <div class="about-aside rv">
+    <div class="about-aside rv parallax-el" style="--depth: 30px;">
       <div class="stat-row">
-        <div><div class="stat-n">200+</div><div class="stat-l t-ru" style="margin-top:5px">Проектов</div><div class="stat-l t-en" style="margin-top:5px">Projects</div></div>
+        <div><div class="stat-n">200+</div><div class="stat-l t-ru" style="margin-top:5px; color:var(--sky);">Проектов</div><div class="stat-l t-en" style="margin-top:5px; color:var(--sky);">Projects</div></div>
         <div class="stat-l t-ru">с 2020</div><div class="stat-l t-en">since 2020</div>
       </div>
       <div class="stat-row">
-        <div><div class="stat-n">RAW</div><div class="stat-l t-ru" style="margin-top:5px">Формат</div><div class="stat-l t-en" style="margin-top:5px">Format</div></div>
+        <div><div class="stat-n" style="color:var(--neon-magenta);">RAW</div><div class="stat-l t-ru" style="margin-top:5px; color:var(--neon-magenta);">Формат</div><div class="stat-l t-en" style="margin-top:5px; color:var(--neon-magenta);">Format</div></div>
         <div class="stat-l">10-Bit Color</div>
       </div>
       <div class="stat-row">
-        <div><div class="stat-n">24ч</div><div class="stat-l t-ru" style="margin-top:5px">Ответ</div><div class="stat-l t-en" style="margin-top:5px">Response</div></div>
+        <div><div class="stat-n" style="color:var(--neon-purple);">24ч</div><div class="stat-l t-ru" style="margin-top:5px; color:var(--neon-purple);">Ответ</div><div class="stat-l t-en" style="margin-top:5px; color:var(--neon-purple);">Response</div></div>
         <div class="stat-l t-ru">7 дней</div><div class="stat-l t-en">7 days</div>
       </div>
     </div>
   </div>
 </section>
 
-<div class="works-wrap" id="works">
+<div class="works-wrap parallax-wrap" id="works">
   <div class="s-eyebrow rv t-ru">Архив съемок</div>
   <div class="s-eyebrow rv t-en">Footage Archive</div>
-  <h2 class="s-title rv">
+  <h2 class="s-title rv parallax-el" style="--depth: 25px;">
     <span class="t-ru">Избранное<br><i>портфолио</i></span>
     <span class="t-en">Selected<br><i>Works</i></span>
   </h2>
-  <div class="video-block rv">
+  <div class="video-block rv parallax-el" style="--depth: 15px;">
     <video controls preload="metadata"><source src="video1.mp4.mov" type="video/mp4"></video>
     <div class="video-tag">
-      <span class="vtag-n">Project Alpha // Chase</span><span class="vtag-r">FPV · 4K</span>
+      <span class="vtag-n">Project Alpha // Chase</span><span class="vtag-r" style="color:var(--sky);">FPV · 4K</span>
     </div>
   </div>
-  <div class="video-block rv">
+  <div class="video-block rv parallax-el" style="--depth: 10px;">
     <video controls preload="metadata"><source src="video2.mp4" type="video/mp4"></video>
     <div class="video-tag">
-      <span class="vtag-n">Project Beta // Estate</span><span class="vtag-r">Cinematic · RAW</span>
+      <span class="vtag-n">Project Beta // Estate</span><span class="vtag-r" style="color:var(--neon-purple);">Cinematic · RAW</span>
     </div>
   </div>
 </div>
 
-<div class="gallery-wrap" id="gallery">
+<div class="gallery-wrap parallax-wrap" id="gallery">
   <div class="s-eyebrow rv t-ru">Фотогалерея</div>
   <div class="s-eyebrow rv t-en">Photo Gallery</div>
-  <h2 class="s-title rv">Gallery</h2>
-  <div class="gallery-mosaic">
-    <div class="gitem rv"><img src="photo1.jpg.JPG" alt="shot 1" loading="lazy"><div class="gitem-over"><span class="gitem-lbl">Aerial View</span></div></div>
-    <div class="gitem rv"><img src="photo2.jpg.JPG" alt="shot 2" loading="lazy"><div class="gitem-over"><span class="gitem-lbl">FPV Pass</span></div></div>
-    <div class="gitem rv"><img src="photo3.jpg.JPG" alt="shot 3" loading="lazy"><div class="gitem-over"><span class="gitem-lbl">Cinematic</span></div></div>
-    <div class="gitem rv"><img src="photo4.jpg.JPG" alt="shot 4" loading="lazy"><div class="gitem-over"><span class="gitem-lbl">Moscow</span></div></div>
-    <div class="gitem rv"><img src="photo5.jpg.jpg" alt="shot 5" loading="lazy"><div class="gitem-over"><span class="gitem-lbl">Production</span></div></div>
+  <h2 class="s-title rv parallax-el" style="--depth: 20px;">Gallery</h2>
+  <div class="gallery-mosaic parallax-el" style="--depth: 10px;">
+    <div class="gitem rv"><img src="photo1.jpg.JPG" alt="shot 1" loading="lazy"><div class="gitem-over"><span class="gitem-lbl" style="color:var(--sky);">Aerial View</span></div></div>
+    <div class="gitem rv"><img src="photo2.jpg.JPG" alt="shot 2" loading="lazy"><div class="gitem-over"><span class="gitem-lbl" style="color:var(--neon-magenta);">FPV Pass</span></div></div>
+    <div class="gitem rv"><img src="photo3.jpg.JPG" alt="shot 3" loading="lazy"><div class="gitem-over"><span class="gitem-lbl" style="color:var(--neon-purple);">Cinematic</span></div></div>
+    <div class="gitem rv"><img src="photo4.jpg.JPG" alt="shot 4" loading="lazy"><div class="gitem-over"><span class="gitem-lbl" style="color:var(--neon-green);">Moscow</span></div></div>
+    <div class="gitem rv"><img src="photo5.jpg.jpg" alt="shot 5" loading="lazy"><div class="gitem-over"><span class="gitem-lbl" style="color:#fff;">Production</span></div></div>
   </div>
 </div>
 
-<div class="contact-wrap" id="contact">
+<div class="contact-wrap parallax-wrap" id="contact">
   <div class="s-eyebrow rv t-ru">Терминал связи</div>
   <div class="s-eyebrow rv t-en">Comm Terminal</div>
-  <h2 class="s-title rv">
+  <h2 class="s-title rv parallax-el" style="--depth: 25px;">
     <span class="t-ru">Инициализация<br><i>проекта</i></span>
     <span class="t-en">Initialize<br><i>project</i></span>
   </h2>
 
-  <div class="contact-circles">
+  <div class="contact-circles parallax-el" style="--depth: 15px;">
     <div class="ccirc rv">
       <div class="ccirc-icon"><i class="fas fa-phone"></i></div>
       <div class="ccirc-lbl t-ru">Голосовой канал</div>
@@ -504,12 +547,12 @@ span.t-en, a.t-en { display: none; }
       <a href="tel:+79918736003" class="ccirc-val">+7 991 873 60 03</a>
     </div>
 
-    <div class="ccirc rv" style="cursor:pointer; border-color:var(--sky);" onclick="openModal('requestModal')">
+    <div class="ccirc rv" style="cursor:pointer;" onclick="openModal('requestModal')">
       <div class="ccirc-icon"><i class="fas fa-bolt"></i></div>
       <div class="ccirc-lbl">Direct System</div>
       <div class="tg-handle-big" style="margin: 10px 0;">Онлайн Заявка</div>
-      <button class="btn btn-sky" style="padding: 12px 20px; font-size: 9px; margin-top: 15px;">
-        <span class="t-ru">Заполнить Бриф</span><span class="t-en">Fill out Brief</span>
+      <button class="btn btn-submit" style="padding: 12px 20px; font-size: 9px; margin-top: 15px; border:none; border-radius:4px; font-family:var(--font-hud);">
+        <span class="t-ru" style="font-weight:700;">Заполнить Бриф</span><span class="t-en">Fill out Brief</span>
       </button>
     </div>
 
@@ -526,13 +569,13 @@ span.t-en, a.t-en { display: none; }
 <div class="ticker">
   <video class="ticker-video-bg" autoplay muted loop playsinline></video>
   <div class="ticker-track" style="animation-direction:reverse;animation-duration:40s">
-    <div class="ticker-item">KADR FPV <span class="ticker-sep"></span></div>
+    <div class="ticker-item" style="color:var(--sky);">KADR FPV <span class="ticker-sep"></span></div>
     <div class="ticker-item">Next Gen Production <span class="ticker-sep"></span></div>
-    <div class="ticker-item">Design Driven <span class="ticker-sep"></span></div>
+    <div class="ticker-item" style="color:var(--neon-magenta);">Design Driven <span class="ticker-sep"></span></div>
     <div class="ticker-item">Moscow 2026 <span class="ticker-sep"></span></div>
-    <div class="ticker-item">KADR FPV <span class="ticker-sep"></span></div>
+    <div class="ticker-item" style="color:var(--sky);">KADR FPV <span class="ticker-sep"></span></div>
     <div class="ticker-item">Next Gen Production <span class="ticker-sep"></span></div>
-    <div class="ticker-item">Design Driven <span class="ticker-sep"></span></div>
+    <div class="ticker-item" style="color:var(--neon-magenta);">Design Driven <span class="ticker-sep"></span></div>
   </div>
 </div>
 
@@ -562,23 +605,23 @@ span.t-en, a.t-en { display: none; }
         <label class="form-label">Что нужно снять?</label>
         <textarea id="leadTask" class="form-input" placeholder="Опишите локацию, задачу, сроки..." required></textarea>
       </div>
-      <button type="submit" class="btn btn-sky btn-submit">
-        <span>Отправить телеметрию</span>
+      <button type="submit" class="btn btn-submit" style="padding: 15px; border:none; border-radius:4px; font-family:var(--font-hud);">
+        <span style="font-weight:700;">Отправить телеметрию</span>
       </button>
     </form>
   </div>
 </div>
 
 <div class="modal-overlay" id="adminModal">
-  <div class="modal-content">
-    <div class="modal-close" onclick="closeModal('adminModal')"><i class="fas fa-times"></i></div>
-    <h3 class="modal-title">Система <i>Управления</i></h3>
-    <div style="font-family: var(--font-hud); color: var(--sky); font-size: 12px; margin-bottom: 20px;">[ ACCESS DENIED. REQUIRE AUTH KEY ]</div>
+  <div class="modal-content" style="border-color: var(--sky); box-shadow: 0 0 30px rgba(0,240,255,0.15);">
+    <div class="modal-close" style="color:var(--sky);" onclick="closeModal('adminModal')"><i class="fas fa-times"></i></div>
+    <h3 class="modal-title" style="font-family:var(--font-hud); letter-spacing:2px;">Система <i style="-webkit-text-stroke: 1px var(--sky);">Управления</i></h3>
+    <div style="font-family: var(--font-hud); color: var(--neon-magenta); font-size: 14px; margin-bottom: 20px;">[ ACCESS DENIED. REQUIRE AUTH KEY ]</div>
   </div>
 </div>
 
 <script>
-/* ── СИСТЕМНЫЙ ЗАГРУЗЧИК ── */
+/* ── СИСТЕМНЫЙ ЗАГРУЗЧИК (BOOT SEQUENCE) ── */
 window.addEventListener('load', () => {
   const bar = document.getElementById('hud-bar');
   const pctText = document.getElementById('hud-pct');
@@ -587,9 +630,10 @@ window.addEventListener('load', () => {
   
   const logMessages = [
     "BOOTING O3 AIR UNIT...",
+    "CONNECTING TO NODE: DETROIT...",
+    "URUS TARGET TRACKING... [LOCKED]",
     "GYRO CALIBRATION... [OK]",
-    "GPS LOCK AQUIRED: 18 SATS",
-    "VIDEO TRANSMISSION... ACTIVE",
+    "COSMIC PROGRESS PROTOCOL... ACTIVE",
     "SYSTEM READY."
   ];
 
@@ -603,7 +647,7 @@ window.addEventListener('load', () => {
     bar.style.width = progress + '%';
     pctText.innerText = progress.toString().padStart(3, '0');
     
-    if (progress > (logIndex + 1) * 20 && logIndex < logMessages.length) {
+    if (progress > (logIndex + 1) * 18 && logIndex < logMessages.length) {
       logs.innerText = logMessages[logIndex];
       logIndex++;
     }
@@ -614,6 +658,26 @@ window.addEventListener('load', () => {
     }
   }, 120); 
 });
+
+/* ── ПАРАЛЛАКС ЭФФЕКТ (ГИРОСКОП / МЫШЬ) ── */
+// Для ПК (движение мыши)
+document.addEventListener("mousemove", (e) => {
+  const x = (e.clientX / window.innerWidth - 0.5) * 15; // Сила наклона по X
+  const y = (e.clientY / window.innerHeight - 0.5) * 15; // Сила наклона по Y
+  document.documentElement.style.setProperty('--move-x', `${x}deg`);
+  document.documentElement.style.setProperty('--move-y', `${-y}deg`);
+});
+
+// Для мобилок (гироскоп)
+if (window.DeviceOrientationEvent) {
+  window.addEventListener("deviceorientation", (e) => {
+    if(!e.gamma || !e.beta) return;
+    const x = Math.min(Math.max(e.gamma / 3, -15), 15);
+    const y = Math.min(Math.max(e.beta / 3 - 10, -15), 15);
+    document.documentElement.style.setProperty('--move-x', `${x}deg`);
+    document.documentElement.style.setProperty('--move-y', `${-y}deg`);
+  });
+}
 
 /* ── СКРЕМБЛЕР ДЛЯ МЕНЮ (ХАКЕРСКИЙ ЭФФЕКТ) ── */
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
@@ -628,9 +692,7 @@ document.querySelectorAll('.cyber-link').forEach(link => {
     targetSpan.interval = setInterval(() => {
       targetSpan.innerText = targetSpan.innerText.split("")
         .map((letter, index) => {
-          if(index < iterations) {
-            return targetSpan.dataset.text[index];
-          }
+          if(index < iterations) return targetSpan.dataset.text[index];
           return letters[Math.floor(Math.random() * 42)];
         }).join("");
       
