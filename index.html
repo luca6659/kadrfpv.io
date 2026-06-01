@@ -12,7 +12,7 @@
 :root{
   --ink:#05070a;
   --paper:#f0f2f5;
-  --sky:#00f0ff; /* Неоновый голубой */
+  --sky:#00f0ff; /* Неоновый голубой (DJI стиль) */
   --sky-dim:rgba(0, 240, 255, 0.15);
   --edge:rgba(0, 240, 255, 0.2);
   --tg:#229ED9;
@@ -95,11 +95,8 @@ nav a{
   font-size:11px;letter-spacing:3px;text-transform:uppercase;font-weight:700;
   color:rgba(255,255,255,0.5);text-decoration:none; cursor:pointer;
 }
-
-/* ГЕНИАЛЬНЫЙ HOVER ДЛЯ МЕНЮ */
-.cyber-text {
-  display: inline-block; transition: color 0.3s;
-}
+/* Скремблер эффект (Хакерский текст) */
+.cyber-text { display: inline-block; transition: color 0.3s; }
 nav a:hover .cyber-text { color: var(--sky); text-shadow: 0 0 8px var(--sky-dim); }
 
 .lang{
@@ -157,16 +154,14 @@ nav a:hover .cyber-text { color: var(--sky); text-shadow: 0 0 8px var(--sky-dim)
   box-shadow: 0 0 20px rgba(0,240,255,0.2);
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
 }
-.btn-sky:hover{
-  background:#fff; box-shadow: 0 0 30px rgba(255,255,255,0.4); transform: translateY(-2px);
-}
+.btn-sky:hover{background:#fff; box-shadow: 0 0 30px rgba(255,255,255,0.4); transform: translateY(-2px);}
 .btn-ghost{
   padding:16px 30px;border:1px solid var(--edge);color:rgba(255,255,255,.8);
   clip-path: polygon(10px 0, 100% 0, 100% 100%, 0 100%, 0 10px);
 }
 .btn-ghost:hover{border-color:var(--sky);color:var(--sky);background:rgba(0,240,255,0.05);}
 
-/* ── AI VIDEO TICKER ── */
+/* ── AI VIDEO TICKERS ── */
 .ticker{position:relative;overflow:hidden;padding:25px 0;background:#000; font-family:var(--font-hud);}
 .ticker-video-bg {
   position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;
@@ -195,6 +190,10 @@ nav a:hover .cyber-text { color: var(--sky); text-shadow: 0 0 8px var(--sky-dim)
   margin-bottom:70px; text-transform: uppercase;
 }
 .s-title i{font-style:normal; color:transparent; -webkit-text-stroke: 1px var(--sky);}
+
+/* Анимации при скролле */
+.rv{opacity:0;transform:translateY(34px);transition:all .9s cubic-bezier(.22,1,.36,1)}
+.rv.in{opacity:1!important;transform:none!important}
 
 /* ── ABOUT ── */
 .about-layout{display:grid;grid-template-columns:1fr 1fr;gap:96px;align-items:start}
@@ -226,6 +225,24 @@ nav a:hover .cyber-text { color: var(--sky); text-shadow: 0 0 8px var(--sky-dim)
 .vtag-n{font-family:var(--font-hud);font-size:14px;color:#fff;letter-spacing:3px; text-transform:uppercase; font-weight:700;}
 .vtag-r{font-family:var(--font-hud);font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--sky);}
 
+/* ── GALLERY ── */
+.gallery-wrap{padding:0 52px 130px;max-width:1360px;margin:auto}
+.gallery-mosaic{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(2,280px);gap:5px;margin-top:52px;}
+.gitem{overflow:hidden;position:relative;background:#000;border:1px solid var(--edge);}
+.gitem:nth-child(1){grid-column:1/6;grid-row:1/3}
+.gitem:nth-child(2){grid-column:6/9;grid-row:1/2}
+.gitem:nth-child(3){grid-column:9/13;grid-row:1/2}
+.gitem:nth-child(4){grid-column:6/10;grid-row:2/3}
+.gitem:nth-child(5){grid-column:10/13;grid-row:2/3}
+.gitem img{width:100%;height:100%;object-fit:cover;display:block;transition:all 0.6s;filter:saturate(0.3) brightness(0.7); opacity:0.8;}
+.gitem:hover img{transform:scale(1.05);filter:saturate(1) brightness(1); opacity:1;}
+.gitem-over{
+  position:absolute;inset:0;background:linear-gradient(to top,rgba(5,7,10,.9) 0%,transparent 60%);
+  opacity:0;transition:opacity .4s;display:flex;align-items:flex-end;padding:20px;
+}
+.gitem:hover .gitem-over{opacity:1}
+.gitem-lbl{font-family:var(--font-hud);font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--sky);}
+
 /* ── CONTACT ── */
 .contact-wrap{padding:0 52px 150px;max-width:1360px;margin:auto}
 .contact-circles{display:grid;grid-template-columns: repeat(3, 1fr);gap:24px;margin-top:60px;}
@@ -250,6 +267,16 @@ nav a:hover .cyber-text { color: var(--sky); text-shadow: 0 0 8px var(--sky-dim)
 .ccirc-sub{font-family:var(--font-hud);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:5px}
 
 .tg-handle-big{font-size:clamp(28px,3.5vw,40px);font-weight:700;letter-spacing:2px;color:#fff;line-height:1;}
+
+/* SCROLL TO TOP */
+#st{
+  position:fixed;bottom:34px;right:34px;width:44px;height:44px;border-radius:4px;
+  border:1px solid var(--sky);background:rgba(0,240,255,0.1);backdrop-filter:blur(12px);
+  display:grid;place-items:center;cursor:pointer;z-index:999;opacity:0;visibility:hidden;transition:all .3s;
+}
+#st.on{opacity:1;visibility:visible}
+#st:hover{background:var(--sky);box-shadow: 0 0 15px var(--sky-dim);}
+#st i{font-size:14px;color:#000;}
 
 /* ── MODALS (FORM & ADMIN) ── */
 .modal-overlay {
@@ -298,6 +325,18 @@ textarea.form-input { resize: vertical; min-height: 120px; }
 span.t-en, a.t-en { display: none; }
 .en-mode span.t-ru, .en-mode a.t-ru { display: none; }
 .en-mode span.t-en, .en-mode a.t-en { display: inline; }
+
+@media(max-width:960px){
+  header,header.slim{padding:20px 24px}
+  nav{display:none}
+  .hero-inner{padding:0 24px 60px}
+  .s,.works-wrap,.gallery-wrap,.contact-wrap{padding-left:24px;padding-right:24px}
+  .about-layout{grid-template-columns:1fr;gap:48px}
+  .gallery-mosaic{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .gitem:nth-child(n){grid-column:auto!important;grid-row:auto!important}
+  .contact-circles{grid-template-columns: 1fr; gap:24px}
+  .footer-bar{flex-direction:column;gap:14px;text-align:center;padding:32px 24px}
+}
 </style>
 </head>
 <body id="body">
@@ -386,18 +425,18 @@ span.t-en, a.t-en { display: none; }
 </div>
 
 <section class="s" id="about">
-  <div class="s-eyebrow t-ru">Манифест</div>
-  <div class="s-eyebrow t-en">Manifesto</div>
-  <h2 class="s-title">
+  <div class="s-eyebrow rv t-ru">Манифест</div>
+  <div class="s-eyebrow rv t-en">Manifesto</div>
+  <h2 class="s-title rv">
     <span class="t-ru">Каждый кадр —<br><i>новая высота</i></span>
     <span class="t-en">Every frame —<br><i>a new altitude</i></span>
   </h2>
   <div class="about-layout">
-    <div class="about-body">
+    <div class="about-body rv">
       <span class="t-ru">Мы стираем грань между классическим кино и агрессивным пилотированием.<br><br><strong>KADR FPV</strong> — это больше, чем пролеты с дрона. Мы интегрируем новейшие технологии: от тяжелых кино-лифтеров до ИИ-генерации превизов.<br><br>Готовы снять пролет сквозь виллу, догнать спорткар на скорости 150 км/ч или собрать сложный 3D-трекинг прямо на постпродакшене.</span>
       <span class="t-en">We blur the line between classic cinema and aggressive piloting.<br><br><strong>KADR FPV</strong> is more than drone flythroughs. We integrate the latest tech: from heavy cinema lifters to AI-generated pre-viz.<br><br>Ready to fly through a villa, chase a sports car at 150 km/h, or build complex 3D tracking in post.</span>
     </div>
-    <div class="about-aside">
+    <div class="about-aside rv">
       <div class="stat-row">
         <div><div class="stat-n">200+</div><div class="stat-l t-ru" style="margin-top:5px">Проектов</div><div class="stat-l t-en" style="margin-top:5px">Projects</div></div>
         <div class="stat-l t-ru">с 2020</div><div class="stat-l t-en">since 2020</div>
@@ -406,24 +445,28 @@ span.t-en, a.t-en { display: none; }
         <div><div class="stat-n">RAW</div><div class="stat-l t-ru" style="margin-top:5px">Формат</div><div class="stat-l t-en" style="margin-top:5px">Format</div></div>
         <div class="stat-l">10-Bit Color</div>
       </div>
+      <div class="stat-row">
+        <div><div class="stat-n">24ч</div><div class="stat-l t-ru" style="margin-top:5px">Ответ</div><div class="stat-l t-en" style="margin-top:5px">Response</div></div>
+        <div class="stat-l t-ru">7 дней</div><div class="stat-l t-en">7 days</div>
+      </div>
     </div>
   </div>
 </section>
 
 <div class="works-wrap" id="works">
-  <div class="s-eyebrow t-ru">Архив съемок</div>
-  <div class="s-eyebrow t-en">Footage Archive</div>
-  <h2 class="s-title">
+  <div class="s-eyebrow rv t-ru">Архив съемок</div>
+  <div class="s-eyebrow rv t-en">Footage Archive</div>
+  <h2 class="s-title rv">
     <span class="t-ru">Избранное<br><i>портфолио</i></span>
     <span class="t-en">Selected<br><i>Works</i></span>
   </h2>
-  <div class="video-block">
+  <div class="video-block rv">
     <video controls preload="metadata"><source src="video1.mp4.mov" type="video/mp4"></video>
     <div class="video-tag">
       <span class="vtag-n">Project Alpha // Chase</span><span class="vtag-r">FPV · 4K</span>
     </div>
   </div>
-  <div class="video-block">
+  <div class="video-block rv">
     <video controls preload="metadata"><source src="video2.mp4" type="video/mp4"></video>
     <div class="video-tag">
       <span class="vtag-n">Project Beta // Estate</span><span class="vtag-r">Cinematic · RAW</span>
@@ -431,16 +474,29 @@ span.t-en, a.t-en { display: none; }
   </div>
 </div>
 
+<div class="gallery-wrap" id="gallery">
+  <div class="s-eyebrow rv t-ru">Фотогалерея</div>
+  <div class="s-eyebrow rv t-en">Photo Gallery</div>
+  <h2 class="s-title rv">Gallery</h2>
+  <div class="gallery-mosaic">
+    <div class="gitem rv"><img src="photo1.jpg.JPG" alt="shot 1" loading="lazy"><div class="gitem-over"><span class="gitem-lbl">Aerial View</span></div></div>
+    <div class="gitem rv"><img src="photo2.jpg.JPG" alt="shot 2" loading="lazy"><div class="gitem-over"><span class="gitem-lbl">FPV Pass</span></div></div>
+    <div class="gitem rv"><img src="photo3.jpg.JPG" alt="shot 3" loading="lazy"><div class="gitem-over"><span class="gitem-lbl">Cinematic</span></div></div>
+    <div class="gitem rv"><img src="photo4.jpg.JPG" alt="shot 4" loading="lazy"><div class="gitem-over"><span class="gitem-lbl">Moscow</span></div></div>
+    <div class="gitem rv"><img src="photo5.jpg.jpg" alt="shot 5" loading="lazy"><div class="gitem-over"><span class="gitem-lbl">Production</span></div></div>
+  </div>
+</div>
+
 <div class="contact-wrap" id="contact">
-  <div class="s-eyebrow t-ru">Терминал связи</div>
-  <div class="s-eyebrow t-en">Comm Terminal</div>
-  <h2 class="s-title">
+  <div class="s-eyebrow rv t-ru">Терминал связи</div>
+  <div class="s-eyebrow rv t-en">Comm Terminal</div>
+  <h2 class="s-title rv">
     <span class="t-ru">Инициализация<br><i>проекта</i></span>
     <span class="t-en">Initialize<br><i>project</i></span>
   </h2>
 
   <div class="contact-circles">
-    <div class="ccirc">
+    <div class="ccirc rv">
       <div class="ccirc-icon"><i class="fas fa-phone"></i></div>
       <div class="ccirc-lbl t-ru">Голосовой канал</div>
       <div class="ccirc-lbl t-en">Voice Channel</div>
@@ -448,7 +504,7 @@ span.t-en, a.t-en { display: none; }
       <a href="tel:+79918736003" class="ccirc-val">+7 991 873 60 03</a>
     </div>
 
-    <div class="ccirc" style="cursor:pointer; border-color:var(--sky);" onclick="openModal('requestModal')">
+    <div class="ccirc rv" style="cursor:pointer; border-color:var(--sky);" onclick="openModal('requestModal')">
       <div class="ccirc-icon"><i class="fas fa-bolt"></i></div>
       <div class="ccirc-lbl">Direct System</div>
       <div class="tg-handle-big" style="margin: 10px 0;">Онлайн Заявка</div>
@@ -457,7 +513,7 @@ span.t-en, a.t-en { display: none; }
       </button>
     </div>
 
-    <a href="https://web.telegram.org/k/#@chistbly" target="_blank" class="ccirc" style="text-decoration:none;">
+    <a href="https://web.telegram.org/k/#@chistbly" target="_blank" class="ccirc rv" style="text-decoration:none;">
       <div class="ccirc-icon"><i class="fab fa-telegram"></i></div>
       <div class="ccirc-lbl">Telegram Direct</div>
       <div class="tg-handle-big" style="margin: 10px 0;">@chistbly</div>
@@ -467,11 +523,26 @@ span.t-en, a.t-en { display: none; }
   </div>
 </div>
 
+<div class="ticker">
+  <video class="ticker-video-bg" autoplay muted loop playsinline></video>
+  <div class="ticker-track" style="animation-direction:reverse;animation-duration:40s">
+    <div class="ticker-item">KADR FPV <span class="ticker-sep"></span></div>
+    <div class="ticker-item">Next Gen Production <span class="ticker-sep"></span></div>
+    <div class="ticker-item">Design Driven <span class="ticker-sep"></span></div>
+    <div class="ticker-item">Moscow 2026 <span class="ticker-sep"></span></div>
+    <div class="ticker-item">KADR FPV <span class="ticker-sep"></span></div>
+    <div class="ticker-item">Next Gen Production <span class="ticker-sep"></span></div>
+    <div class="ticker-item">Design Driven <span class="ticker-sep"></span></div>
+  </div>
+</div>
+
 <footer class="footer-bar">
   <div class="footer-logo">KADR <b>FPV</b></div>
   <div class="footer-copy">© 2026 KADR FPV Moscow · All systems operational</div>
   <div class="admin-link" onclick="openModal('adminModal')">Admin Access [Hidden]</div>
 </footer>
+
+<div id="st"><i class="fas fa-arrow-up"></i></div>
 
 <div class="modal-overlay" id="requestModal">
   <div class="modal-content">
@@ -526,15 +597,12 @@ window.addEventListener('load', () => {
   let logIndex = 0;
 
   const bootInterval = setInterval(() => {
-    // Случайный шаг загрузки, чтобы выглядело реалистично
     progress += Math.floor(Math.random() * 12) + 2; 
     if (progress >= 100) progress = 100;
     
-    // Обновляем бар и проценты (с ведущими нулями)
     bar.style.width = progress + '%';
     pctText.innerText = progress.toString().padStart(3, '0');
     
-    // Меняем логи в процессе
     if (progress > (logIndex + 1) * 20 && logIndex < logMessages.length) {
       logs.innerText = logMessages[logIndex];
       logIndex++;
@@ -544,14 +612,13 @@ window.addEventListener('load', () => {
       clearInterval(bootInterval);
       setTimeout(() => loader.classList.add('out'), 400);
     }
-  }, 120); // Займет примерно 2 секунды
+  }, 120); 
 });
 
 /* ── СКРЕМБЛЕР ДЛЯ МЕНЮ (ХАКЕРСКИЙ ЭФФЕКТ) ── */
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
 document.querySelectorAll('.cyber-link').forEach(link => {
   link.onmouseenter = event => {
-    // Ищем нужный span внутри ссылки (RU или EN в зависимости от языка)
     const targetSpan = link.querySelector('span:not([style*="display: none"])');
     if(!targetSpan) return;
     
@@ -562,24 +629,34 @@ document.querySelectorAll('.cyber-link').forEach(link => {
       targetSpan.innerText = targetSpan.innerText.split("")
         .map((letter, index) => {
           if(index < iterations) {
-            return targetSpan.dataset.text[index]; // Возвращаем правильную букву
+            return targetSpan.dataset.text[index];
           }
-          return letters[Math.floor(Math.random() * 42)]; // Случайный символ
+          return letters[Math.floor(Math.random() * 42)];
         }).join("");
       
       if(iterations >= targetSpan.dataset.text.length){
         clearInterval(targetSpan.interval);
       }
-      iterations += 1 / 2; // Скорость расшифровки
+      iterations += 1 / 2; 
     }, 30);
   }
 });
 
-/* HEADER SLIM */
+/* HEADER SLIM И КНОПКА НАВЕРХ */
 const hdr = document.getElementById('hdr');
 window.addEventListener('scroll', () => {
   hdr.classList.toggle('slim', window.scrollY > 60);
+  document.getElementById('st').classList.toggle('on', window.scrollY > 400);
 });
+
+/* SCROLL REVEAL (Анимация при скролле) */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+/* SCROLL TOP */
+document.getElementById('st').addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
 
 /* LANGUAGE */
 function setLang(lang) {
