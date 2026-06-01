@@ -12,11 +12,11 @@
 :root{
   --ink:#05070a;
   --paper:#f0f2f5;
-  --sky:#00f0ff; 
+  --sky:#00f0ff; /* Неоновый голубой */
   --sky-dim:rgba(0, 240, 255, 0.15);
-  --neon-magenta: #ff2a85; 
-  --neon-purple: #b026ff; 
-  --neon-green: #00ff66; 
+  --neon-magenta: #ff2a85; /* Дерзкий розовый */
+  --neon-purple: #b026ff; /* Глубокий фиолетовый */
+  --neon-green: #00ff66; /* Системный зеленый */
   --edge:rgba(0, 240, 255, 0.2);
   --tg:#229ED9;
   --panel-bg: rgba(5, 7, 10, 0.85);
@@ -56,7 +56,7 @@ body::before {
   will-change: transform;
 }
 
-/* ── HUD LOADER ── */
+/* ── HUD LOADER (КОСМИЧЕСКИЙ ПРОГРЕСС-БАР) ── */
 #loader{
   position:fixed;inset:0;background:var(--ink);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -222,6 +222,7 @@ nav a:hover .cyber-text { color: var(--sky); text-shadow: 0 0 8px var(--sky-dim)
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
 }
 
+/* Анимации при скролле */
 .rv{opacity:0;transform:translateY(34px);transition:all .9s cubic-bezier(.22,1,.36,1)}
 .rv.in{opacity:1!important;transform:none!important}
 
@@ -238,10 +239,11 @@ nav a:hover .cyber-text { color: var(--sky); text-shadow: 0 0 8px var(--sky-dim)
 .stat-row:nth-child(1):hover{background:rgba(0,240,255,0.05);border-color:var(--sky); box-shadow: -5px 0 0 var(--sky);}
 .stat-row:nth-child(2):hover{background:rgba(255,42,133,0.05);border-color:var(--neon-magenta); box-shadow: -5px 0 0 var(--neon-magenta);}
 .stat-row:nth-child(3):hover{background:rgba(176,38,255,0.05);border-color:var(--neon-purple); box-shadow: -5px 0 0 var(--neon-purple);}
+
 .stat-n{font-family:var(--font-accent); font-size:52px;font-weight:800;color:#fff;line-height:1;}
 .stat-l{font-family:var(--font-hud);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.4)}
 
-/* ── WORKS ── */
+/* ── WORKS (ПИКСЕЛЬНЫЙ ПРИЦЕЛ) ── */
 .works-wrap{padding:0 52px 130px;max-width:1360px;margin:auto}
 .video-block{
   position:relative;overflow:hidden;margin-bottom:15px;background:#000;
@@ -284,6 +286,7 @@ nav a:hover .cyber-text { color: var(--sky); text-shadow: 0 0 8px var(--sky-dim)
   text-align:center;gap:10px;padding:60px 30px;position:relative;
   transition:all .4s; clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
 }
+/* Разные цвета для карточек */
 .ccirc:nth-child(1):hover{border-color:var(--sky);background:rgba(0,240,255,.05);box-shadow:0 15px 30px rgba(0,240,255,.15);}
 .ccirc:nth-child(1):hover .ccirc-icon{background:var(--sky); color:#000;}
 
@@ -303,7 +306,6 @@ nav a:hover .cyber-text { color: var(--sky); text-shadow: 0 0 8px var(--sky-dim)
   font-family:var(--font-accent); font-size:clamp(20px,2vw,28px);font-weight:800;color:#fff;
   text-decoration:none;display:block;transition:color .3s;
 }
-.ccirc-val:hover{color:var(--sky);}
 .ccirc-sub{font-family:var(--font-hud);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:5px}
 
 .tg-handle-big{font-family:var(--font-accent); font-size:clamp(28px,3.5vw,40px);font-weight:800;letter-spacing:2px;color:#fff;line-height:1;}
@@ -347,41 +349,6 @@ nav a:hover .cyber-text { color: var(--sky); text-shadow: 0 0 8px var(--sky-dim)
 textarea.form-input { resize: vertical; min-height: 120px; }
 .btn-submit { width: 100%; text-align: center; justify-content: center; margin-top: 10px; background: var(--neon-magenta); box-shadow: 0 0 20px rgba(255,42,133,0.3);}
 .btn-submit:hover { background: #fff; color: #000; box-shadow: 0 0 30px rgba(255,255,255,0.5);}
-
-/* Admin Auth / Dashboard styles */
-.admin-modal-box { border-color: var(--sky) !important; box-shadow: 0 0 30px rgba(0,240,255,0.15) !important; max-width: 800px; }
-.admin-modal-box .modal-title i { -webkit-text-stroke: 1px var(--sky); }
-.admin-modal-box .modal-close { color: var(--sky); }
-.admin-modal-box .form-label { color: var(--sky); }
-.admin-modal-box .form-input:focus { border-color: var(--sky); background: rgba(0,240,255,0.05); }
-
-.admin-tabs { display: flex; gap: 20px; border-bottom: 1px solid var(--edge); margin-bottom: 20px; }
-.admin-tab {
-  padding: 10px 0; font-family:var(--font-hud); font-size: 11px; text-transform: uppercase; letter-spacing: 2px;
-  color: rgba(255,255,255,0.4); cursor: pointer; transition: color 0.3s; border-bottom: 2px solid transparent;
-}
-.admin-tab.active { color: var(--sky); border-bottom-color: var(--sky); }
-.admin-pane { display: none; }
-.admin-pane.active { display: block; }
-.data-list { display: flex; flex-direction: column; gap: 10px; max-height:400px; overflow-y:auto; padding-right:10px;}
-.data-list::-webkit-scrollbar { width: 4px; }
-.data-list::-webkit-scrollbar-thumb { background: var(--sky); border-radius: 4px; }
-.data-card {
-  background: rgba(255,255,255,0.02); border: 1px solid var(--edge);
-  padding: 20px; border-radius: 4px; display: flex; justify-content: space-between;
-  align-items: center; transition: border-color 0.3s;
-}
-.data-card:hover { border-color: var(--sky); background: rgba(0,240,255,0.05); }
-.data-info h4 { font-family:var(--font-accent); font-size: 18px; margin-bottom: 5px; color: #fff; text-transform:uppercase;}
-.data-info p { font-family:var(--font-hud); font-size: 11px; color: rgba(255,255,255,0.6); }
-.data-actions { display: flex; gap: 10px; }
-.btn-action {
-  padding: 8px 16px; font-family:var(--font-hud); font-size: 9px; text-transform: uppercase; letter-spacing: 1px;
-  background: none; border: 1px solid var(--edge); color: #fff; border-radius: 4px; cursor: pointer; transition: all 0.3s;
-}
-.btn-action.call { text-decoration: none;}
-.btn-action.call:hover { background: var(--neon-green); color: #000 !important; }
-.btn-action.delete:hover { border-color: var(--neon-red); color: var(--neon-red); }
 
 /* ── FOOTER ── */
 .footer-bar{border-top:1px solid var(--edge);padding:40px 52px;display:flex;justify-content:space-between;align-items:center;}
@@ -584,7 +551,7 @@ span.t-en, a.t-en { display: none; }
       <div class="ccirc-icon"><i class="fas fa-bolt"></i></div>
       <div class="ccirc-lbl">Direct System</div>
       <div class="tg-handle-big" style="margin: 10px 0;">Онлайн Заявка</div>
-      <button class="btn btn-submit" style="padding: 12px 20px; font-size: 9px; margin-top: 15px; border:none; border-radius:4px; font-family:var(--font-hud); box-shadow:none;">
+      <button class="btn btn-submit" style="padding: 12px 20px; font-size: 9px; margin-top: 15px; border:none; border-radius:4px; font-family:var(--font-hud);">
         <span class="t-ru" style="font-weight:700;">Заполнить Бриф</span><span class="t-en">Fill out Brief</span>
       </button>
     </div>
@@ -625,7 +592,7 @@ span.t-en, a.t-en { display: none; }
     <div class="modal-close" onclick="closeModal('requestModal')"><i class="fas fa-times"></i></div>
     <h3 class="modal-title">Новая <i>Заявка</i></h3>
     
-    <form onsubmit="submitForm(event)">
+    <form id="leadForm" onsubmit="submitForm(event)">
       <div class="form-group">
         <label class="form-label">Ваше Имя</label>
         <input type="text" id="leadName" class="form-input" placeholder="Например, Александр" required>
@@ -646,209 +613,15 @@ span.t-en, a.t-en { display: none; }
 </div>
 
 <div class="modal-overlay" id="adminModal">
-  <div class="modal-content admin-modal-box">
-    <div class="modal-close" onclick="closeModal('adminModal')"><i class="fas fa-times"></i></div>
-
-    <div id="adminLoginScreen">
-      <h3 class="modal-title">Система <i>Доступа</i></h3>
-      <div class="form-group">
-        <label class="form-label">Email Оператора</label>
-        <input type="email" id="adminEmail" class="form-input" placeholder="Введите email">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Код доступа (Пароль)</label>
-        <input type="password" id="adminPass" class="form-input" placeholder="••••••••">
-      </div>
-      <button onclick="adminLogin()" class="btn btn-submit" style="background:var(--sky); padding:15px; border:none; border-radius:4px; font-family:var(--font-hud); width:100%;">
-        <span style="font-weight:700; color:#000;">АВТОРИЗАЦИЯ</span>
-      </button>
-    </div>
-
-    <div id="adminDashboardScreen" style="display:none;">
-      <h3 class="modal-title">База <i>Данных</i></h3>
-      <button onclick="adminLogout()" style="position:absolute; top:25px; right:60px; background:none; border:1px solid var(--neon-magenta); color:var(--neon-magenta); padding:5px 10px; font-family:var(--font-hud); font-size:10px; cursor:pointer; border-radius:4px;">ВЫХОД</button>
-
-      <div class="admin-tabs">
-        <div class="admin-tab active" onclick="switchAdminTab('leads', event)">Все Заявки</div>
-        <div class="admin-tab" onclick="switchAdminTab('team', event)">Команда</div>
-      </div>
-
-      <div id="tab-leads" class="admin-pane active">
-        <div class="data-list" id="realAdminLeadsContainer">
-          <div style="color:var(--sky); font-family:var(--font-hud); font-size:12px;">УСТАНОВКА СВЯЗИ С БАЗОЙ...</div>
-        </div>
-      </div>
-
-      <div id="tab-team" class="admin-pane">
-        <div class="data-list">
-          <div class="data-card" style="border-color:var(--neon-green);">
-            <div class="data-info">
-              <h4>Luka Babakov [Chief]</h4>
-              <p style="color:var(--neon-green);">Статус: ONLINE</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    
+  <div class="modal-content" style="border-color: var(--sky); box-shadow: 0 0 30px rgba(0,240,255,0.15);">
+    <div class="modal-close" style="color:var(--sky);" onclick="closeModal('adminModal')"><i class="fas fa-times"></i></div>
+    <h3 class="modal-title" style="font-family:var(--font-hud); letter-spacing:2px;">Система <i style="-webkit-text-stroke: 1px var(--sky);">Управления</i></h3>
+    <div style="font-family: var(--font-hud); color: var(--neon-magenta); font-size: 14px; margin-bottom: 20px;">[ ACCESS DENIED. REQUIRE AUTH KEY ]</div>
   </div>
 </div>
 
-<script type="module">
-// 1. Подключаем библиотеки Firebase (Официальный Google SDK)
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-// 2. Твои ключи от Базы Данных Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyCfTNWjpG6X0jv2EctojrbKKVqxtErBnGg",
-  authDomain: "kadrfpv.firebaseapp.com",
-  databaseURL: "https://kadrfpv-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "kadrfpv",
-  storageBucket: "kadrfpv.firebasestorage.app"
-};
-
-// 3. Запускаем систему
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-// ── ЛОГИКА АДМИНКИ (ПРОВЕРКА ПАРОЛЯ) ──
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        // Если логин верный - прячем окно ввода и показываем базу заявок
-        document.getElementById('adminLoginScreen').style.display = 'none';
-        document.getElementById('adminDashboardScreen').style.display = 'block';
-        window.loadLeads(); // Качаем заявки из базы
-    } else {
-        // Если не вошел - показываем окно логина
-        document.getElementById('adminLoginScreen').style.display = 'block';
-        document.getElementById('adminDashboardScreen').style.display = 'none';
-    }
-});
-
-// Функция Кнопки "Вход"
-window.adminLogin = async () => {
-    const email = document.getElementById('adminEmail').value;
-    const pass = document.getElementById('adminPass').value;
-    try {
-        await signInWithEmailAndPassword(auth, email, pass);
-    } catch (error) {
-        alert("ОШИБКА: Неверный email или пароль.");
-    }
-};
-
-// Функция Кнопки "Выход"
-window.adminLogout = async () => {
-    await signOut(auth);
-};
-
-// Функция скачивания заявок из Базы Данных
-window.loadLeads = async () => {
-    const container = document.getElementById('realAdminLeadsContainer');
-    container.innerHTML = '<div style="color:var(--sky); font-family:var(--font-hud); font-size:12px;">ЗАГРУЗКА...</div>';
-    try {
-        const q = query(collection(db, "leads"), orderBy("createdAt", "desc"));
-        const querySnapshot = await getDocs(q);
-        
-        container.innerHTML = ""; 
-        if (querySnapshot.empty) {
-            container.innerHTML = '<div style="color:rgba(255,255,255,0.4); font-family:var(--font-hud); font-size:12px;">БАЗА ПУСТА. ЗАЯВОК НЕТ.</div>';
-            return;
-        }
-        
-        // Отрисовываем каждую заявку
-        querySnapshot.forEach((docSnap) => {
-            const data = docSnap.data();
-            const id = docSnap.id;
-            const date = data.createdAt ? new Date(data.createdAt.toMillis()).toLocaleString('ru-RU') : "Только что";
-            
-            container.innerHTML += `
-                <div class="data-card" style="border-color: var(--sky);">
-                  <div class="data-info">
-                    <h4>${data.name}</h4>
-                    <p style="margin-bottom:8px;">${data.task}</p>
-                    <p style="color: var(--sky); font-family:var(--font-hud); letter-spacing:1px;">📞 ${data.phone}</p>
-                    <p style="color: rgba(255,255,255,0.3); font-size:9px; margin-top:5px;">Отправлено: ${date}</p>
-                  </div>
-                  <div class="data-actions">
-                    <a href="tel:${data.phone.replace(/\D/g,'')}" class="btn-action call" style="border-color:var(--neon-green); color:var(--neon-green);"><i class="fas fa-phone"></i> Позвонить</a>
-                    <button class="btn-action delete" onclick="deleteLead('${id}')">Удалить</button>
-                  </div>
-                </div>
-            `;
-        });
-    } catch (e) {
-        console.error(e);
-        container.innerHTML = '<div style="color:var(--neon-red); font-family:var(--font-hud); font-size:12px;">ОШИБКА БАЗЫ ДАННЫХ. ПРОВЕРЬТЕ ПРАВИЛА FIRESTORE (RULES).</div>';
-    }
-};
-
-// Функция удаления заявки из Базы
-window.deleteLead = async (id) => {
-    if(confirm("Точно удалить заявку из базы?")) {
-        await deleteDoc(doc(db, "leads", id));
-        window.loadLeads(); // Обновляем список
-    }
-};
-
-// ── ЛОГИКА ОТПРАВКИ ЗАЯВКИ КЛИЕНТОМ ──
-window.submitForm = async function(e) {
-  e.preventDefault(); 
-  const btn = e.target.querySelector('.btn-submit span');
-  const originalText = btn.innerText;
-  btn.innerText = "ПЕРЕДАЧА ДАННЫХ...";
-  
-  const name = document.getElementById('leadName').value;
-  const phone = document.getElementById('leadPhone').value;
-  const task = document.getElementById('leadTask').value;
-  
-  try {
-    // 1. СОХРАНЯЕМ В ОБЛАКО FIREBASE
-    await addDoc(collection(db, "leads"), {
-        name: name,
-        phone: phone,
-        task: task,
-        createdAt: serverTimestamp()
-    });
-
-    // 2. ДУБЛИРУЕМ В ТЕЛЕГРАМ (Опционально)
-    // Если хочешь чтобы уведомление еще и пиликало на телефоне - вставь ключи сюда:
-    const BOT_TOKEN = '8808545348:AAFZC-Q1zz6P8n_QInWVIqMjakT8y8t8eEo'; 
-    const CHAT_ID = '5729574721'; 
-    
-    if (BOT_TOKEN !== 'ТВОЙ_ТОКЕН_ОТ_БОТА') {
-        const message = `🔥 НОВАЯ ЗАЯВКА В БАЗЕ 🔥\n\n👤 Имя: ${name}\n📞 Телефон: ${phone}\n📝 Задача: ${task}`;
-        const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`;
-        await fetch(url).catch(() => console.log("Telegram не отправлен"));
-    }
-
-    alert('ТЕЛЕМЕТРИЯ УСПЕШНО ПЕРЕДАНА!');
-    e.target.reset();
-    window.closeModal('requestModal');
-
-  } catch (error) {
-    console.error(error);
-    alert('ОШИБКА СИСТЕМЫ ПРИ ЗАПИСИ В БАЗУ.');
-  } finally {
-    btn.innerText = originalText;
-  }
-};
-
-// ── ВИЗУАЛЬНЫЕ ЭФФЕКТЫ (ФРОНТЕНД) ──
-
-window.openModal = function(id) { document.getElementById(id).classList.add('active'); };
-window.closeModal = function(id) { document.getElementById(id).classList.remove('active'); };
-
-window.switchAdminTab = function(tabId, event) {
-  document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.admin-pane').forEach(p => p.classList.remove('active'));
-  event.currentTarget.classList.add('active');
-  document.getElementById('tab-' + tabId).classList.add('active');
-};
-
-/* СИСТЕМНЫЙ ЗАГРУЗЧИК */
+<script>
+/* ── СИСТЕМНЫЙ ЗАГРУЗЧИК (BOOT SEQUENCE) ── */
 window.addEventListener('load', () => {
   const bar = document.getElementById('hud-bar');
   const pctText = document.getElementById('hud-pct');
@@ -863,7 +636,9 @@ window.addEventListener('load', () => {
     "COSMIC PROGRESS PROTOCOL... ACTIVE",
     "SYSTEM READY."
   ];
-  let progress = 0; let logIndex = 0;
+
+  let progress = 0;
+  let logIndex = 0;
 
   const bootInterval = setInterval(() => {
     progress += Math.floor(Math.random() * 12) + 2; 
@@ -884,13 +659,16 @@ window.addEventListener('load', () => {
   }, 120); 
 });
 
-/* ПАРАЛЛАКС ЭФФЕКТ (ГИРОСКОП / МЫШЬ) */
+/* ── ПАРАЛЛАКС ЭФФЕКТ (ГИРОСКОП / МЫШЬ) ── */
+// Для ПК (движение мыши)
 document.addEventListener("mousemove", (e) => {
-  const x = (e.clientX / window.innerWidth - 0.5) * 15; 
-  const y = (e.clientY / window.innerHeight - 0.5) * 15; 
+  const x = (e.clientX / window.innerWidth - 0.5) * 15; // Сила наклона по X
+  const y = (e.clientY / window.innerHeight - 0.5) * 15; // Сила наклона по Y
   document.documentElement.style.setProperty('--move-x', `${x}deg`);
   document.documentElement.style.setProperty('--move-y', `${-y}deg`);
 });
+
+// Для мобилок (гироскоп)
 if (window.DeviceOrientationEvent) {
   window.addEventListener("deviceorientation", (e) => {
     if(!e.gamma || !e.beta) return;
@@ -901,21 +679,26 @@ if (window.DeviceOrientationEvent) {
   });
 }
 
-/* СКРЕМБЛЕР ДЛЯ МЕНЮ */
+/* ── СКРЕМБЛЕР ДЛЯ МЕНЮ (ХАКЕРСКИЙ ЭФФЕКТ) ── */
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
 document.querySelectorAll('.cyber-link').forEach(link => {
   link.onmouseenter = event => {
     const targetSpan = link.querySelector('span:not([style*="display: none"])');
     if(!targetSpan) return;
+    
     let iterations = 0;
     clearInterval(targetSpan.interval);
+    
     targetSpan.interval = setInterval(() => {
       targetSpan.innerText = targetSpan.innerText.split("")
         .map((letter, index) => {
           if(index < iterations) return targetSpan.dataset.text[index];
           return letters[Math.floor(Math.random() * 42)];
         }).join("");
-      if(iterations >= targetSpan.dataset.text.length) clearInterval(targetSpan.interval);
+      
+      if(iterations >= targetSpan.dataset.text.length){
+        clearInterval(targetSpan.interval);
+      }
       iterations += 1 / 2; 
     }, 30);
   }
@@ -928,15 +711,17 @@ window.addEventListener('scroll', () => {
   document.getElementById('st').classList.toggle('on', window.scrollY > 400);
 });
 
-/* SCROLL REVEAL */
+/* SCROLL REVEAL (Анимация при скролле) */
 const io = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
 }, { threshold: 0.1 });
 document.querySelectorAll('.rv').forEach(el => io.observe(el));
 
+/* SCROLL TOP */
 document.getElementById('st').addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
 
-window.setLang = function(lang) {
+/* LANGUAGE */
+function setLang(lang) {
   const body = document.getElementById('body');
   const btnRu = document.getElementById('btnRu');
   const btnEn = document.getElementById('btnEn');
@@ -948,6 +733,44 @@ window.setLang = function(lang) {
     body.classList.remove('en-mode');
     btnRu.classList.add('active');
     btnEn.classList.remove('active');
+  }
+}
+
+/* МОДАЛЬНЫЕ ОКНА */
+function openModal(id) { document.getElementById(id).classList.add('active'); }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+/* ── ОТПРАВКА В ТЕЛЕГРАМ ── */
+async function submitForm(e) {
+  e.preventDefault(); 
+  const btn = e.target.querySelector('.btn-submit span');
+  const originalText = btn.innerText;
+  btn.innerText = "SENDING...";
+  
+  // ВСТАВЬ СВОИ ДАННЫЕ СЮДА:
+  const BOT_TOKEN = '8808545348:AAHcGBG56Pehaa8pSfb5EdTWa0BV490ZKjw'; 
+  const CHAT_ID = '5729574721'; 
+  
+  const name = document.getElementById('leadName').value;
+  const phone = document.getElementById('leadPhone').value;
+  const task = document.getElementById('leadTask').value;
+  
+  const message = `🔥 НОВАЯ ЗАЯВКА С САЙТА 🔥\n\n👤 Имя: ${name}\n📞 Телефон: ${phone}\n📝 Задача: ${task}`;
+  const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`;
+
+  try {
+    const response = await fetch(url);
+    if (response.ok) {
+      alert('Заявка отправлена!');
+      e.target.reset();
+      closeModal('requestModal');
+    } else {
+      alert('Ошибка при отправке! Проверь BOT_TOKEN и CHAT_ID в коде.');
+    }
+  } catch (error) {
+    alert('Ошибка соединения.');
+  } finally {
+    btn.innerText = originalText;
   }
 }
 </script>
