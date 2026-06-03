@@ -12,11 +12,11 @@
 :root{
   --ink:#05070a;
   --paper:#f0f2f5;
-  --sky:#00f0ff; /* Неоновый голубой */
+  --sky:#00f0ff; 
   --sky-dim:rgba(0, 240, 255, 0.15);
-  --neon-magenta: #ff2a85; /* Дерзкий розовый */
-  --neon-purple: #b026ff; /* Глубокий фиолетовый */
-  --neon-green: #00ff66; /* Системный зеленый */
+  --neon-magenta: #ff2a85; 
+  --neon-purple: #b026ff; 
+  --neon-green: #00ff66; 
   --edge:rgba(0, 240, 255, 0.2);
   --tg:#229ED9;
   --panel-bg: rgba(5, 7, 10, 0.85);
@@ -286,7 +286,6 @@ nav a:hover .cyber-text { color: var(--sky); text-shadow: 0 0 8px var(--sky-dim)
   text-align:center;gap:10px;padding:60px 30px;position:relative;
   transition:all .4s; clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
 }
-/* Разные цвета для карточек */
 .ccirc:nth-child(1):hover{border-color:var(--sky);background:rgba(0,240,255,.05);box-shadow:0 15px 30px rgba(0,240,255,.15);}
 .ccirc:nth-child(1):hover .ccirc-icon{background:var(--sky); color:#000;}
 
@@ -347,8 +346,24 @@ nav a:hover .cyber-text { color: var(--sky); text-shadow: 0 0 8px var(--sky-dim)
 }
 .form-input:focus {outline: none; border-color: var(--neon-magenta); background: rgba(255,42,133,0.05);}
 textarea.form-input { resize: vertical; min-height: 120px; }
-.btn-submit { width: 100%; text-align: center; justify-content: center; margin-top: 10px; background: var(--neon-magenta); box-shadow: 0 0 20px rgba(255,42,133,0.3);}
-.btn-submit:hover { background: #fff; color: #000; box-shadow: 0 0 30px rgba(255,255,255,0.5);}
+
+/* ── CHECKBOX ПЕРСОНАЛЬНЫХ ДАННЫХ ── */
+.checkbox-group { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 25px; }
+.checkbox-group input { margin-top: 3px; cursor: pointer; accent-color: var(--neon-magenta); }
+.checkbox-label { font-family: var(--font-hud); font-size: 9px; letter-spacing: 1px; color: rgba(255,255,255,0.6); line-height: 1.4; text-transform: uppercase; }
+.checkbox-label a { color: var(--neon-magenta); text-decoration: none; transition: color 0.3s; }
+.checkbox-label a:hover { color: var(--sky); }
+
+/* СТИЛИ ЗАБЛОКИРОВАННОЙ КНОПКИ */
+.btn-submit { width: 100%; text-align: center; justify-content: center; margin-top: 10px; background: var(--neon-magenta); box-shadow: 0 0 20px rgba(255,42,133,0.3); transition: all 0.3s;}
+.btn-submit:hover:not(:disabled) { background: #fff; color: #000; box-shadow: 0 0 30px rgba(255,255,255,0.5);}
+.btn-submit:disabled {
+  background: rgba(255, 42, 133, 0.2);
+  color: rgba(255, 255, 255, 0.3);
+  box-shadow: none;
+  cursor: not-allowed;
+  border: 1px solid rgba(255, 42, 133, 0.3);
+}
 
 /* ── FOOTER ── */
 .footer-bar{border-top:1px solid var(--edge);padding:40px 52px;display:flex;justify-content:space-between;align-items:center;}
@@ -361,13 +376,17 @@ textarea.form-input { resize: vertical; min-height: 120px; }
 }
 .admin-link:hover { color: var(--neon-purple); }
 
-/* I18N */
-.t-en { display: none; }
+/* ── I18N (Многоязычность RU / EN / NO) ── */
+.t-en, .t-no { display: none; }
 .en-mode .t-ru { display: none; }
 .en-mode .t-en { display: block; }
-span.t-en, a.t-en { display: none; }
+.no-mode .t-ru { display: none; }
+.no-mode .t-no { display: block; }
+span.t-en, a.t-en, span.t-no, a.t-no { display: none; }
 .en-mode span.t-ru, .en-mode a.t-ru { display: none; }
 .en-mode span.t-en, .en-mode a.t-en { display: inline; }
+.no-mode span.t-ru, .no-mode a.t-ru { display: none; }
+.no-mode span.t-no, .no-mode a.t-no { display: inline; }
 
 @media(max-width:960px){
   header,header.slim{padding:20px 24px}
@@ -408,23 +427,28 @@ span.t-en, a.t-en { display: none; }
       <a href="#about" class="cyber-link">
         <span class="t-ru cyber-text" data-text="О НАС">О НАС</span>
         <span class="t-en cyber-text" data-text="ABOUT">ABOUT</span>
+        <span class="t-no cyber-text" data-text="OM OSS">OM OSS</span>
       </a>
       <a href="#works" class="cyber-link">
         <span class="t-ru cyber-text" data-text="РАБОТЫ">РАБОТЫ</span>
         <span class="t-en cyber-text" data-text="WORKS">WORKS</span>
+        <span class="t-no cyber-text" data-text="PROSJEKTER">PROSJEKTER</span>
       </a>
       <a href="#gallery" class="cyber-link">
         <span class="t-ru cyber-text" data-text="ГАЛЕРЕЯ">ГАЛЕРЕЯ</span>
         <span class="t-en cyber-text" data-text="GALLERY">GALLERY</span>
+        <span class="t-no cyber-text" data-text="GALLERI">GALLERI</span>
       </a>
       <a href="#contact" class="cyber-link">
         <span class="t-ru cyber-text" data-text="СВЯЗЬ">СВЯЗЬ</span>
         <span class="t-en cyber-text" data-text="CONTACT">CONTACT</span>
+        <span class="t-no cyber-text" data-text="KONTAKT">KONTAKT</span>
       </a>
     </nav>
     <div class="lang">
       <button id="btnRu" class="active" onclick="setLang('ru')">RU</button>
       <button id="btnEn" onclick="setLang('en')">EN</button>
+      <button id="btnNo" onclick="setLang('no')">NO</button>
     </div>
   </div>
 </header>
@@ -438,6 +462,7 @@ span.t-en, a.t-en { display: none; }
     <div class="hero-chip">
       <span class="t-ru">Live 3D // Drag to control</span>
       <span class="t-en">Live 3D // Drag to control</span>
+      <span class="t-no">Live 3D // Dra for å styre</span>
     </div>
     <h1 class="hero-h1">
       <span class="ln">KADR</span>
@@ -445,11 +470,18 @@ span.t-en, a.t-en { display: none; }
     </h1>
     <p class="hero-desc t-ru">Абсолютный контроль в любой плоскости.<br>Нажми и потяни мышь, чтобы управлять сценой.</p>
     <p class="hero-desc t-en">Absolute control in any dimension.<br>Click and drag to manipulate the scene.</p>
+    <p class="hero-desc t-no">Absolutt kontroll i alle dimensjoner.<br>Klikk og dra for å styre scenen.</p>
     <div class="hero-actions">
       <button onclick="openModal('requestModal')" class="btn btn-sky">
-        <span class="t-ru">Оставить заявку</span><span class="t-en">Deploy Request</span>
+        <span class="t-ru">Оставить заявку</span>
+        <span class="t-en">Deploy Request</span>
+        <span class="t-no">Send forespørsel</span>
       </button>
-      <a href="#works" class="btn btn-ghost"><span class="t-ru">База Данных</span><span class="t-en">View DB</span></a>
+      <a href="#works" class="btn btn-ghost">
+        <span class="t-ru">База Данных</span>
+        <span class="t-en">View DB</span>
+        <span class="t-no">Se database</span>
+      </a>
     </div>
   </div>
 </section>
@@ -470,27 +502,49 @@ span.t-en, a.t-en { display: none; }
 <section class="s parallax-wrap" id="about">
   <div class="s-eyebrow rv t-ru">Манифест</div>
   <div class="s-eyebrow rv t-en">Manifesto</div>
+  <div class="s-eyebrow rv t-no">Manifest</div>
   <h2 class="s-title rv parallax-el" style="--depth: 25px;">
     <span class="t-ru">Каждый кадр —<br><i>новая высота</i></span>
     <span class="t-en">Every frame —<br><i>a new altitude</i></span>
+    <span class="t-no">Hvert bilde —<br><i>en ny høyde</i></span>
   </h2>
   <div class="about-layout">
     <div class="about-body rv parallax-el" style="--depth: 15px;">
       <span class="t-ru">Мы стираем грань между классическим кино и агрессивным пилотированием.<br><br><strong>KADR FPV</strong> — это больше, чем пролеты с дрона. Мы интегрируем новейшие технологии: от тяжелых кино-лифтеров до ИИ-генерации превизов.<br><br>Готовы снять пролет сквозь виллу, догнать спорткар на скорости 150 км/ч или собрать сложный 3D-трекинг прямо на постпродакшене.</span>
       <span class="t-en">We blur the line between classic cinema and aggressive piloting.<br><br><strong>KADR FPV</strong> is more than drone flythroughs. We integrate the latest tech: from heavy cinema lifters to AI-generated pre-viz.<br><br>Ready to fly through a villa, chase a sports car at 150 km/h, or build complex 3D tracking in post.</span>
+      <span class="t-no">Vi visker ut grensen mellom klassisk film og aggressiv flyging.<br><br><strong>KADR FPV</strong> er mer enn droneflyging. Vi integrerer den nyeste teknologien: fra tunge kinoløftere til AI-generert pre-viz.<br><br>Klar for å fly gjennom en villa, jage en sportsbil i 150 km/t, eller bygge kompleks 3D-sporing i post.</span>
     </div>
     <div class="about-aside rv parallax-el" style="--depth: 30px;">
       <div class="stat-row">
-        <div><div class="stat-n">200+</div><div class="stat-l t-ru" style="margin-top:5px; color:var(--sky);">Проектов</div><div class="stat-l t-en" style="margin-top:5px; color:var(--sky);">Projects</div></div>
-        <div class="stat-l t-ru">с 2020</div><div class="stat-l t-en">since 2020</div>
+        <div>
+          <div class="stat-n">200+</div>
+          <div class="stat-l t-ru" style="margin-top:5px; color:var(--sky);">Проектов</div>
+          <div class="stat-l t-en" style="margin-top:5px; color:var(--sky);">Projects</div>
+          <div class="stat-l t-no" style="margin-top:5px; color:var(--sky);">Prosjekter</div>
+        </div>
+        <div class="stat-l t-ru">с 2020</div>
+        <div class="stat-l t-en">since 2020</div>
+        <div class="stat-l t-no">siden 2020</div>
       </div>
       <div class="stat-row">
-        <div><div class="stat-n" style="color:var(--neon-magenta);">RAW</div><div class="stat-l t-ru" style="margin-top:5px; color:var(--neon-magenta);">Формат</div><div class="stat-l t-en" style="margin-top:5px; color:var(--neon-magenta);">Format</div></div>
+        <div>
+          <div class="stat-n" style="color:var(--neon-magenta);">RAW</div>
+          <div class="stat-l t-ru" style="margin-top:5px; color:var(--neon-magenta);">Формат</div>
+          <div class="stat-l t-en" style="margin-top:5px; color:var(--neon-magenta);">Format</div>
+          <div class="stat-l t-no" style="margin-top:5px; color:var(--neon-magenta);">Format</div>
+        </div>
         <div class="stat-l">10-Bit Color</div>
       </div>
       <div class="stat-row">
-        <div><div class="stat-n" style="color:var(--neon-purple);">24ч</div><div class="stat-l t-ru" style="margin-top:5px; color:var(--neon-purple);">Ответ</div><div class="stat-l t-en" style="margin-top:5px; color:var(--neon-purple);">Response</div></div>
-        <div class="stat-l t-ru">7 дней</div><div class="stat-l t-en">7 days</div>
+        <div>
+          <div class="stat-n" style="color:var(--neon-purple);">24ч</div>
+          <div class="stat-l t-ru" style="margin-top:5px; color:var(--neon-purple);">Ответ</div>
+          <div class="stat-l t-en" style="margin-top:5px; color:var(--neon-purple);">Response</div>
+          <div class="stat-l t-no" style="margin-top:5px; color:var(--neon-purple);">Responstid</div>
+        </div>
+        <div class="stat-l t-ru">7 дней</div>
+        <div class="stat-l t-en">7 days</div>
+        <div class="stat-l t-no">7 dager</div>
       </div>
     </div>
   </div>
@@ -499,9 +553,11 @@ span.t-en, a.t-en { display: none; }
 <div class="works-wrap parallax-wrap" id="works">
   <div class="s-eyebrow rv t-ru">Архив съемок</div>
   <div class="s-eyebrow rv t-en">Footage Archive</div>
+  <div class="s-eyebrow rv t-no">Videoarkiv</div>
   <h2 class="s-title rv parallax-el" style="--depth: 25px;">
     <span class="t-ru">Избранное<br><i>портфолио</i></span>
     <span class="t-en">Selected<br><i>Works</i></span>
+    <span class="t-no">Utvalgte<br><i>Verk</i></span>
   </h2>
   <div class="video-block rv parallax-el" style="--depth: 15px;">
     <video controls preload="metadata"><source src="video1.mp4.mov" type="video/mp4"></video>
@@ -520,7 +576,12 @@ span.t-en, a.t-en { display: none; }
 <div class="gallery-wrap parallax-wrap" id="gallery">
   <div class="s-eyebrow rv t-ru">Фотогалерея</div>
   <div class="s-eyebrow rv t-en">Photo Gallery</div>
-  <h2 class="s-title rv parallax-el" style="--depth: 20px;">Gallery</h2>
+  <div class="s-eyebrow rv t-no">Fotogalleri</div>
+  <h2 class="s-title rv parallax-el" style="--depth: 20px;">
+    <span class="t-ru">Галерея</span>
+    <span class="t-en">Gallery</span>
+    <span class="t-no">Galleri</span>
+  </h2>
   <div class="gallery-mosaic parallax-el" style="--depth: 10px;">
     <div class="gitem rv"><img src="photo1.jpg.JPG" alt="shot 1" loading="lazy"><div class="gitem-over"><span class="gitem-lbl" style="color:var(--sky);">Aerial View</span></div></div>
     <div class="gitem rv"><img src="photo2.jpg.JPG" alt="shot 2" loading="lazy"><div class="gitem-over"><span class="gitem-lbl" style="color:var(--neon-magenta);">FPV Pass</span></div></div>
@@ -533,9 +594,11 @@ span.t-en, a.t-en { display: none; }
 <div class="contact-wrap parallax-wrap" id="contact">
   <div class="s-eyebrow rv t-ru">Терминал связи</div>
   <div class="s-eyebrow rv t-en">Comm Terminal</div>
+  <div class="s-eyebrow rv t-no">Kommunikasjonsterminal</div>
   <h2 class="s-title rv parallax-el" style="--depth: 25px;">
     <span class="t-ru">Инициализация<br><i>проекта</i></span>
     <span class="t-en">Initialize<br><i>project</i></span>
+    <span class="t-no">Initialiser<br><i>prosjekt</i></span>
   </h2>
 
   <div class="contact-circles parallax-el" style="--depth: 15px;">
@@ -543,6 +606,7 @@ span.t-en, a.t-en { display: none; }
       <div class="ccirc-icon"><i class="fas fa-phone"></i></div>
       <div class="ccirc-lbl t-ru">Голосовой канал</div>
       <div class="ccirc-lbl t-en">Voice Channel</div>
+      <div class="ccirc-lbl t-no">Talekanal</div>
       <a href="tel:+79153585459" class="ccirc-val">+7 915 358 54 59</a>
       <a href="tel:+79918736003" class="ccirc-val">+7 991 873 60 03</a>
     </div>
@@ -550,9 +614,15 @@ span.t-en, a.t-en { display: none; }
     <div class="ccirc rv" style="cursor:pointer;" onclick="openModal('requestModal')">
       <div class="ccirc-icon"><i class="fas fa-bolt"></i></div>
       <div class="ccirc-lbl">Direct System</div>
-      <div class="tg-handle-big" style="margin: 10px 0;">Онлайн Заявка</div>
+      <div class="tg-handle-big" style="margin: 10px 0;">
+        <span class="t-ru">Онлайн Заявка</span>
+        <span class="t-en">Online Form</span>
+        <span class="t-no">Online Skjema</span>
+      </div>
       <button class="btn btn-submit" style="padding: 12px 20px; font-size: 9px; margin-top: 15px; border:none; border-radius:4px; font-family:var(--font-hud);">
-        <span class="t-ru" style="font-weight:700;">Заполнить Бриф</span><span class="t-en">Fill out Brief</span>
+        <span class="t-ru" style="font-weight:700;">Заполнить Бриф</span>
+        <span class="t-en">Fill out Brief</span>
+        <span class="t-no">Fyll ut brief</span>
       </button>
     </div>
 
@@ -562,6 +632,7 @@ span.t-en, a.t-en { display: none; }
       <div class="tg-handle-big" style="margin: 10px 0;">@chistbly</div>
       <div class="ccirc-sub t-ru">Написать напрямую</div>
       <div class="ccirc-sub t-en">Message directly</div>
+      <div class="ccirc-sub t-no">Send melding</div>
     </a>
   </div>
 </div>
@@ -590,23 +661,51 @@ span.t-en, a.t-en { display: none; }
 <div class="modal-overlay" id="requestModal">
   <div class="modal-content">
     <div class="modal-close" onclick="closeModal('requestModal')"><i class="fas fa-times"></i></div>
-    <h3 class="modal-title">Новая <i>Заявка</i></h3>
+    <h3 class="modal-title">
+      <span class="t-ru">Новая <i>Заявка</i></span>
+      <span class="t-en">New <i>Request</i></span>
+      <span class="t-no">Ny <i>Forespørsel</i></span>
+    </h3>
     
     <form id="leadForm" onsubmit="submitForm(event)">
       <div class="form-group">
-        <label class="form-label">Ваше Имя</label>
-        <input type="text" id="leadName" class="form-input" placeholder="Например, Александр" required>
+        <label class="form-label">
+          <span class="t-ru">Ваше Имя</span>
+          <span class="t-en">Your Name</span>
+          <span class="t-no">Ditt Navn</span>
+        </label>
+        <input type="text" id="leadName" class="form-input" placeholder="Name" required>
       </div>
       <div class="form-group">
-        <label class="form-label">Номер телефона</label>
+        <label class="form-label">
+          <span class="t-ru">Номер телефона</span>
+          <span class="t-en">Phone Number</span>
+          <span class="t-no">Telefonnummer</span>
+        </label>
         <input type="tel" id="leadPhone" class="form-input" placeholder="+7 (999) 000-00-00" required>
       </div>
       <div class="form-group">
-        <label class="form-label">Что нужно снять?</label>
-        <textarea id="leadTask" class="form-input" placeholder="Опишите локацию, задачу, сроки..." required></textarea>
+        <label class="form-label">
+          <span class="t-ru">Что нужно снять?</span>
+          <span class="t-en">What do you need filmed?</span>
+          <span class="t-no">Hva skal filmes?</span>
+        </label>
+        <textarea id="leadTask" class="form-input" placeholder="..." required></textarea>
       </div>
-      <button type="submit" class="btn btn-submit" style="padding: 15px; border:none; border-radius:4px; font-family:var(--font-hud);">
-        <span style="font-weight:700;">Отправить телеметрию</span>
+      
+      <div class="checkbox-group">
+        <input type="checkbox" id="privacyConsent" onchange="toggleSubmitButton(this)" required>
+        <label for="privacyConsent" class="checkbox-label">
+          <span class="t-ru">Я даю согласие на <a href="#">обработку персональных данных</a></span>
+          <span class="t-en">I consent to the <a href="#">processing of personal data</a></span>
+          <span class="t-no">Jeg samtykker til <a href="#">behandling av personopplysninger</a></span>
+        </label>
+      </div>
+
+      <button type="submit" id="submitBtn" class="btn btn-submit" style="padding: 15px; border:none; border-radius:4px; font-family:var(--font-hud);" disabled>
+        <span class="t-ru" style="font-weight:700;">Отправить телеметрию</span>
+        <span class="t-en" style="font-weight:700;">Send telemetry</span>
+        <span class="t-no" style="font-weight:700;">Send telemetri</span>
       </button>
     </form>
   </div>
@@ -660,15 +759,13 @@ window.addEventListener('load', () => {
 });
 
 /* ── ПАРАЛЛАКС ЭФФЕКТ (ГИРОСКОП / МЫШЬ) ── */
-// Для ПК (движение мыши)
 document.addEventListener("mousemove", (e) => {
-  const x = (e.clientX / window.innerWidth - 0.5) * 15; // Сила наклона по X
-  const y = (e.clientY / window.innerHeight - 0.5) * 15; // Сила наклона по Y
+  const x = (e.clientX / window.innerWidth - 0.5) * 15;
+  const y = (e.clientY / window.innerHeight - 0.5) * 15;
   document.documentElement.style.setProperty('--move-x', `${x}deg`);
   document.documentElement.style.setProperty('--move-y', `${-y}deg`);
 });
 
-// Для мобилок (гироскоп)
 if (window.DeviceOrientationEvent) {
   window.addEventListener("deviceorientation", (e) => {
     if(!e.gamma || !e.beta) return;
@@ -684,7 +781,7 @@ const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
 document.querySelectorAll('.cyber-link').forEach(link => {
   link.onmouseenter = event => {
     const targetSpan = link.querySelector('span:not([style*="display: none"])');
-    if(!targetSpan) return;
+    if(!targetSpan || !targetSpan.dataset.text) return;
     
     let iterations = 0;
     clearInterval(targetSpan.interval);
@@ -720,19 +817,26 @@ document.querySelectorAll('.rv').forEach(el => io.observe(el));
 /* SCROLL TOP */
 document.getElementById('st').addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
 
-/* LANGUAGE */
+/* LANGUAGE (RU / EN / NO) */
 function setLang(lang) {
   const body = document.getElementById('body');
   const btnRu = document.getElementById('btnRu');
   const btnEn = document.getElementById('btnEn');
+  const btnNo = document.getElementById('btnNo');
+  
+  body.classList.remove('en-mode', 'no-mode');
+  btnRu.classList.remove('active');
+  btnEn.classList.remove('active');
+  btnNo.classList.remove('active');
+
   if(lang === 'en') {
     body.classList.add('en-mode');
     btnEn.classList.add('active');
-    btnRu.classList.remove('active');
+  } else if (lang === 'no') {
+    body.classList.add('no-mode');
+    btnNo.classList.add('active');
   } else {
-    body.classList.remove('en-mode');
     btnRu.classList.add('active');
-    btnEn.classList.remove('active');
   }
 }
 
@@ -740,14 +844,28 @@ function setLang(lang) {
 function openModal(id) { document.getElementById(id).classList.add('active'); }
 function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
+/* РАЗБЛОКИРОВКА КНОПКИ ПРИ СОГЛАСИИ */
+function toggleSubmitButton(checkbox) {
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = !checkbox.checked;
+}
+
 /* ── ОТПРАВКА В ТЕЛЕГРАМ ── */
 async function submitForm(e) {
   e.preventDefault(); 
-  const btn = e.target.querySelector('.btn-submit span');
-  const originalText = btn.innerText;
-  btn.innerText = "SENDING...";
   
-  // ВСТАВЬ СВОИ ДАННЫЕ СЮДА:
+  // Дополнительная JS защита на случай обхода
+  const consentBox = document.getElementById('privacyConsent');
+  if (!consentBox.checked) {
+    alert("Необходимо дать согласие на обработку персональных данных!");
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  const originalHtml = btn.innerHTML;
+  btn.innerHTML = "<span style='font-weight:700;'>SENDING...</span>";
+  btn.disabled = true; // Блокируем кнопку от повторных нажатий
+  
   const BOT_TOKEN = '8808545348:AAHcGBG56Pehaa8pSfb5EdTWa0BV490ZKjw'; 
   const CHAT_ID = '5729574721'; 
   
@@ -755,22 +873,25 @@ async function submitForm(e) {
   const phone = document.getElementById('leadPhone').value;
   const task = document.getElementById('leadTask').value;
   
-  const message = `🔥 НОВАЯ ЗАЯВКА С САЙТА 🔥\n\n👤 Имя: ${name}\n📞 Телефон: ${phone}\n📝 Задача: ${task}`;
+  const message = `🔥 НОВАЯ ЗАЯВКА С САЙТА 🔥\n\n👤 Имя: ${name}\n📞 Телефон: ${phone}\n📝 Задача: ${task}\n✅ Согласие на обработку ПД получено.`;
   const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(message)}`;
 
   try {
     const response = await fetch(url);
     if (response.ok) {
       alert('Заявка отправлена!');
-      e.target.reset();
+      e.target.reset(); // Очищаем форму
+      toggleSubmitButton(consentBox); // Снова блокируем кнопку, так как чекбокс сбросился
       closeModal('requestModal');
     } else {
       alert('Ошибка при отправке! Проверь BOT_TOKEN и CHAT_ID в коде.');
+      btn.disabled = false; // Возвращаем кнопку если ошибка
     }
   } catch (error) {
     alert('Ошибка соединения.');
+    btn.disabled = false;
   } finally {
-    btn.innerText = originalText;
+    btn.innerHTML = originalHtml;
   }
 }
 </script>
